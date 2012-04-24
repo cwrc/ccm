@@ -1,31 +1,32 @@
-source 'http://rubygems.org'
+  source 'http://rubygems.org'
 
-gem 'rails', '3.0.12'
+  gem 'rails', '~>3.0.11'
 
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
+  gem 'blacklight', '~> 3.1.2'
+  gem 'hydra-head', '~> 3.2.0'
 
-gem 'sqlite3'
+  # We will assume that you're using sqlite3 for testing/demo, 
+  # but in a production setup you probably want to use a real sql database like mysql or postgres
+  #gem 'sqlite3'
 
-# Use unicorn as the web server
-# gem 'unicorn'
+  #  We will assume you're using devise in tutorials/documentation. 
+  # You are free to implement your own User/Authentication solution in its place.
+  gem 'devise'
+  
+  gem 'active-fedora'
+  
+  gem 'will_paginate' ##, :git => 'git://github.com/mislav/will_paginate.git', :branch => 'rails3'
 
-# Deploy with Capistrano
-# gem 'capistrano'
-
-# To use debugger (ruby-debug for Ruby 1.8.7+, ruby-debug19 for Ruby 1.9.2+)
-# gem 'ruby-debug'
-# gem 'ruby-debug19', :require => 'ruby-debug'
-
-# Bundle the extra gems:
-# gem 'bj'
-# gem 'nokogiri'
-# gem 'sqlite3-ruby', :require => 'sqlite3'
-# gem 'aws-s3', :require => 'aws/s3'
-
-# Bundle gems for the local environment. Make sure to
-# put test-only gems in this group so their generators
-# and rake tasks are available in development mode:
-# group :development, :test do
-#   gem 'webrat'
-# end
+  # For testing.  You will probably want to use all of these to run the tests you write for your hydra head
+  group :development, :test do 
+         gem 'solrizer-fedora', '>=1.0.1'
+         gem 'ruby-debug'
+         gem 'rspec'
+         gem 'rspec-rails', '>=2.5.0'
+         gem 'mocha'
+         gem 'cucumber-rails'
+         gem 'database_cleaner'
+         gem 'capybara'
+         gem 'bcrypt-ruby'
+         gem "jettywrapper"
+  end # (leave this comment here to catch a stray line inserted by blacklight!)gem "devise"
