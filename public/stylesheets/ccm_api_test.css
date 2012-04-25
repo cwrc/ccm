@@ -1,0 +1,57 @@
+html,body 
+{
+	margin: 0;
+	padding: 0; 
+	height:100%;
+	background: #BBB; 
+}
+
+#page
+{
+	position:relative;
+	margin: 0 auto;
+	padding:0;
+	width: 1000px;
+	background: #FFF;
+	height:100%;
+	min-height:100%;/*for mozilla*/
+}
+
+html>body #page {height:auto}/*for mozilla */
+
+.error, .notice
+{
+	padding:1em; margin-bottom:1em;
+}
+
+.error
+{
+	background: #FF6F61;
+}
+
+.notice
+{
+	background: #C6D880;
+}
+
+.page-title
+{
+	padding: 2%;
+	font-size: 24pt;
+	font-weight:bold;
+	height: 5%;
+	border-bottom: solid 1px #BBB;
+}
+
+.sub-title
+{
+	font-weight: bold;
+	margin:5px;
+}
+
+#editor_title
+{
+	font-size: 16pt;
+	font-weight: bold;
+	margin:5px;
+}
