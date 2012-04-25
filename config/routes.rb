@@ -10,6 +10,12 @@ CwrcPlatform::Application.routes.draw do
     end
   end
 
+  resources :items do
+    collection do
+      post 'save'
+    end
+  end
+
 
 ##  devise_for :users
 
