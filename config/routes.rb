@@ -2,7 +2,7 @@ EntityHydra::Application.routes.draw do
   Blacklight.add_routes(self)
   HydraHead.add_routes(self)
 
-  root :to => "entities#index"
+  root :to => "test#index"
 
   resources :test do
     collection do
@@ -15,6 +15,7 @@ EntityHydra::Application.routes.draw do
       post 'save'
     end
   end
+
 
   
 
