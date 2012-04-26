@@ -27,8 +27,8 @@ class CcmContentDatastream < ActiveFedora::NokogiriDatastream
 
     ##Updating the version and encoding attributes of the envelope     
     envelope = self.find_by_terms(:xml_description).first
-    envelope.set_attribute('version', new_desc_doc.version)
-    envelope.set_attribute('encoding', new_desc_doc.encoding)
+    envelope.set_attribute('version', new_desc_doc.version) unless new_desc_doc.version.nil?
+    envelope.set_attribute('encoding', new_desc_doc.encoding) unless new_desc_doc.encoding.nil?
     
     ##Removing all child elements of the envelope. Actually, we should have only one
     while envelope.elements.count > 0

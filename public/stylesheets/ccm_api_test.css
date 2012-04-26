@@ -15,9 +15,15 @@ html,body
 	background: #FFF;
 	height:100%;
 	min-height:100%;/*for mozilla*/
+	text-align: left;
 }
 
 html>body #page {height:auto}/*for mozilla */
+
+#page-content
+{
+	margin: 0 20px;
+}
 
 .error, .notice
 {
@@ -36,22 +42,28 @@ html>body #page {height:auto}/*for mozilla */
 
 .page-title
 {
-	padding: 2%;
+	padding: 2% 0;
 	font-size: 24pt;
 	font-weight:bold;
 	height: 5%;
 	border-bottom: solid 1px #BBB;
 }
 
-.sub-title
+.sub-title, .editor-title
 {
 	font-weight: bold;
-	margin:5px;
+	font-weight: bold;
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
 
-#editor_title
+.editor-title
 {
 	font-size: 16pt;
-	font-weight: bold;
-	margin:5px;
+}
+
+.editor
+{
+	width: 640px;
+	height: 480px;
 }

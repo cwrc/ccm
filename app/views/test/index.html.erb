@@ -1,4 +1,27 @@
+
 <div class="page-title">
 	CCM API Test Page
 </div>
 
+<% if !flash[:error].nil? %> <div class="error"><%=flash[:error]%></div> <% end %>
+		
+
+<div class="editor-title">
+	<% if @item.nil? %>
+		Create new item
+	<% else %>
+		Update Item <%= @item.id %>
+	<% end %>	
+</div>
+
+<form action="<%= url_for :controller=>:items, :action=>:save -%>" id="save_item" method="post">
+	<textarea name="xml" class="editor" id="xml"><%= @item.get_xml_description unless @item.nil? %></textarea>
+	<input type="hidden" name="id" value="<%=@item.id unless @item.nil? %>" />
+	<br />
+	<%= link_to "Reset All Forms", :controller=>:test, :action=>:index %> | <input type="submit" value="<%= @item.nil? ? "Create" : "Update" %>" id="create_item_button" onclick="submit_form('save_item'); return false;" />
+</form>
+
+
+<% if !flash[:notice].nil? %>
+	<script type="text/javascript">alert("<%=flash[:notice]-%>")</script>
+<% end %>

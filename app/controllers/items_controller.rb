@@ -1,14 +1,20 @@
 class ItemsController < ApplicationController
   
-  def create
+  
+  def show
+    
+  end
+  
+  def save
     begin
-      entity = CwrcEntity.new
       xml_string = params[:xml]
+      id = params[:id]
       
-      entity.replace_xml_description(xml_string)
+      item = (id.nil? || id == "") ? CwrcItem.new : CwrcItem.find(id)
+      item.replace_xml_description(xml_string)
       
-      if entity.save
-        render :text => entity.pid
+      if item.save
+        render :text => item.pid
       else
         render :text => -1
       end
@@ -16,12 +22,8 @@ class ItemsController < ApplicationController
       render :text => -1
     end    
   end
-  
-  def show
-    
-  end
-  
-  def save
+
+  def delete
     
   end
 
