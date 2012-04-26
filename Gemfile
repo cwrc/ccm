@@ -29,4 +29,4 @@
          gem 'capybara'
          gem 'bcrypt-ruby'
          gem "jettywrapper"
-  end # (leave this comment here to catch a stray line inserted by blacklight!)gem "devise"
+  end # (leave this comment here to catch a stray line inserted by blacklight!)

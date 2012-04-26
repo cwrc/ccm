@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120424232610) do
+ActiveRecord::Schema.define(:version => 20120131233729) do
 
   create_table "bookmarks", :force => true do |t|
     t.integer  "user_id",     :null => false
