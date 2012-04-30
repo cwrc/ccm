@@ -1,5 +1,9 @@
 class ItemsApiController < ApplicationController
   
+  ##API actions do not require any layout formatting
+  layout false
+  
+  ##API methods must be accessible via third-party generated forms
   skip_before_filter :protect_from_forgery, :only => [:save, :delete]
   
   def show

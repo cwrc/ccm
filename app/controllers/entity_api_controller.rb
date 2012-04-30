@@ -3,8 +3,8 @@ class EntityApiController < ApplicationController
   ##API actions do not require any layout formatting
   layout false
   
-  ##Since th create and update actions are called via a UI which is generayed outside of rails, we need to disable forgery protection on them
-  skip_before_filter :protect_from_forgery, :only => [:save]
+  ##API methods must be accessible via third-party generated forms
+  skip_before_filter :protect_from_forgery, :only => [:save, :delete]
   
   def show
     object = CwrcEntity.find(params[:id]);
@@ -28,5 +28,17 @@ class EntityApiController < ApplicationController
       render :text => -1
     end    
   end
+  
+  def delete
+    begin
+      object = CwrcEntity.find(params[:id]);
+      id = object.pid
+      object.delete
+      render :text=> id      
+    rescue
+      render :text=>-1        
+    end
+  end
+  
   
 end

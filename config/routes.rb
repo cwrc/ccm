@@ -7,6 +7,7 @@ EntityHydra::Application.routes.draw do
   resources :entity_api do
     collection do
       post 'save'
+      post 'delete'
     end
   end
   

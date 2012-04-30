@@ -20,10 +20,10 @@
 				$.post($url, {xml: term, id: pid},
 												function(data)
 												{
-											  		alert(data);
+											  		
 											  		if(data != "-1")
 											  		{
-											  			window.location="<%= url_for(:controller=>:test, :action=>@test_action) -%>/?id=" + data;				  			
+											  			window.location="<%= url_for(:controller=>:test, :action=>@test_action) -%>/?id=" + data;
 											  		}
 											  		else
 											  		{
@@ -34,8 +34,11 @@
 			});	//End: $("#edit_form").submit(function(event)	 
 		 }); //End: $(document).ready(function()
 		 
-		 function delete_link(objectId)
+		 function delete_object(objectId)
 		 {
+		 	if(!confirm ('DELETE ' + objectId + '??'))
+		 		return;
+		 		
 		 	var $url = '<%= url_for :controller=>@api_controller, :action=>:delete -%>';
 		 	var args = {id: objectId};
 
@@ -46,7 +49,6 @@
 						  		if(data != "-1")
 						  		{
 						  			window.location="<%= url_for(:controller=>:test, :action=>@test_action) -%>";
-						  			alert('Deleted '  + data);				  			
 						  		}
 						  		else
 						  		{
@@ -54,6 +56,23 @@
 						  		}
 						   }); //End: .post
 		 }
+		 
+		 function load_object(objectId)
+		 {
+		 	var $url = '<%= url_for :controller=>@api_controller, :action=>:index -%>/' + objectId;
+			$.get($url, {},
+							function(data)
+							{
+								var xml_string = new XMLSerializer().serializeToString(data);
+								document.forms['edit_form'].elements["xml"].value = xml_string;
+								document.forms['edit_form'].elements["pid"].value = objectId;
+								document.forms['edit_form'].elements["pid"].value = objectId;
+								
+								document.getElementById('editor_title').innerHTML = "Update " + objectId;
+								document.getElementById('create_button').value = "Update";
+						   }); //End: .get
+		 }		 
+		 
 		 
 	</script>
 <% end %>
@@ -63,9 +82,8 @@
 	<div class="sub-title"><%=@object_type-%> ID</div>
 	<% @object_list.each do |x| %>
 		<div class="entity-id">
-			<a target="_blank" href="<%= url_for :controller=>@api_controller, :action=>:index -%>/<%=x.pid %>"><%=x.pid%></a>&nbsp; |&nbsp;
-			<a class="pid"     href="<%= url_for(:controller=>:test, :action=>@test_action) -%>/?id=<%=x.pid%>">edit</a>&nbsp; |&nbsp;
-			<a href="#" onClick="delete_link('<%=x.pid%>'); return false;">delete</a>
+			<a href="" onClick="load_object('<%=x.pid%>'); return false;"><%=x.pid%></a>&nbsp; |&nbsp;
+			<a href="" onClick="delete_object('<%=x.pid%>'); return false;">[delete]</a>
 		</div>
 	<% end %>
 	<br />
