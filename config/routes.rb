@@ -4,9 +4,16 @@ EntityHydra::Application.routes.draw do
 
   root :to => "test#index"
 
+  resources :entity_api do
+    collection do
+      post 'save'
+    end
+  end
+  
   resources :test do
     collection do
-      
+      get 'entity_manager'   
+      post 'delete_all_entities'   
     end
   end
 

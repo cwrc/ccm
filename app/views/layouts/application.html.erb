@@ -43,9 +43,15 @@
 
 </script>
   
+  <%= yield :head %>
 </head>
 <body>
 	<div id="page">
+		<div class="test-site-title">
+			CWRC API Test Page
+		</div>
+		<% if !flash[:error].nil? %> <div class="error"><%=flash[:error]%></div> <% end %>
+		
 		<div id="page-content">
 			<%= yield %>
 		</div>		

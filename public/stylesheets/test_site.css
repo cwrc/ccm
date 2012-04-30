@@ -1,0 +1,81 @@
+html,body 
+{
+	margin: 0;
+	padding: 0; 
+	height:100%;
+	background: #BBB; 
+}
+
+#page
+{
+	position:relative;
+	margin: 0 auto;
+	padding:0;
+	width: 1000px;
+	background: #FFF;
+	height:100%;
+	min-height:100%;/*for mozilla*/
+	text-align: left;
+	border: solid
+}
+
+html>body #page {height:auto}/*for mozilla */
+
+
+.test-site-title
+{
+	padding: 2%;
+	font-size: 24pt;
+	font-weight:bold;
+	height: 5%;
+	border-bottom: solid 1px #BBB;
+}
+
+.page-title
+{
+	padding: 2% 0;
+	font-size: 18pt;
+	font-weight:bold;
+	height: 5%;
+}
+
+#page-content
+{
+	height: 100%;
+/*	border: solid 2px green;*/
+}
+
+.error, .notice
+{
+	padding:1em; margin-bottom:1em;
+}
+
+.error
+{
+	background: #FF6F61;
+}
+
+.notice
+{
+	background: #C6D880;
+}
+
+#left
+{
+	float: left;
+	width:160px; 
+	color:#333; 
+	border-right:1px solid #BBB; 
+}
+
+#right
+{
+	float:right;
+	width: 800px;
+}
+
+
+.clear
+{
+	clear: both;
+}

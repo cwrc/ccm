@@ -6,5 +6,17 @@ class TestController < ApplicationController
     end 
     
   end
+  
+  def entity_manager
+    @entities = CwrcEntity.get_latest_pids()
+    id = params[:id]
+    if !id.nil? && id != ""
+      @entity = CwrcEntity.find(id);      
+    end
+  end
+  
+  def delete_all_entities
+    
+  end
 
 end

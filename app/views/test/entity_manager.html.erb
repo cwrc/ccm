@@ -1,0 +1,121 @@
+<% content_for :head do %>
+	<%= stylesheet_link_tag "entitymgr.css" %>
+	
+	<script type="text/javascript">
+	
+		$(document).ready(function() 
+		{
+		   $("#get_template").click(function()
+		   {
+		   	  //Prevent page reloading
+		   	  event.preventDefault();
+		   	  
+		   	  $.get('<%= url_for :controller=>:entity_api, :action=>:new -%>', function(data)
+		   	  {
+		   	  	$('#editor_title').html('Input Information for a New Entity');
+		   	  	$('#new_entity_editor').html(data);
+		   	  	$('#active_pid').attr('value', '')
+		   	  	$('#create_button').attr('value', 'Create');
+		   	  });
+		   	  
+		   });
+		   
+		   $("#create_form").submit(function(event)
+		   {
+				//Prevent normal form submission
+				event.preventDefault();
+				
+				//getting data from the form
+				var $form = $(this),
+				    term = $form.find('textarea[name="xml"]').val(),
+				    pid = $form.find('input[name="pid"]').val();
+				
+				if(pid != null && pid != "")
+				{
+					//updating existing record
+					var $url = '<%= url_for :controller=>:entity_api, :action=>:save -%>';
+					$.post($url, {xml: term, id: pid},
+						function(data)
+						{
+					  		alert(data);
+					  		if(data != "-1")
+					  		{
+					  			<% 
+					  				x = url_for(:controller=>:test, :action=>:entity_manager)
+					  			%>
+					  			window.location="<%= x -%>/?id=" + data;				  			
+					  		}
+					  		else
+					  		{
+					  			alert("Failed to update the entity!!")
+					  		}
+					   	});
+				}
+				else
+				{
+					//creating a new record
+					var $url = '<%= url_for :controller=>:entity_api -%>';
+					
+					$.post($url, {xml: term},
+						function(data)
+						{
+					  		alert(data);
+					  		if(data != "-1")
+					  		{
+					  			<% 
+					  				x = url_for(:controller=>:test, :action=>:entity_manager)
+					  			%>
+					  			window.location="<%= x -%>/?id=" + data;				  			
+					  		}
+					  		else
+					  		{
+					  			alert("Failed to create the entity!!")
+					  		}
+					   	});
+				}
+			});
+	 	   
+		 });
+		 
+	</script>
+<% end %>
+
+<div id="left">
+
+	<div class="sub-title">Entity ID</div>
+	<% @entities.each do |x| %>
+		<div class="entity-id">
+			<% url = url_for(:controller=>:test, :action=>:entity_manager) %>
+			
+			-<a class="pid" href="<%= url -%>/?id=<%=x.pid%>"><%=x.pid%></a>
+		</div>
+	<% end %>
+	<br />
+	<br />
+	<br />
+	<br />
+	<% if @entities.count > 10 %>
+		<% url = url_for(:controller=>:test, :action=>:delete_all_entities) %>
+		<form action="<%= url -%>" method="post">
+			<input type="submit" value="Delete All Entities!!" />
+		</form>
+	<% end %>
+
+</div>
+
+<div id="right">
+	<div id="create-panel">
+		<div id="editor_title" class="page-title"> <% if !@entity.nil?%> Update <%=@entity.pid%><% else %>Input Information for a New Entity<% end %></div>
+		
+		<form action="#" id="create_form" method="post">
+			<% pid = @entity.nil? || @entity.pid.nil? ? "" : @entity.pid %>
+			<input type="hidden" name="pid" id="active_pid" value="<%= @entity.pid %>" />
+			<textarea id="new_entity_editor" class="entity_editor" name="xml"><%= @entity.get_xml_description unless @entity.nil? %></textarea>
+			<br />
+			<a href="" id="get_template">Load Template</a> | <input type="submit" value="Update" id="create_button" />
+		</form>
+	</div>
+
+</div>
+
+<div class="clear"></div>
