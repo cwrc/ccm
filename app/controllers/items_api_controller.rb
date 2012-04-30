@@ -1,8 +1,10 @@
 class ItemsApiController < ApplicationController
   
+  skip_before_filter :protect_from_forgery, :only => [:save, :delete]
   
   def show
-    
+    object = CwrcItem.find(params[:id]);
+    render :xml=> object.get_xml_description
   end
   
   def save
@@ -10,11 +12,11 @@ class ItemsApiController < ApplicationController
       xml_string = params[:xml]
       id = params[:id]
       
-      item = (id.nil? || id == "") ? CwrcItem.new : CwrcItem.find(id)
-      item.replace_xml_description(xml_string)
+      object = (id.nil? || id == "") ? CwrcItem.new : CwrcItem.find(id)
+      object.replace_xml_description(xml_string)
       
-      if item.save
-        render :text => item.pid
+      if object.save
+        render :text => object.pid
       else
         render :text => -1
       end
@@ -24,7 +26,14 @@ class ItemsApiController < ApplicationController
   end
 
   def delete
-    
+    begin
+      object = CwrcItem.find(params[:id]);
+      id = object.pid
+      object.delete
+      render :text=> id      
+    rescue
+      render :text=>-1        
+    end
   end
 
 end

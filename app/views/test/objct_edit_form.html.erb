@@ -27,22 +27,45 @@
 											  		}
 											  		else
 											  		{
-											  			alert("Failed to update the entity!!")
+											  			alert("Failed to update the <%=@object_type-%>!!")
 											  		}
 											   	});
 			
-			});	//End: $("#edit_form").submit(function(event)	   	
+			});	//End: $("#edit_form").submit(function(event)	 
 		 }); //End: $(document).ready(function()
+		 
+		 function delete_link(objectId)
+		 {
+		 	var $url = '<%= url_for :controller=>@api_controller, :action=>:delete -%>';
+		 	var args = {id: objectId};
+
+			$.post($url, args,
+							function(data)
+							{
+						  		
+						  		if(data != "-1")
+						  		{
+						  			window.location="<%= url_for(:controller=>:test, :action=>@test_action) -%>";
+						  			alert('Deleted '  + data);				  			
+						  		}
+						  		else
+						  		{
+						  			alert("Failed to delete the <%=@object_type-%>!!")
+						  		}
+						   }); //End: .post
+		 }
 		 
 	</script>
 <% end %>
 
 <div id="left">
 
-	<div class="sub-title">Entity ID</div>
+	<div class="sub-title"><%=@object_type-%> ID</div>
 	<% @object_list.each do |x| %>
 		<div class="entity-id">
-			<a class="pid" href="<%= url_for(:controller=>:test, :action=>@test_action) -%>/?id=<%=x.pid%>"><%=x.pid%></a>
+			<a target="_blank" href="<%= url_for :controller=>@api_controller, :action=>:index -%>/<%=x.pid %>"><%=x.pid%></a>&nbsp; |&nbsp;
+			<a class="pid"     href="<%= url_for(:controller=>:test, :action=>@test_action) -%>/?id=<%=x.pid%>">edit</a>&nbsp; |&nbsp;
+			<a href="#" onClick="delete_link('<%=x.pid%>'); return false;">delete</a>
 		</div>
 	<% end %>
 	<br />
@@ -59,7 +82,7 @@
 
 <div id="right">
 	<div id="create-panel">
-		<div id="editor_title" class="page-title"> <% if !@object.nil?%> Update <%=@object.pid%><% else %>Input Information for a New Item<% end %></div>
+		<div id="editor_title" class="page-title"> <% if !@object.nil?%> Update <%=@object.pid%><% else %>Input Information for a New <%=@object_type-%><% end %></div>
 		
 		<form action="#" id="edit_form" method="post">
 			<% pid = @object.nil? || @object.pid.nil? ? "" : @object.pid %>

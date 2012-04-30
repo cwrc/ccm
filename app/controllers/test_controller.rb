@@ -8,6 +8,7 @@ class TestController < ApplicationController
   end
   
   def entity_manager
+    @object_type = "Entity"
     @api_controller = "entity_api"
     @test_action = "entity_manager"
     
@@ -25,6 +26,7 @@ class TestController < ApplicationController
   end
 
   def items
+    @object_type = "Item"
     @api_controller = "items_api"
     @test_action = "items"
     
