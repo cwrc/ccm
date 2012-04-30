@@ -34,22 +34,37 @@ class EntityApiController < ApplicationController
   end
   
   def save
-    
     begin
-      entity = CwrcEntity.find(params[:id]);
       xml_string = params[:xml]
+      id = params[:id]
       
-      entity.replace_xml_description(xml_string)
-
-      if entity.save
-        render :text => entity.pid
+      object = (id.nil? || id == "") ? CwrcEntity.new : CwrcEntity.find(id)
+      object.replace_xml_description(xml_string)
+      
+      if object.save
+        render :text => object.pid
       else
         render :text => -1
       end
     rescue
       render :text => -1
-    end
-      
+    end    
+    
+#    begin
+#     entity = CwrcEntity.find(params[:id]);
+#      xml_string = params[:xml]
+#      
+#      entity.replace_xml_description(xml_string)
+#
+#      if entity.save
+#        render :text => entity.pid
+#      else
+#        render :text => -1
+#      end
+#    rescue
+#      render :text => -1
+#    end
+
   end
   
 end

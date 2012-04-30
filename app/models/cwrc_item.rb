@@ -20,12 +20,16 @@ class CwrcItem < ActiveFedora::Base
 #  end
   
   def self.delete_all
-    CwrcContent.find(:all).each do |x|
+    CwrcItem.find(:all).each do |x|
       begin
         x.delete
       rescue
       end
     end
+  end
+  
+  def self.get_latest_pids
+    CwrcItem.find(:all)
   end
   
 end

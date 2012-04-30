@@ -48,7 +48,7 @@
 <body>
 	<div id="page">
 		<div class="test-site-title">
-			CWRC API Test Page
+			<%= link_to "CWRC API Test Page", :controller=>:test, :action=>:index -%>
 		</div>
 		<% if !flash[:error].nil? %> <div class="error"><%=flash[:error]%></div> <% end %>
 		

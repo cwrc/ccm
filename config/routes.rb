@@ -10,17 +10,19 @@ EntityHydra::Application.routes.draw do
     end
   end
   
-  resources :test do
-    collection do
-      get 'entity_manager'   
-      post 'delete_all_entities'   
-    end
-  end
-
-  resources :items do
+  resources :items_api do
     collection do
       post 'save'
       post 'delete'
+    end
+  end
+
+  resources :test do
+    collection do
+      get 'entity_manager'   
+      get 'items'
+      post 'delete_all_entities'  
+      post 'delete_all_items' 
     end
   end
 

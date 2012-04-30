@@ -109,7 +109,7 @@
 		
 		<form action="#" id="create_form" method="post">
 			<% pid = @entity.nil? || @entity.pid.nil? ? "" : @entity.pid %>
-			<input type="hidden" name="pid" id="active_pid" value="<%= @entity.pid %>" />
+			<input type="hidden" name="pid" id="active_pid" value="<%= pid %>" />
 			<textarea id="new_entity_editor" class="entity_editor" name="xml"><%= @entity.get_xml_description unless @entity.nil? %></textarea>
 			<br />
 			<a href="" id="get_template">Load Template</a> | <input type="submit" value="Update" id="create_button" />

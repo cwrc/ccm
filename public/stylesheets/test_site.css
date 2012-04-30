@@ -31,6 +31,12 @@ html>body #page {height:auto}/*for mozilla */
 	border-bottom: solid 1px #BBB;
 }
 
+.test-site-title a
+{
+	text-decoration: none;
+	color: #333;
+}
+
 .page-title
 {
 	padding: 2% 0;
