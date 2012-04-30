@@ -21,10 +21,6 @@ class TestController < ApplicationController
     render "objct_edit_form"
   end
   
-  def delete_all_entities
-    
-  end
-
   def items
     @object_type = "Item"
     @api_controller = "items_api"
