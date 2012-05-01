@@ -4,14 +4,14 @@ EntityHydra::Application.routes.draw do
 
   root :to => "test#index"
 
-  resources :entity_api do
+  resources :entity do
     collection do
       post 'save'
       post 'delete'
     end
   end
   
-  resources :items_api do
+  resources :item do
     collection do
       post 'save'
       post 'delete'

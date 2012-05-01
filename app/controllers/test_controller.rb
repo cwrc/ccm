@@ -9,7 +9,7 @@ class TestController < ApplicationController
   
   def entity_manager
     @object_type = "Entity"
-    @api_controller = "entity_api"
+    @api_controller = "entity"
     @test_action = "entity_manager"
     
     @object_list = CwrcEntity.get_latest_pids()
@@ -23,7 +23,7 @@ class TestController < ApplicationController
   
   def items
     @object_type = "Item"
-    @api_controller = "items_api"
+    @api_controller = "item"
     @test_action = "items"
     
     @object_list = CwrcItem.get_latest_pids()
