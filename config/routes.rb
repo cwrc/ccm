@@ -22,6 +22,8 @@ EntityHydra::Application.routes.draw do
     collection do
       post 'save'
       post 'delete'
+      post 'link'
+      post 'unlink'
     end
   end
 
@@ -30,6 +32,7 @@ EntityHydra::Application.routes.draw do
       get 'entity_manager'   
       get 'items'
       get 'collections'
+      get 'collection_content'
     end
   end
 

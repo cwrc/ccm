@@ -48,5 +48,14 @@ class TestController < ApplicationController
     
     render "objct_edit_form"
   end
+  
+  def collection_content
+    @collection_list = CwrcCollection.find(:all)
+    @item_list = CwrcItem.find(:all)
+    
+    if !params[:id].nil?
+      @selected_collection = CwrcCollection.find(params[:id])
+    end
+  end
 
 end

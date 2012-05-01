@@ -1,6 +1,8 @@
 
 class CwrcCollection < ActiveFedora::Base
   
+  has_many :items, :property=>:has_derivation
+  has_many :subcollections, :property=>:has_derivation
   
   has_metadata :name => "ccmContentMetadata", :type=> CcmContentDatastream
   
@@ -22,6 +24,18 @@ class CwrcCollection < ActiveFedora::Base
  
   def self.get_latest_pids
     CwrcCollection.find(:all)
+  end
+  
+  def link_item(itemId)
+    item = CwrcItem.find(itemId)
+    item.add_relationship(:has_derivation, self)
+    item.save
+  end
+  
+  def unlink_item(itemId)
+    item = CwrcItem.find(itemId)
+    item.remove_relationship(:has_derivation, self)
+    item.save
   end
   
 end

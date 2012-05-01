@@ -1,0 +1,66 @@
+
+
+
+
+<div id="left">
+
+  <div class="sub-title">All Collections</div>
+  <% @collection_list.each do |x| %>
+    <div class="entity-id">
+      <a href="<%=url_for :controller=>:test, :action=>:collection_content-%>?id=<%=x.pid-%>"><%=x.pid%></a>
+    </div>
+  <% end %>
+
+  <div class="sub-title">All Items</div>
+  <% @item_list.each do |x| %>
+    <div class="entity-id">
+    	<%=x.pid%>
+    </div>
+  <% end %>
+
+</div>
+
+<div id="right">
+	<div id="editor_title" class="page-title"> Selected Collection: <% if @selected_collection.nil?%> None <% else %><%=@selected_collection.pid-%><% end %></div>
+	
+	<% if !@selected_collection.nil? %>
+		<h2>List of child collections</h2>
+		<% if @selected_collection.subcollections.count > 0 %>
+			<% @selected_collection.subcollections.each do |x| %>
+				<%= x.pid %>
+			<% end %>
+		<% else %>
+			None.
+		<% end %>
+		
+		<h2>List of Items</h2>
+		<% if @selected_collection.items.count > 0 %>
+			<% @selected_collection.items.each do |x| %>
+				<%= x.pid %>
+			<% end %>
+		<% else %>
+			None.
+		<% end %>
+		
+	<% end %>
+
+<% if false %>
+
+  <div id="create-panel">
+    <div id="editor_title" class="page-title"> <% if !@object.nil?%> Update <%=@object.pid%><% else %>Input Information for a New <%=@object_type-%><% end %></div>
+    
+    <form action="#" id="edit_form" method="post">
+      <% pid = @object.nil? || @object.pid.nil? ? "" : @object.pid %>
+      <input type="hidden" name="pid" id="active_pid" value="<%= pid %>" />
+      <textarea id="new_entity_editor" class="entity_editor" name="xml"><%= @object.get_xml_description unless @object.nil? %></textarea>
+      <br />
+      <% label = @object.nil? ? "Create" : "Update" %>
+      <%= link_to "Reset", :controller=>:test, :action=>@test_action %> | <input type="submit" value="<%= label -%>" id="create_button" />
+    </form>
+  </div>
+<% end %>
+
+</div>
+
+<div class="clear"></div>
+
