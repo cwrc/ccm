@@ -35,5 +35,18 @@ class TestController < ApplicationController
     render "objct_edit_form"
   end
   
+  def collections
+    @object_type = "Collection"
+    @api_controller = "collection"
+    @test_action = "collections"
+    
+    @object_list = CwrcCollection.get_latest_pids()
+    id = params[:id]
+    if !id.nil? && id != ""
+      @object = CwrcCollection.find(id);      
+    end
+    
+    render "objct_edit_form"
+  end
 
 end

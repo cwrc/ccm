@@ -68,15 +68,6 @@
 			<a href="" onClick="delete_object('<%=x.pid%>'); return false;">[delete]</a>
 		</div>
 	<% end %>
-	<br />
-	<br />
-	<br />
-	<br />
-	<% if @object_list.count > 10 %>
-		<form action="<%= url_for(:controller=>:test, :action=>:delete_all_items) -%>" method="post">
-			<input type="submit" value="Delete All Items" onsubmit="confirm('Are you REALLY SURE ??'"/>
-		</form>
-	<% end %>
 
 </div>
 
