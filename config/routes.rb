@@ -22,8 +22,10 @@ EntityHydra::Application.routes.draw do
     collection do
       post 'save'
       post 'delete'
-      post 'link'
-      post 'unlink'
+      post 'link_item'
+      post 'unlink_item'
+      post 'link_collection'
+      post 'unlink_collection'
     end
   end
 

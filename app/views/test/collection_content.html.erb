@@ -1,5 +1,35 @@
-
-
+<% content_for :head do %>
+	
+	<% if !@selected_collection.nil? %>
+		<script type="text/javascript">
+			 function call_link_method(apiAction, childId)
+			 {
+			 		
+			 	var $url = '<%= url_for :controller=>:collection, :action=>:index-%>';
+			 	$url = $url + '/' + apiAction;
+			 	//alert($url);
+			 	
+			 	var args = {parent: "<%=@selected_collection.pid-%>", child: childId};
+	
+				$.post($url, args,
+								function(data)
+								{
+							  		
+							  		if(data != "-1")
+							  		{
+							  			window.location="<%= url_for(:controller=>:test, :action=>:collection_content) -%>?id=<%=@selected_collection.pid-%>";
+							  		}
+							  		else
+							  		{
+							  			//alert("Linking/unlinking operation failed!!");
+							  			alert(data);
+							  		}
+							   }); //End: .post
+		
+			}//End: function call_link_method(apiAction, childId)
+		</script>
+	<% end %>
+<% end %>
 
 
 <div id="left">
@@ -7,14 +37,20 @@
   <div class="sub-title">All Collections</div>
   <% @collection_list.each do |x| %>
     <div class="entity-id">
-      <a href="<%=url_for :controller=>:test, :action=>:collection_content-%>?id=<%=x.pid-%>"><%=x.pid%></a>
+      <a href="<%=url_for :controller=>:test, :action=>:collection_content-%>?id=<%=x.pid-%>"><%=x.pid%></a>&nbsp;&nbsp;
+	  <form style="display:inline;" action="" method="post">
+		<input type="submit" value=">>" onclick="call_link_method('link_collection', '<%= x.pid %>'); return false;" />
+	  </form>
     </div>
   <% end %>
 
   <div class="sub-title">All Items</div>
   <% @item_list.each do |x| %>
     <div class="entity-id">
-    	<%=x.pid%>
+    	<%=x.pid%>&nbsp;&nbsp;
+	   	<form style="display:inline;" action="" method="post">
+			<input type="submit" value=">>" onclick="call_link_method('link_item', '<%= x.pid %>'); return false;" />
+	  	</form>
     </div>
   <% end %>
 
@@ -24,7 +60,7 @@
 	<div id="editor_title" class="page-title"> Selected Collection: <% if @selected_collection.nil?%> None <% else %><%=@selected_collection.pid-%><% end %></div>
 	
 	<% if !@selected_collection.nil? %>
-		<h2>List of child collections</h2>
+		<h2>Subcollections</h2>
 		<% if @selected_collection.subcollections.count > 0 %>
 			<% @selected_collection.subcollections.each do |x| %>
 				<%= x.pid %>
@@ -33,10 +69,13 @@
 			None.
 		<% end %>
 		
-		<h2>List of Items</h2>
+		<h2>Items</h2>
 		<% if @selected_collection.items.count > 0 %>
 			<% @selected_collection.items.each do |x| %>
 				<%= x.pid %>
+			    <form style="display:inline;" action="" method="post">
+				  <input type="submit" value="<<" onclick="call_link_method('unlink_item', '<%= x.pid %>'); return false;" />
+			    </form>
 			<% end %>
 		<% else %>
 			None.

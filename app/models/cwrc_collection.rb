@@ -2,7 +2,7 @@
 class CwrcCollection < ActiveFedora::Base
   
   has_many :items, :property=>:has_derivation
-  has_many :subcollections, :property=>:has_derivation
+  has_many :subcollections, :property=>:has_collection
   
   has_metadata :name => "ccmContentMetadata", :type=> CcmContentDatastream
   
@@ -27,15 +27,26 @@ class CwrcCollection < ActiveFedora::Base
   end
   
   def link_item(itemId)
-    item = CwrcItem.find(itemId)
-    item.add_relationship(:has_derivation, self)
-    item.save
+    child = CwrcItem.find(itemId)
+    child.add_relationship(:has_derivation, self)
+    child.save
   end
   
   def unlink_item(itemId)
-    item = CwrcItem.find(itemId)
-    item.remove_relationship(:has_derivation, self)
-    item.save
+    child = CwrcItem.find(itemId)
+    child.remove_relationship(:has_derivation, self)
+    child.save
   end
   
+  def link_subcollection(subCollectionId)
+    child = CwrcCollection.find(subCollectionId)
+    child.add_relationship(:has_collection, self)
+    child.save
+  end
+  
+  def unlink_subcollection(subCollectionId)
+    child = CwrcCollection.find(subCollectionId)
+    child.remove_relationship(:has_collection, self)
+    child.save
+  end
 end
