@@ -6,6 +6,15 @@ class ItemController < ApplicationController
   ##API methods must be accessible via third-party generated forms
   skip_before_filter :protect_from_forgery, :only => [:save, :delete]
   
+  def list
+    list = CwrcItem(:all)
+    ret = Array.new
+    list.each do |x|
+      ret.push(x.id)
+    end
+    render :text=>ret.join(',')
+  end
+  
   def show
     object = CwrcItem.find(params[:id]);
     render :xml=> object.get_xml_description
