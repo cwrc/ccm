@@ -15,6 +15,7 @@ EntityHydra::Application.routes.draw do
     collection do
       post 'save'
       post 'delete'
+      get 'list'
     end
   end
 
@@ -26,6 +27,7 @@ EntityHydra::Application.routes.draw do
       post 'unlink_item'
       post 'link_collection'
       post 'unlink_collection'
+      get 'list'
     end
   end
 
