@@ -7,7 +7,7 @@ class ItemController < ApplicationController
   skip_before_filter :protect_from_forgery, :only => [:save, :delete]
   
   def list
-    list = CwrcItem(:all)
+    list = CwrcItem.find(:all)
     ret = Array.new
     list.each do |x|
       ret.push(x.id)
