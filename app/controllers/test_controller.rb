@@ -12,7 +12,7 @@ class TestController < ApplicationController
     @api_controller = "entity"
     @test_action = "entity_manager"
     
-    @object_list = CwrcEntity.get_latest_pids()
+    @object_list = CwrcEntity.find(:all, {:rows=>CwrcEntity.count})
     id = params[:id]
     if !id.nil? && id != ""
       @object = CwrcEntity.find(id);   
@@ -26,7 +26,7 @@ class TestController < ApplicationController
     @api_controller = "item"
     @test_action = "items"
     
-    @object_list = CwrcItem.get_latest_pids()
+    @object_list = CwrcItem.find(:all, {:rows=>CwrcItem.count})
     id = params[:id]
     if !id.nil? && id != ""
       @object = CwrcItem.find(id);      
@@ -40,7 +40,7 @@ class TestController < ApplicationController
     @api_controller = "collection"
     @test_action = "collections"
     
-    @object_list = CwrcCollection.get_latest_pids()
+    @object_list = CwrcCollection.find(:all, {:rows=>CwrcCollection.count}) 
     id = params[:id]
     if !id.nil? && id != ""
       @object = CwrcCollection.find(id);      
@@ -50,8 +50,8 @@ class TestController < ApplicationController
   end
   
   def collection_content
-    @collection_list = CwrcCollection.find(:all)
-    @item_list = CwrcItem.find(:all)
+    @collection_list = CwrcCollection.find(:all, {:rows=>CwrcCollection.count}) 
+    @item_list = CwrcItem.find(:all, {:rows=>CwrcItem.count}) 
     
     if !params[:id].nil?
       @selected_collection = CwrcCollection.find(params[:id])
