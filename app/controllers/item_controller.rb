@@ -7,12 +7,14 @@ class ItemController < ApplicationController
   skip_before_filter :protect_from_forgery, :only => [:save, :delete]
   
   def list
-    list = CwrcItem.find(:all)
+    max = params[:max].nil? ? CwrcItem.count : params[:max].to_i
+    list = CwrcItem.find(:all, {:rows=>max})
+           
     ret = Array.new
     list.each do |x|
       ret.push(x.id)
     end
-    render :text=>ret.join(',')
+    render :text=>"Count: #{ret.count}<br /><br />#{ret.join('<br/>')}"
   end
   
   def show
