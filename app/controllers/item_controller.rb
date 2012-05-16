@@ -9,12 +9,9 @@ class ItemController < ApplicationController
   def list
     max = params[:max].nil? ? CwrcItem.count : params[:max].to_i
     list = CwrcItem.find(:all, {:rows=>max})
-           
-    ret = Array.new
-    list.each do |x|
-      ret.push(x.id)
-    end
-    render :text=>"Count: #{ret.count}<br /><br />#{ret.join('<br/>')}"
+    
+    ret = list.map{ |x| {:id=>x.id, :name=>x.id.to_s}}
+    render :json=>ret.to_json
   end
   
   def show
