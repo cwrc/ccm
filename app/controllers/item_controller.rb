@@ -7,7 +7,7 @@ class ItemController < ApplicationController
   skip_before_filter :protect_from_forgery, :only => [:save, :delete]
   
   def list
-    max = params[:max].nil? ? CwrcItem.count : params[:max].to_i
+    max = params[:max].nil? ? max_int : params[:max].to_i
     list = CwrcItem.find(:all, {:rows=>max})
     
     ret = list.map{ |x| {:id=>x.id, :name=>x.id.to_s}}

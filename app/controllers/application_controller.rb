@@ -26,6 +26,10 @@ class ApplicationController < ActionController::Base
    'application'
   end
 
+  def max_int
+    2 ** (0.size * 8 -1) -1
+  end
+
   # Please be sure to impelement current_user and user_session. Blacklight depends on 
   # these methods in order to perform user specific actions. 
 
