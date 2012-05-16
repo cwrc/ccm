@@ -12,8 +12,12 @@
 	<div id="page">
 		<div class="test-site-title">
 			<%= link_to "CWRC API Test Page", :controller=>:test, :action=>:index -%>
+			<div style="float:right;font-size:11pt;color:blue;"><a style="color:blue;text-decoration:underline;" href="https://sites.google.com/a/ualberta.ca/cwrc-technical/home/cwrc-vre/platform-api" target="_blank">API Documentation</a></div>
 		</div>
 		<% if !flash[:error].nil? %> <div class="error"><%=flash[:error]%></div> <% end %>
+		
+		<br /><br />
+		
 		
 		<div id="page-content">
 			<%= yield %>
