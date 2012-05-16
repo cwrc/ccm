@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
   end
 
   def max_records
-    2 ** 32 -1
+    2 ** 31 -1
   end
 
   # Please be sure to impelement current_user and user_session. Blacklight depends on 
