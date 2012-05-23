@@ -4,7 +4,7 @@ class ItemController < ApplicationController
   layout false
   
   ##API methods must be accessible via third-party generated forms
-  skip_before_filter :protect_from_forgery, :only => [:save, :delete]
+  skip_before_filter :protect_from_forgery
   
   def list
     max = params[:max].nil? ? max_records : params[:max].to_i
@@ -46,6 +46,30 @@ class ItemController < ApplicationController
     rescue
       render :text=>-1        
     end
+  end
+  
+  def add_workflow_stamp
+    begin
+      object = CwrcItem.find(params[:id]);
+      stamp_string = params[:stamp]
+      
+      object.add_stamp_string(stamp_string)
+
+      if object.save
+        render :text => object.pid
+      else
+        render :text => -1
+      end
+    rescue
+      return :text=>-1
+    end
+  end
+  
+  def get_workflow_stamps
+    object = CwrcItem.find(params[:id]);
+    stamps = object.get_stamp_array
+    
+    render :json=>stamps.to_json
   end
 
 end

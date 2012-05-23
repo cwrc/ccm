@@ -8,11 +8,11 @@ class CwrcCollection < ActiveFedora::Base
   
   
   def get_xml_description
-    return datastreams["ccmContentMetadata"].get_xml_description
+    return datastreams["ccmContentMetadata"].get_xml_string
   end
 
   def replace_xml_description(xmlString)
-    return datastreams["ccmContentMetadata"].replace_xml_description(xmlString)
+    return datastreams["ccmContentMetadata"].replace_xml_string(xmlString)
   end
 
 #  def to_solr(solr_doc=Hash.new)

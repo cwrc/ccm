@@ -9,7 +9,7 @@ class CcmContentDatastream < ActiveFedora::NokogiriDatastream
     t.xml_description(:path=>"ccm-content")
   end # set_terminology
 
-  def get_xml_description
+  def get_xml_string
     ## Returns the XML description of the record as a string
     
     envelope = self.find_by_terms(:xml_description).first
@@ -20,7 +20,14 @@ class CcmContentDatastream < ActiveFedora::NokogiriDatastream
     return version_string + envelope.elements.first.to_s
   end
 
-  def replace_xml_description(xmlString)
+  def get_xml_element
+    ## Returns the XML description of the record as an XML element
+    
+    envelope = self.find_by_terms(:xml_description).first
+    return envelope.elements.first
+  end
+
+  def replace_xml_string(xmlString)
     ## Updates the XML description of the record using the given xmlString
     
     new_desc_doc = Nokogiri::XML::Document.parse(xmlString)
@@ -41,7 +48,24 @@ class CcmContentDatastream < ActiveFedora::NokogiriDatastream
     ##Indicating that the XML description was updated, so that item must be saved to the repository.     
     self.dirty = true
   end
-  
+
+  def replace_xml_element(xmlElement)
+    ## Updates the XML description of the record using the given xmlElement
+    
+    ##Updating the version and encoding attributes of the envelope     
+    envelope = self.find_by_terms(:xml_description).first
+    
+    ##Removing all child elements of the envelope. Actually, we should have only one
+    while envelope.elements.count > 0
+      envelope.elements.first.remove
+    end
+    
+    ##Inserting the new element to the envelope
+    envelope.add_child(xmlElement)
+
+    ##Indicating that the XML description was updated, so that item must be saved to the repository.     
+    self.dirty = true
+  end
 
   def self.xml_template
     Nokogiri::XML::Document.parse(
