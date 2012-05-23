@@ -10,36 +10,40 @@ class CwrcItem < ActiveFedora::Base
   end
 
   def replace_xml_description(xmlString)
-    return datastreams["ccmContentMetadata"].replace_xml_string(xmlString)
+    datastreams["ccmContentMetadata"].replace_xml_string(xmlString)
   end
   
   def add_stamp_string(xmlstring)
     
     new_stamp_doc = Nokogiri::XML::Document.parse(xmlstring)
     
-    stamp_collection = datastreams["workflowStamp"].get_xml_element
+    ds = datastreams["workflowStamp"]
+    
+    stamp_collection = ds.get_xml_element
     if stamp_collection.nil?
       stamp_collection = Nokogiri::XML::Document.parse("<Workflow-Stamp-Collection/>").root
     end
     
     stamp_wrapper = Nokogiri::XML::Document.parse("<Stamp-Container version='#{stamp_collection.elements.count + 1}'/>").root
+    
     stamp_wrapper.add_child(new_stamp_doc.root)
     stamp_collection.add_child(stamp_wrapper)
-    replace_xml_element(stamp_collection)
+    ds.replace_xml_element(stamp_collection)
   end
   
   def get_stamp_array
-    stamp_container = datastreams["workflowStamp"].get_xml_element
+    stamp_container = datastreams["workflowStamp"].get_xml_string
+    return stamp_container
     
     stamp_array = Array.new
     
     unless stamp_container.nil?
       stamp_container.elements.each do |wrapper|
-        stamp_array[wrapper.get_attribute('version').to_i] = wrapper.elements.first
+        stamp_array[wrapper.get_attribute('version').to_i - 1] = wrapper.elements.first
       end
     end
     
-    return stamp_array
+    return stamp_container
   end
 
   

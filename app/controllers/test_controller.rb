@@ -14,7 +14,7 @@ class TestController < ApplicationController
     
     @object_list = CwrcEntity.find(:all, {:rows=>CwrcEntity.count})
     id = params[:id]
-    if !id.nil? && id != ""
+    unless id.nil? || id == ""
       @object = CwrcEntity.find(id);   
     end
     
@@ -28,7 +28,7 @@ class TestController < ApplicationController
     
     @object_list = CwrcItem.find(:all, {:rows=>CwrcItem.count})
     id = params[:id]
-    if !id.nil? && id != ""
+    unless id.nil? || id == ""
       @object = CwrcItem.find(id);      
     end
     
@@ -42,7 +42,7 @@ class TestController < ApplicationController
     
     @object_list = CwrcCollection.find(:all, {:rows=>CwrcCollection.count}) 
     id = params[:id]
-    if !id.nil? && id != ""
+    unless id.nil? || id == ""
       @object = CwrcCollection.find(id);      
     end
     
@@ -56,6 +56,17 @@ class TestController < ApplicationController
     if !params[:id].nil?
       @selected_collection = CwrcCollection.find(params[:id])
     end
+  end
+  
+  def workflow_stamps
+    id = params[:id]
+    unless id.nil? || id == ""
+      @object = CwrcItem.find(id);      
+    end
+    
+    @object_list = CwrcItem.find(:all, {:rows=>CwrcItem.count})
+    
+    render "workflow_stamps"
   end
 
 end

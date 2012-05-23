@@ -51,17 +51,18 @@ class ItemController < ApplicationController
   def add_workflow_stamp
     begin
       object = CwrcItem.find(params[:id]);
-      stamp_string = params[:stamp]
       
-      object.add_stamp_string(stamp_string)
+      stamp_string = params[:xml]
 
+      object.add_stamp_string(stamp_string)
+      
       if object.save
         render :text => object.pid
       else
         render :text => -1
       end
     rescue
-      return :text=>-1
+      render :text=>-1
     end
   end
   
@@ -69,7 +70,8 @@ class ItemController < ApplicationController
     object = CwrcItem.find(params[:id]);
     stamps = object.get_stamp_array
     
-    render :json=>stamps.to_json
+    
+    #render :json=>stamps.to_json
+    render :text=>object.pid #stamps.to_s
   end
-
 end
