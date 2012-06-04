@@ -71,7 +71,8 @@ class ItemController < ApplicationController
     stamps = object.get_stamp_array
     
     
+    render :text=>stamps
     #render :json=>stamps.to_json
-    render :text=>object.pid #stamps.to_s
+    #render :text=>object.pid #stamps.to_s
   end
 end

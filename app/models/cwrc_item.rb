@@ -32,7 +32,7 @@ class CwrcItem < ActiveFedora::Base
   end
   
   def get_stamp_array
-    stamp_container = datastreams["workflowStamp"].get_xml_string
+    stamp_container = datastreams["workflowStamp"].get_xml_element
     return stamp_container
     
     stamp_array = Array.new
