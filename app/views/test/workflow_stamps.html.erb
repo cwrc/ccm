@@ -73,9 +73,10 @@
 	<script type="text/javascript">
 		//Loading all workflow stamps using the API call
 		var $url = '<%= url_for :controller=>:item, :action=>:get_workflow_stamps, :id=>@object.pid -%>';
-		
-		$.get($url, function(data){
-			$('#workflow-stamp-history').html(data);
+		var $str = "xx";
+		$.get($url, function(data)
+		{
+			$('#workflow-stamp-history').html(JSON.stringify(data));
 		});//End: $.get
 	</script>
 <% end %>
