@@ -52,11 +52,12 @@
 <% unless @object.nil? %> 
 	<div id="right">
 	  <div id="create-panel">
-	    <div id="editor_title" class="page-title"> Current workflow stamps in <%=@object.pid%></div>
-	    <div id="workflow-stamp-history" style="border:solid 1px #444; padding:5px;">
+	    <div id="editor_title" class="page-title"> Workflow stamps of <%=@object.pid%></div>
+	    <div id="workflow-stamp-history" style="padding:5px;">
 	    </div>
-	    <br /><br />
+	    <br />
 	    
+	    <div class="page-title"> Add a stamp</div>
 	    <form action="#" id="edit_form" method="post">
 	      <input type="hidden" name="pid" id="active_pid" value="<%= @object.pid %>" />
 	      <textarea id="new_entity_editor" class="entity_editor" name="xml"></textarea>
@@ -73,10 +74,14 @@
 	<script type="text/javascript">
 		//Loading all workflow stamps using the API call
 		var $url = '<%= url_for :controller=>:item, :action=>:get_workflow_stamps, :id=>@object.pid -%>';
-		var $str = "xx";
+		
 		$.get($url, function(data)
 		{
-			$('#workflow-stamp-history').html(JSON.stringify(data));
+			var $str = JSON.stringify(data);
+			$str = $str.replace(/</g, "&lt;");
+			$str = $str.replace(/>/g, "&gt;");
+			
+			$('#workflow-stamp-history').html($str);
 		});//End: $.get
 	</script>
 <% end %>
