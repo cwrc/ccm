@@ -70,9 +70,11 @@ class ItemController < ApplicationController
     object = CwrcItem.find(params[:id]);
     stamps = object.get_stamp_array
     
+    ret = Array.new
+    stamps.each do |x|
+      ret.push(x.to_s)
+    end
     
-    render :text=>stamps
-    #render :json=>stamps.to_json
-    #render :text=>object.pid #stamps.to_s
+    render :json=>ret
   end
 end

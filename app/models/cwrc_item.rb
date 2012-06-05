@@ -33,17 +33,16 @@ class CwrcItem < ActiveFedora::Base
   
   def get_stamp_array
     stamp_container = datastreams["workflowStamp"].get_xml_element
-    return stamp_container
     
     stamp_array = Array.new
     
     unless stamp_container.nil?
       stamp_container.elements.each do |wrapper|
-        stamp_array[wrapper.get_attribute('version').to_i - 1] = wrapper.elements.first
+        stamp_array[wrapper.get_attribute('version').to_i - 1] = wrapper.elements
       end
     end
     
-    return stamp_container
+    return stamp_array
   end
 
   
