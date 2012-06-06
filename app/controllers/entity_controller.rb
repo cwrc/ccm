@@ -6,6 +6,15 @@ class EntityController < ApplicationController
   ##API methods must be accessible via third-party generated forms
   skip_before_filter :protect_from_forgery, :only => [:save, :delete]
   
+
+  def list
+    max = params[:max].nil? ? max_records : params[:max].to_i
+    list = CwrcEntity.find(:all, {:rows=>max})
+    
+    ret = list.map{ |x| {:id=>x.id, :name=>x.id.to_s}}
+    render :json=>ret.to_json
+  end
+   
   def show
     object = CwrcEntity.find(params[:id]);
     render :xml=> object.get_xml_description

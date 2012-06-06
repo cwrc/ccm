@@ -8,6 +8,7 @@ EntityHydra::Application.routes.draw do
     collection do
       post 'save'
       post 'delete'
+      get 'list'
     end
   end
   
