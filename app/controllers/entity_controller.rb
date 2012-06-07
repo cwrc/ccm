@@ -8,11 +8,16 @@ class EntityController < ApplicationController
   
 
   def list
+    callback = params[:callback]
     max = params[:max].nil? ? max_records : params[:max].to_i
     list = CwrcEntity.find(:all, {:rows=>max})
     
     ret = list.map{ |x| {:id=>x.id, :name=>x.id.to_s}}
-    render :json=>ret.to_json
+    if callback.nil?
+      render :json=>ret.to_json
+    else
+      render :json=>ret.to_json, :callback => params[:callback]
+    end
   end
    
   def show
