@@ -26,7 +26,7 @@ class EntityController < ApplicationController
     if callback.nil?
       render :xml=> object.get_xml_description
     else
-      render :text=> callback + "(\"" + object.get_xml_description.to_s.gsub("\"", "\\\"") + "\")"      
+      render :text=> callback + "(\"" + object.get_xml_description.to_s.gsub("\"", "\\\"").gsub("\r\n", " ").gsub("\n", " ") + "\")"      
     end
   end
   
