@@ -31,7 +31,7 @@ class EntityController < ApplicationController
                 
         format.json { render :json=>CobraVsMongoose.xml_to_json(xml.to_s) }
         
-        format.any { render :xml=> xml }
+        format.any { render :xml=> xml, :content_type => Mime::XML }
         
       end
       
