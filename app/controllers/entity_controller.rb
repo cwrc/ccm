@@ -27,24 +27,12 @@ class EntityController < ApplicationController
     if callback.nil?
       respond_to do |format|
         
-        format.xml do
-          render :xml=> xml
-        end
+        format.xml { render :xml=> xml }
+                
+        format.json { render :json=>CobraVsMongoose.xml_to_json(xml.to_s) }
         
-        format.json do
-          render :json=>CobraVsMongoose.xml_to_json(xml.to_s)
-
-          ##Example:
-          ##doc   = Nokogiri::XML(File.read('some_file.xml'))
-          ##xslt  = Nokogir::XSLT(File.read('some_transformer.xslt'))
-          ##puts xslt.transform(doc)
-          
-          ##xslt_file = "/home/kamal/projects/cwrc/cwrc_platform/lib/xslt/cwrc_entity_json_person.xsl"
-          ##xslt = Nokogiri::XSLT(File.open(xslt_file, 'rb'))
-          ##doc = Nokogiri::XML::Document.parse(xml.to_s)
-          
-          ##render :json=>xslt.transform(doc)
-        end
+        format.any { render :xml=> xml }
+        
       end
       
     else
