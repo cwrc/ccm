@@ -16,6 +16,10 @@
   gem 'active-fedora'
   
   gem 'will_paginate' ##, :git => 'git://github.com/mislav/will_paginate.git', :branch => 'rails3'
+  
+  ##gem 'libxslt-ruby'
+  
+  gem 'cobravsmongoose'
 
   # For testing.  You will probably want to use all of these to run the tests you write for your hydra head
   group :development, :test do 

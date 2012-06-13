@@ -69,6 +69,7 @@ GEM
       xpath (~> 0.1.4)
     childprocess (0.3.1)
       ffi (~> 1.0.6)
+    cobravsmongoose (0.0.2)
     columnize (0.3.6)
     crack (0.3.1)
     cucumber (1.1.4)
@@ -301,6 +302,7 @@ DEPENDENCIES
   bcrypt-ruby
   blacklight (~> 3.1.2)
   capybara
+  cobravsmongoose
   cucumber-rails
   database_cleaner
   devise
