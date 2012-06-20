@@ -68,5 +68,9 @@ class TestController < ApplicationController
     
     render "workflow_stamps"
   end
+  
+  def test
+    
+  end
 
 end

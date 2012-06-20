@@ -43,6 +43,7 @@ EntityHydra::Application.routes.draw do
       get 'collections'
       get 'collection_content'
       get 'workflow_stamps'
+      get 'test'
     end
   end
 

@@ -44,7 +44,7 @@ class EntityController < ApplicationController
     begin
       callback = params[:callback]
       
-      if request.post?
+##      if request.post?
         xml_string = params[:xml]
         id = params[:id]
       
@@ -56,9 +56,9 @@ class EntityController < ApplicationController
         else
           render :text => callback.nil? ? -1 : "#{callback}(\"-1\")"
         end
-      else
-        raise "Invalid request method received"
-      end          
+##      else
+##        raise "Invalid request method received"
+##      end          
     rescue
       render :text => callback.nil? ? -1 : "#{callback}(\"-1\")"
     end    
