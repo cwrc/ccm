@@ -7,6 +7,7 @@ EntityHydra::Application.routes.draw do
   resources :entity do
     collection do
       post 'save'
+      get 'save' #This is required to parse callback when using JSONP
       post 'delete'
       get 'list'
     end

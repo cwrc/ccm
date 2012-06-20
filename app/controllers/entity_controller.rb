@@ -43,17 +43,22 @@ class EntityController < ApplicationController
   def save
     begin
       callback = params[:callback]
-      xml_string = params[:xml]
-      id = params[:id]
       
-      object = (id.nil? || id == "") ? CwrcEntity.new : CwrcEntity.find(id)
-      object.replace_xml_description(xml_string)
+      if request.post?
+        xml_string = params[:xml]
+        id = params[:id]
       
-      if object.save
-        render :text => callback.nil? ? object.pid : "#{callback}(\"#{object.pid}\")"
+        object = (id.nil? || id == "") ? CwrcEntity.new : CwrcEntity.find(id)
+        object.replace_xml_description(xml_string)
+        
+        if object.save
+          render :text => callback.nil? ? object.pid : "#{callback}(\"#{object.pid}\")"
+        else
+          render :text => callback.nil? ? -1 : "#{callback}(\"-1\")"
+        end
       else
-        render :text => callback.nil? ? -1 : "#{callback}(\"-1\")"
-      end
+        raise "Invalid request method received"
+      end          
     rescue
       render :text => callback.nil? ? -1 : "#{callback}(\"-1\")"
     end    
