@@ -42,6 +42,7 @@ class EntityController < ApplicationController
   
   def save
     begin
+      callback = params[:callback]
       xml_string = params[:xml]
       id = params[:id]
       
@@ -49,23 +50,24 @@ class EntityController < ApplicationController
       object.replace_xml_description(xml_string)
       
       if object.save
-        render :text => object.pid
+        render :text => callback.nil? ? object.pid : "#{callback}(\"#{object.pid}\")"
       else
-        render :text => -1
+        render :text => callback.nil? ? -1 : "#{callback}(\"-1\")"
       end
     rescue
-      render :text => -1
+      render :text => callback.nil? ? -1 : "#{callback}(\"-1\")"
     end    
   end
   
   def delete
     begin
+      callback = params[:callback]
       object = CwrcEntity.find(params[:id]);
       id = object.pid
       object.delete
-      render :text=> id      
+      render :text=> callback.nil? ? id : "#{callback}(\"#{id}\")"      
     rescue
-      render :text=>-1        
+      render :text=> callback.nil? ? -1 : "#{callback}(\"-1\")"        
     end
   end
   
