@@ -45,6 +45,13 @@ class CwrcItem < ActiveFedora::Base
     
     return stamp_array
   end
+  
+  def add_to_collection(collectionIDs)
+    collectionIDs.each do |id|
+      c = CwrcCollection.find(id)
+      member_of_append(c)
+    end
+  end
 
   
 
