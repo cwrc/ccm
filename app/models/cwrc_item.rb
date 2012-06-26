@@ -52,6 +52,8 @@ class CwrcItem < ActiveFedora::Base
       member_of_append(c)
     end
   end
+  
+  
 
   
 

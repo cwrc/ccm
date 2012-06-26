@@ -3,10 +3,19 @@ class CwrcCollection < ActiveFedora::Base
   
   has_relationship "members", :is_member_of, :inbound => true
   
+  has_relationship "member_of", :is_member_of
+  
   has_many :items, :property=>:has_derivation
   has_many :subcollections, :property=>:has_collection
   
   has_metadata :name => "ccmContentMetadata", :type=> CcmContentDatastream
+  
+  def add_to_collection(collectionIDs)
+    collectionIDs.each do |id|
+      c = CwrcCollection.find(id)
+      member_of_append(c)
+    end
+  end
   
   
   def get_xml_description
