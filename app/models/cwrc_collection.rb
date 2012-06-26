@@ -1,6 +1,8 @@
 
 class CwrcCollection < ActiveFedora::Base
   
+  has_relationship "members", :is_member_of, :inbound => true
+  
   has_many :items, :property=>:has_derivation
   has_many :subcollections, :property=>:has_collection
   
@@ -27,9 +29,20 @@ class CwrcCollection < ActiveFedora::Base
   end
   
   def link_item(itemId)
-    child = CwrcItem.find(itemId)
-    child.add_relationship(:has_derivation, self)
-    child.save
+    
+    subject = itemId
+    predicate = "isMemberOf"
+    object = pid
+    url = $FEDORA + "/objects/#{itemId}/relationships/new?subject=#{subject}&predicate=#{predicate}&object=#{object}&isLiteral=true"
+    uri = URI.parse(url)
+    params = {}
+    x = Net::HTTP.post_form(uri, params)
+    
+    puts x.class
+    
+    #child = CwrcItem.find(itemId)
+    #child.add_relationship(:has_derivation, self)
+    #child.save
   end
   
   def unlink_item(itemId)

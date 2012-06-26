@@ -1,6 +1,7 @@
 
 class CwrcItem < ActiveFedora::Base
   
+  has_relationship "member_of", :is_member_of
   
   has_metadata :name => "ccmContentMetadata", :type=> CcmContentDatastream
   has_metadata :name => "workflowStamp", :type=> CcmContentDatastream
