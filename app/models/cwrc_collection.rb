@@ -46,6 +46,32 @@ class CwrcCollection < ActiveFedora::Base
     return result
   end
   
+  def get_children(retCollectionsOnly = false, recurse = false, result = nil)
+    
+    result = Array.new if result.nil?
+    
+    members.each do |x|
+      already_traversed = result.any?{|i| i == x}
+      if x.is_a?(CwrcCollection)
+        if recurse
+          unless already_traversed
+            result.push(x)
+            result = x.get_children(retCollectionsOnly, true, result)
+          end
+        else
+          result.push(x) unless already_traversed
+        end
+      else #Else: if c.is_a?(CwrcCollection)
+        unless retCollectionsOnly
+          result.push(x) unless already_traversed
+        end
+      end #End: if c.is_a?(CwrcCollection)
+    end #End: members.each do |c|
+    
+    return result
+  end
+  
+  
   
   def get_xml_description
     return datastreams["ccmContentMetadata"].get_xml_string
