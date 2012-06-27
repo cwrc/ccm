@@ -53,7 +53,12 @@ class CwrcItem < ActiveFedora::Base
     end
   end
   
-  
+  def remove_from_collection(collectionIDs)
+    collectionIDs.each do |id|
+      c = CwrcCollection.find(id)
+      member_of_remove(c)
+    end
+  end
 
   
 

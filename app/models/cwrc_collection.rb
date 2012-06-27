@@ -17,6 +17,35 @@ class CwrcCollection < ActiveFedora::Base
     end
   end
   
+  def remove_from_collection(collectionIDs)
+    collectionIDs.each do |id|
+      c = CwrcCollection.find(id)
+      member_of_remove(c)
+    end
+  end
+  
+  def get_child_collections(recurse = false, result = nil)
+    
+    result = Array.new if result.nil?
+    
+    members.each do |c|
+      if c.is_a?(CwrcCollection)
+        if recurse
+          already_traversed = result.any?{|i| i == c}
+
+          if !already_traversed
+            result.push(c)
+            result = c.get_child_collections(true, result)
+          end
+        else
+          result.push(c)
+        end
+      end #End: if c.is_a?(CwrcCollection)
+    end #End: members.each do |c|
+    
+    return result
+  end
+  
   
   def get_xml_description
     return datastreams["ccmContentMetadata"].get_xml_string
