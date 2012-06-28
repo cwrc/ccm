@@ -33,6 +33,7 @@ EntityHydra::Application.routes.draw do
       post 'link_collection'
       post 'unlink_collection'
       get 'list'
+      get 'children'
     end
   end
 

@@ -48,6 +48,41 @@ class CollectionController < ApplicationController
     end
   end
   
+  def children
+    callback = params[:callback]
+    deep = params[:deep]
+    type = params[:type]
+    
+    collection = CwrcCollection.find(params[:id]);
+    
+    ret_collections_only = type == "c"
+    ret_items_only = type == "i"
+    recurse = deep == "1"
+     
+    children = collection.get_children(ret_collections_only, recurse)
+        
+    ret = Array.new
+    children.each do |child|
+      
+      next if (ret_collections_only && !child.is_a?(CwrcCollection)) || (ret_items_only && child.is_a?(CwrcCollection))
+      
+      id = child.pid
+      name = child.pid.to_s
+      type = child.is_a?(CwrcCollection) ? "c" : "i"
+      parents = child.member_of_ids
+      children = child.is_a?(CwrcCollection) ? child.members_ids : []
+      
+      x = {"id" => id, "name" => name, "type" => type, "parents" => parents, "children" => children}
+      ret.push(x)
+    end
+    
+    if callback.nil?
+      render :json=>ret.to_json
+    else
+      render :json=>ret.to_json, :callback => callback
+    end
+  end
+  
   def link_item
     begin
       CwrcCollection.find(params[:parent]).link_item(params[:child])
