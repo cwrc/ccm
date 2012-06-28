@@ -48,6 +48,58 @@ class CollectionController < ApplicationController
     end
   end
   
+  def link_item
+    begin
+      parent_ids = params[:parent].split(",")
+      child = CwrcItem.find(params[:child])
+      child.add_to_collection(parent_ids)
+      child.save
+      
+      render :text=> 1
+    rescue
+      render :text=> -1
+    end
+  end
+
+  def unlink_item
+    begin
+      parent_ids = params[:parent].split(",")
+      child = CwrcItem.find(params[:child])
+      child.remove_from_collection(parent_ids)
+      child.save
+      
+      render :text=> 1
+    rescue
+      render :text=> -1
+    end
+  end
+  
+  def link_collection
+    begin
+      parent_ids = params[:parent].split(",")
+      child = CwrcCollection.find(params[:child])
+      child.add_to_collection(parent_ids)
+      child.save
+      
+      render :text=> 1
+    rescue
+      render :text=> -1
+    end
+  end
+  
+  def unlink_collection
+    begin
+      parent_ids = params[:parent].split(",")
+      child = CwrcCollection.find(params[:child])
+      child.remove_from_collection(parent_ids)
+      child.save
+      
+      render :text=> 1
+    rescue
+      render :text=> -1
+    end
+  end
+  
   def children
     callback = params[:callback]
     deep = params[:deep]
@@ -83,40 +135,4 @@ class CollectionController < ApplicationController
     end
   end
   
-  def link_item
-    begin
-      CwrcCollection.find(params[:parent]).link_item(params[:child])
-      render :text=> 1
-    rescue
-      ##render :text=> -1
-      render :text=>CwrcCollection.find(params[:parent]).to_s
-    end
-  end
-
-  def unlink_item
-    begin
-      CwrcCollection.find(params[:parent]).unlink_item(params[:child])
-      render :text=> 1
-    rescue
-      render :text=> -1
-    end
-  end
-  
-  def link_collection
-    begin
-      CwrcCollection.find(params[:parent]).link_collection(params[:child])
-      render :text=> 1
-    rescue
-      render :text=> -1
-    end
-  end
-  
-  def unlink_collection
-    begin
-      CwrcCollection.find(params[:parent]).unlink_collection(params[:child])
-      render :text=> 1
-    rescue
-      render :text=> -1
-    end
-  end
 end

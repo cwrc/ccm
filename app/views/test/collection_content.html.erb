@@ -63,19 +63,36 @@
 <div id="right">
 	<div id="editor_title" class="page-title"> Selected Collection: <% if @selected_collection.nil?%> None <% else %><%=@selected_collection.pid-%><% end %></div>
 	
-	<% if !@selected_collection.nil? %>
+	<% unless @selected_collection.nil? %>
+	    <% 
+	    	children = @selected_collection.get_children
+	    	child_collections = Array.new
+	    	child_items = Array.new
+	    	children.each do |child|
+	    		if child.is_a?(CwrcCollection)
+	    			child_collections.push(child)
+	    		else
+	    			child_items.push(child)
+	    		end
+	    	end
+	    	 
+	    %>
+	    
 		<h2>Subcollections</h2>
-		<% if @selected_collection.subcollections.count > 0 %>
-			<% @selected_collection.subcollections.each do |x| %>
+		<% if child_collections.count > 0 %>
+			<% child_collections.each do |x| %>
 				<%= x.pid %>
+			    <form style="display:inline;" action="" method="post">
+				  <input type="submit" value="<<" onclick="call_link_method('unlink_collection', '<%= x.pid %>'); return false;" />
+			    </form>
 			<% end %>
 		<% else %>
 			None.
 		<% end %>
 		
 		<h2>Items</h2>
-		<% if @selected_collection.items.count > 0 %>
-			<% @selected_collection.items.each do |x| %>
+		<% if child_items.count > 0 %>
+			<% child_items.each do |x| %>
 				<%= x.pid %>
 			    <form style="display:inline;" action="" method="post">
 				  <input type="submit" value="<<" onclick="call_link_method('unlink_item', '<%= x.pid %>'); return false;" />
