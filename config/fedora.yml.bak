@@ -1,17 +1,10 @@
 development:
-  user: fedoraAdmin
-  password: fedoraAdmin
-#  url: http://fedora.testing.cwrc.ca:8080/fedora
-  url: http://localhost:8983/fedora
+  user: cwrcFedoraCCM
+  password: JcpD70HwJGCLrDyaoKWIkg
+  url: http://fedora.testing.cwrc.ca:8080/fedora
   #fedora:
     # url: http://fedoraAdmin:fedoraAdmin@127.0.0.1:8983/fedora
     #url: http://cwrcFedoraCCM:JcpD70HwJGCLrDyaoKWIkg@fedora.testing.cwrc.ca:8080/fedora
-
-
-##  fedora:
-##    url: http://localhost:8983/fedora
-##  solr:
-##    url: http://localhost:8983/solr 
 
 test: &TEST  
   fedora:
