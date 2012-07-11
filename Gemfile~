@@ -17,8 +17,6 @@
   
   gem 'will_paginate' ##, :git => 'git://github.com/mislav/will_paginate.git', :branch => 'rails3'
 
-  gem 'cobravsmongoose'
-
   # For testing.  You will probably want to use all of these to run the tests you write for your hydra head
   group :development, :test do 
          gem 'solrizer-fedora', '>=1.0.1'

@@ -1,0 +1,15 @@
+<script type="text/javascript">
+
+	
+	jQuery.ajax({
+	url: 'http://apps.testing.cwrc.ca:3000/entity/save',
+	type: 'POST',
+	data: {'xml':'<entity>test 1234</entity>'},
+	dataType: 'jsonp',
+	success: function(result) {
+	      alert(result);
+	}}
+);
+
+	
+</script>
