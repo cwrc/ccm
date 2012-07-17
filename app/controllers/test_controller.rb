@@ -31,6 +31,8 @@ class TestController < ApplicationController
     unless id.nil? || id == ""
       @object = CwrcItem.find(id);      
     end
+    @show_parent_collection_field = true
+    @parent_ids = CwrcCollection.find(:all, {:rows=>CwrcCollection.count})
     
     render "objct_edit_form"
   end
@@ -46,6 +48,7 @@ class TestController < ApplicationController
       @object = CwrcCollection.find(id);      
     end
     
+    @show_parent_collection_field = true
     render "objct_edit_form"
   end
   

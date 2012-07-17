@@ -13,7 +13,7 @@ class CwrcCollection < ActiveFedora::Base
     self.save unless self.new_object? ##Item should have a valid pid in order to add it to the collection using hasCollectionMember predicate
     
     collectionIDs.each do |id|
-      c = CwrcCollection.find(id)
+      c = CwrcCollection.find(id.strip)
       
       self.add_relationship(:is_member_of_collection, c)
       
@@ -25,7 +25,7 @@ class CwrcCollection < ActiveFedora::Base
   
   def remove_from_collection(collectionIDs)
     collectionIDs.each do |id|
-      c = CwrcCollection.find(id)
+      c = CwrcCollection.find(id.strip)
       
       self.remove_relationship(:is_member_of_collection, c)
       
