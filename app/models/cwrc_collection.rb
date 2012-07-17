@@ -73,6 +73,14 @@ class CwrcCollection < ActiveFedora::Base
 #  end
 #
   
+  def get_parent_ids
+    self.ids_for_outbound(:is_member_of_collection)
+  end
+   
+  def get_child_ids
+    self.ids_for_outbound(:has_collection_member)
+  end
+
   def get_children(retCollectionsOnly = false, recurse = false, result = nil)
     
     result = Array.new if result.nil?

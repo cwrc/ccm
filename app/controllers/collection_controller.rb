@@ -121,8 +121,8 @@ class CollectionController < ApplicationController
       id = child.pid
       name = child.pid.to_s
       type = child.is_a?(CwrcCollection) ? "c" : "i"
-      parents = child.member_of_ids
-      children = child.is_a?(CwrcCollection) ? child.members_ids : []
+      parents = child.get_parent_ids
+      children = child.is_a?(CwrcCollection) ? child.get_child_ids : []
       
       x = {"id" => id, "name" => name, "type" => type, "parents" => parents, "children" => children}
       ret.push(x)
