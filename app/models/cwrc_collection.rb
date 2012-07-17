@@ -1,9 +1,8 @@
 
 class CwrcCollection < ActiveFedora::Base
   
-  has_relationship "members", :is_member_of, :inbound => true
-  
-  has_relationship "member_of", :is_member_of
+  ##has_relationship "members", :is_member_of, :inbound => true
+  ##has_relationship "member_of", :is_member_of
   
   has_many :items, :property=>:has_derivation
   has_many :subcollections, :property=>:has_collection
@@ -11,18 +10,44 @@ class CwrcCollection < ActiveFedora::Base
   has_metadata :name => "ccmContentMetadata", :type=> CcmContentDatastream
   
   def add_to_collection(collectionIDs)
+    self.save unless self.new_object? ##Item should have a valid pid in order to add it to the collection using hasCollectionMember predicate
+    
     collectionIDs.each do |id|
       c = CwrcCollection.find(id)
-      member_of_append(c)
+      
+      self.add_relationship(:is_member_of_collection, c)
+      
+      c.add_relationship(:has_collection_member, self)
+      c.save
     end
+    self.save
   end
   
   def remove_from_collection(collectionIDs)
     collectionIDs.each do |id|
       c = CwrcCollection.find(id)
-      member_of_remove(c)
+      
+      self.remove_relationship(:is_member_of_collection, c)
+      
+      c.remove_relationship(:has_collection_member, self)
+      c.save
     end
+    self.save
   end
+  
+#  def add_to_collection(collectionIDs)
+#    collectionIDs.each do |id|
+#      c = CwrcCollection.find(id)
+#      member_of_append(c)
+#    end
+#  end
+#  
+#  def remove_from_collection(collectionIDs)
+#    collectionIDs.each do |id|
+#      c = CwrcCollection.find(id)
+#      member_of_remove(c)
+#    end
+#  end
   
 #
 #  def get_child_collections(recurse = false, result = nil)
@@ -52,7 +77,8 @@ class CwrcCollection < ActiveFedora::Base
     
     result = Array.new if result.nil?
     
-    members.each do |x|
+    self.ids_for_outbound(:has_collection_member).each do |x|
+      x = ActiveFedora::Base.load_instance_from_solr(x.to_s)
       already_traversed = result.any?{|i| i == x}
       if x.is_a?(CwrcCollection)
         if recurse
