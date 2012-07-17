@@ -46,6 +46,10 @@ class CwrcItem < ActiveFedora::Base
     return stamp_array
   end
   
+  def get_parent_ids
+    self.ids_for_outbound(:is_member_of_collection)
+  end
+  
   def add_to_collection(collectionIDs)
     self.save unless self.new_object? ##Item should have a valid pid in order to add it to the collection using hasCollectionMember predicate
     
