@@ -52,8 +52,8 @@ class CollectionController < ApplicationController
     begin
       parent_ids = params[:parent].split(",")
       child = CwrcItem.find(params[:child])
-      child.add_to_collection(parent_ids)
-      child.save
+      
+      child.add_to_collection(parent_ids) ##This call saves both the child and its parents after the relationship is added
       
       render :text=> 1
     rescue
@@ -65,8 +65,8 @@ class CollectionController < ApplicationController
     begin
       parent_ids = params[:parent].split(",")
       child = CwrcItem.find(params[:child])
-      child.remove_from_collection(parent_ids)
-      child.save
+      
+      child.remove_from_collection(parent_ids) ##This call saves both the child and its parents after the relationship is removed
       
       render :text=> 1
     rescue
