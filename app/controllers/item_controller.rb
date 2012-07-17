@@ -31,11 +31,13 @@ class ItemController < ApplicationController
     begin
       xml_string = params[:xml]
       id = params[:id]
+      parent_ids = params[:parent].nil? ? [] : params[:parent].split(",")
       
       object = (id.nil? || id == "") ? CwrcItem.new : CwrcItem.find(id)
       object.replace_xml_description(xml_string)
       
       if object.save
+        object.add_to_collection(parent_ids)
         render :text => object.pid
       else
         render :text => -1
