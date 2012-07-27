@@ -1,5 +1,6 @@
 
-class CwrcCollection < ActiveFedora::Base
+##class CwrcCollection < ActiveFedora::Base
+class CwrcCollection < CcmBase
   
   ##has_relationship "members", :is_member_of, :inbound => true
   ##has_relationship "member_of", :is_member_of
