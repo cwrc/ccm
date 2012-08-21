@@ -105,7 +105,9 @@
 					<% parents.push(pid) %>
 				<% end %>
 			<% end %>
-			<%= parents.join(", ") %>
+			<div id="current-parent-ids">
+				<%= parents.join(", ") %>
+			</div>
 			<br /><br />
 			IDs of new Parent Collections (optional, separate multiple IDs by commas): <input type="text" name="parent" id="parent" value="" style="width:600px;" />
 			<% end %>
