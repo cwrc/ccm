@@ -10,6 +10,10 @@ class CwrcCollection < CcmBase
   
   has_metadata :name => "ccmContentMetadata", :type=> CcmContentDatastream
   
+  def initialize()
+    super(:namespace=>"collection")
+  end
+  
   def add_to_collection(collectionIDs)
     self.save unless self.new_object? ##Item should have a valid pid in order to add it to the collection using hasCollectionMember predicate
     

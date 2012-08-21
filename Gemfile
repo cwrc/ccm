@@ -26,9 +26,13 @@
          gem 'rspec'
          gem 'rspec-rails', '>=2.5.0'
          gem 'mocha'
-         gem 'cucumber-rails'
          gem 'database_cleaner'
          gem 'capybara'
          gem 'bcrypt-ruby'
          gem "jettywrapper"
+         gem 'selenium-webdriver'
   end # (leave this comment here to catch a stray line inserted by blacklight!)
+  
+  group :test do
+         gem 'cucumber-rails'
+  end
