@@ -23,13 +23,13 @@
   group :development, :test do 
          gem 'solrizer-fedora', '>=1.0.1'
          gem 'ruby-debug'
-         gem 'rspec'
-         gem 'rspec-rails', '>=2.5.0'
          gem 'mocha'
          gem 'database_cleaner'
          gem 'capybara'
          gem 'bcrypt-ruby'
          gem "jettywrapper"
+         gem 'rspec'
+         gem 'rspec-rails', '>=2.5.0'
          gem 'selenium-webdriver'
   end # (leave this comment here to catch a stray line inserted by blacklight!)
   
