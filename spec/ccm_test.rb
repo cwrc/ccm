@@ -36,6 +36,109 @@ class CcmTest
     "
   end
   
+  def create_sample_person_entity_desc(firstname, lastname)
+    '<entity>
+  <person xmlns="">
+    <identity>
+      <preferredForm>
+        <namePart>'+firstname+'</namePart>
+        <namePart partType="surname">'+lastname+'</namePart>
+      </preferredForm>
+      <variantForms>
+        <variant>
+          <namePart/>
+          <namePart partType="surname"/>
+          <variantType>birthName</variantType>
+          <authorizedBy>
+            <projectId/>
+          </authorizedBy>
+        </variant>
+      </variantForms>
+      <sameAs/>
+      <sameAs cert=""/>
+    </identity>
+    <description>
+      <existDates>
+        <dateSingle>
+          <standardDate/>
+          <dateType/>
+          <note/>
+          <note/>
+        </dateSingle>
+        <dateSingle cert="">
+          <standardDate/>
+          <dateType>birth</dateType>
+          <note/>
+          <note xml:lang="english"/>
+        </dateSingle>
+        <dateRange>
+          <fromDate>
+            <standardDate/>
+            <dateType/>
+            <note/>
+          </fromDate>
+          <toDate>
+            <standardDate/>
+            <dateType/>
+            <note/>
+          </toDate>
+        </dateRange>
+        <dateRange cert="">
+          <fromDate>
+            <standardDate/>
+            <dateType>birth</dateType>
+            <note/>
+          </fromDate>
+          <toDate>
+            <standardDate/>
+            <dateType>birth</dateType>
+            <note/>
+          </toDate>
+        </dateRange>
+      </existDates>
+      <occupations>
+        <occupation>
+          <term/>
+        </occupation>
+      </occupations>
+      <activities>
+        <activity>
+          <term/>
+        </activity>
+      </activities>
+      <genders>
+        <gender>female</gender>
+      </genders>
+      <researchInterests>
+        <interest>
+          <term/>
+        </interest>
+      </researchInterests>
+      <descriptiveNotes>
+        <note>
+          <projectId/>
+          <access/>
+        </note>
+        <note xml:lang="english">
+          <projectId/>
+          <access/>
+        </note>
+      </descriptiveNotes>
+    </description>
+    <recordInfo>
+      <personTypes>
+        <personType/>
+      </personTypes>
+      <originInfo>
+        <projectId/>
+      </originInfo>
+    </recordInfo>
+  </person>
+</entity>
+    '
+    
+  end
+  
   def fill_form_field(element_name, element_value)
     element = @driver.find_element(:name, element_name)
     element.send_keys(element_value)
@@ -47,11 +150,17 @@ class CcmTest
     return element.attribute("value")    
   end
   
-  def check_form_filed_partial_content(element_name, element_values)
+  def form_filed_should_have(element_name, element_values)
     content = get_form_field(element_name)
     
     element_values.each do |val|
       raise "#{val} not found inside the #{element_name} element." unless content.include?(val) 
+    end
+  end
+  
+  def page_should_have(values)
+    values.each do |val|
+      raise "#{val} not found in the page source." unless @driver.page_source.include?(val) 
     end
   end
   
