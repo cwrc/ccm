@@ -1,11 +1,11 @@
-require 'spec_helper'
-require 'ccm_test'
 
 
 describe "collection" do
   it 'creates collection', :js => true do
     test = CcmTest.new
     test.goto("test/collections")
+    
+    test.page_should_have("Input Information for a New Collection")
 
     # creating a scample xml description for a new collection    
     title = "title #{rand(1000)}"
@@ -17,16 +17,17 @@ describe "collection" do
     test.click("create_button")
     
     # making sure that the collection description is corectly saved
-    test.check_form_filed_partial_content("xml", ["<dc:title>#{title}</dc:title>", "<dc:creator>#{creator}</dc:creator>"])
+    test.form_filed_should_have("xml", ["<dc:title>#{title}</dc:title>", "<dc:creator>#{creator}</dc:creator>"])
     
     #close the browser
     test.quit  
-    
   end
 
   it 'creates sub collection', :js => true do
     test = CcmTest.new
     test.goto("test/collections")
+    
+    test.page_should_have("Input Information for a New Collection")
 
     # creating a scample xml description for a new collection    
     title = "title #{rand(1000)}"
@@ -48,7 +49,7 @@ describe "collection" do
     test.click("create_button")
     
     # making sure that the collection description is corectly saved
-    test.check_form_filed_partial_content("xml", ["<dc:title>#{title}</dc:title>", "<dc:creator>#{creator}</dc:creator>"])
+    test.form_filed_should_have("xml", ["<dc:title>#{title}</dc:title>", "<dc:creator>#{creator}</dc:creator>"])
     
     test.quit  
   end
