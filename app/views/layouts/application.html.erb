@@ -23,4 +23,8 @@
 			<%= yield %>
 		</div>		
 	</div>
+	
+	<!--We need the following hidden timestamp for the test suite. -->
+	<div id="secret-timestamp" style="display:hidden"><%=Time.now.to_f%></div>
+</body>
 </html>

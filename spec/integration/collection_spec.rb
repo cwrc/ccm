@@ -1,4 +1,4 @@
-
+require 'ccm_test'
 
 describe "collection" do
   it 'creates collection', :js => true do
@@ -50,6 +50,7 @@ describe "collection" do
     
     # making sure that the collection description is corectly saved
     test.form_filed_should_have("xml", ["<dc:title>#{title}</dc:title>", "<dc:creator>#{creator}</dc:creator>"])
+    test.page_element_text_should_have("current-parent-ids", parent_id)
     
     test.quit  
   end

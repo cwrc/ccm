@@ -38,105 +38,112 @@ class CcmTest
   
   def create_sample_person_entity_desc(firstname, lastname)
     '<entity>
-  <person xmlns="">
-    <identity>
-      <preferredForm>
-        <namePart>'+firstname+'</namePart>
-        <namePart partType="surname">'+lastname+'</namePart>
-      </preferredForm>
-      <variantForms>
-        <variant>
-          <namePart/>
-          <namePart partType="surname"/>
-          <variantType>birthName</variantType>
-          <authorizedBy>
+      <person xmlns="">
+        <identity>
+          <preferredForm>
+            <namePart>'+firstname+'</namePart>
+            <namePart partType="surname">'+lastname+'</namePart>
+          </preferredForm>
+          <variantForms>
+            <variant>
+              <namePart/>
+              <namePart partType="surname"/>
+              <variantType>birthName</variantType>
+              <authorizedBy>
+                <projectId/>
+              </authorizedBy>
+            </variant>
+          </variantForms>
+          <sameAs/>
+          <sameAs cert=""/>
+        </identity>
+        <description>
+          <existDates>
+            <dateSingle>
+              <standardDate/>
+              <dateType/>
+              <note/>
+              <note/>
+            </dateSingle>
+            <dateSingle cert="">
+              <standardDate/>
+              <dateType>birth</dateType>
+              <note/>
+              <note xml:lang="english"/>
+            </dateSingle>
+            <dateRange>
+              <fromDate>
+                <standardDate/>
+                <dateType/>
+                <note/>
+              </fromDate>
+              <toDate>
+                <standardDate/>
+                <dateType/>
+                <note/>
+              </toDate>
+            </dateRange>
+            <dateRange cert="">
+              <fromDate>
+                <standardDate/>
+                <dateType>birth</dateType>
+                <note/>
+              </fromDate>
+              <toDate>
+                <standardDate/>
+                <dateType>birth</dateType>
+                <note/>
+              </toDate>
+            </dateRange>
+          </existDates>
+          <occupations>
+            <occupation>
+              <term/>
+            </occupation>
+          </occupations>
+          <activities>
+            <activity>
+              <term/>
+            </activity>
+          </activities>
+          <genders>
+            <gender>female</gender>
+          </genders>
+          <researchInterests>
+            <interest>
+              <term/>
+            </interest>
+          </researchInterests>
+          <descriptiveNotes>
+            <note>
+              <projectId/>
+              <access/>
+            </note>
+            <note xml:lang="english">
+              <projectId/>
+              <access/>
+            </note>
+          </descriptiveNotes>
+        </description>
+        <recordInfo>
+          <personTypes>
+            <personType/>
+          </personTypes>
+          <originInfo>
             <projectId/>
-          </authorizedBy>
-        </variant>
-      </variantForms>
-      <sameAs/>
-      <sameAs cert=""/>
-    </identity>
-    <description>
-      <existDates>
-        <dateSingle>
-          <standardDate/>
-          <dateType/>
-          <note/>
-          <note/>
-        </dateSingle>
-        <dateSingle cert="">
-          <standardDate/>
-          <dateType>birth</dateType>
-          <note/>
-          <note xml:lang="english"/>
-        </dateSingle>
-        <dateRange>
-          <fromDate>
-            <standardDate/>
-            <dateType/>
-            <note/>
-          </fromDate>
-          <toDate>
-            <standardDate/>
-            <dateType/>
-            <note/>
-          </toDate>
-        </dateRange>
-        <dateRange cert="">
-          <fromDate>
-            <standardDate/>
-            <dateType>birth</dateType>
-            <note/>
-          </fromDate>
-          <toDate>
-            <standardDate/>
-            <dateType>birth</dateType>
-            <note/>
-          </toDate>
-        </dateRange>
-      </existDates>
-      <occupations>
-        <occupation>
-          <term/>
-        </occupation>
-      </occupations>
-      <activities>
-        <activity>
-          <term/>
-        </activity>
-      </activities>
-      <genders>
-        <gender>female</gender>
-      </genders>
-      <researchInterests>
-        <interest>
-          <term/>
-        </interest>
-      </researchInterests>
-      <descriptiveNotes>
-        <note>
-          <projectId/>
-          <access/>
-        </note>
-        <note xml:lang="english">
-          <projectId/>
-          <access/>
-        </note>
-      </descriptiveNotes>
-    </description>
-    <recordInfo>
-      <personTypes>
-        <personType/>
-      </personTypes>
-      <originInfo>
-        <projectId/>
-      </originInfo>
-    </recordInfo>
-  </person>
-</entity>
+          </originInfo>
+        </recordInfo>
+      </person>
+    </entity>
     '
-    
+  end
+  
+  def create_sample_item_desc(content)
+    '
+    <item>
+      '+content+'
+    </item>
+    '
   end
   
   def fill_form_field(element_name, element_value)
@@ -164,9 +171,28 @@ class CcmTest
     end
   end
   
+  def get_page_element(element_id)
+    element = @driver.find_element(:id, element_id)
+    railse "Element with id=#{element_id} not found" if element.nil?
+    return element    
+  end
+  
+  def page_element_text_should_have(element_id, values)
+    values.each do |val|
+      raise "#{val} not found in the page element with id = #{element_id}." unless get_page_element(element_id).text.include?(val)
+    end
+  end
+  
   def click(button_id)
+    t1 = get_page_element("secret-timestamp").text.to_f
+    
     element = @driver.find_element(:id, button_id)
     element.submit()
+
+    #wait for the page to finish rendering. 
+    #Here we wait the hidden timestamp at the end of the page body to have a higher value than t1.
+    wait = Selenium::WebDriver::Wait.new(:timeout => 10) # seconds
+    wait.until { get_page_element("secret-timestamp").text.to_f > t1 }
   end
   
   def quit

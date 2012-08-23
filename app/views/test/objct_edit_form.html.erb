@@ -76,12 +76,13 @@
 	<% unless @parent_ids.nil? %>
 	  <br />
 	  <div class="sub-title">Potential Parent IDs</div>
-	  <% @parent_ids.each do |x| %>
-	    <div class="entity-id">
-	    	<%=x.pid-%>
-	    </div>
-	  <% end %>
-	
+	  <div id="potential-parent-list">
+		  <% @parent_ids.each do |x| %>
+		    <div class="entity-id">
+		    	<%=x.pid-%>
+		    </div>
+		  <% end %>
+	  </div>
 	<% end %>
 
 </div>
@@ -105,9 +106,7 @@
 					<% parents.push(pid) %>
 				<% end %>
 			<% end %>
-			<div id="current-parent-ids">
-				<%= parents.join(", ") %>
-			</div>
+			<div id="current-parent-ids" class="xx"><%= parents.join(", ") %></div>
 			<br /><br />
 			IDs of new Parent Collections (optional, separate multiple IDs by commas): <input type="text" name="parent" id="parent" value="" style="width:600px;" />
 			<% end %>
