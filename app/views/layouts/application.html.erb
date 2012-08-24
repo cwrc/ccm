@@ -7,6 +7,18 @@
   <%= csrf_meta_tag %>
   
   <%= yield :head %>
+  
+  <script type="text/javascript">
+	jQuery(window).load(function ()
+	{
+		setTimeout( function() 
+			{
+				var date = new Date();
+				$('#secret-timestamp').text(date.getTime());
+			}, 
+			200 );
+	});  	
+  </script>
 </head>
 <body>
 	<div id="page">
@@ -25,6 +37,6 @@
 	</div>
 	
 	<!--We need the following hidden timestamp for the test suite. -->
-	<div id="secret-timestamp" style="display:hidden"><%=Time.now.to_f%></div>
+	<div id="secret-timestamp" style="display:hidden"></div>
 </body>
 </html>
