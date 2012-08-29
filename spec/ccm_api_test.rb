@@ -12,9 +12,13 @@ class CcmApiTest
   end
   
   #Makes a post call to the specified URL and stores the response in a member variable
-  def post(relativ_url, params)
+  def post(relative_url, params)
     url = URI::join(ENV["testhost"], relative_url)
-    @res = Net::HTTP.post_form(url, params)
+    @res = Net::HTTP.post_form(url, params).body
+  end
+  
+  def text_body
+    @res
   end
   
   def xml_body
@@ -39,6 +43,14 @@ class CcmApiTest
       
     end
     JSON.parse(s)
+  end
+  
+  def text_body_include?(values)
+    s = @res
+    
+    values.each do |val|
+      raise "#{val} not found in the body text." unless s.include?(val)
+    end
   end
 
 end

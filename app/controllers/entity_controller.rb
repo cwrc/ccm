@@ -21,8 +21,12 @@ class EntityController < ApplicationController
    
   def show
     callback = params[:callback]
-    object = CwrcEntity.find(params[:id]);
-    xml = object.get_xml_description
+    begin
+      object = CwrcEntity.find(params[:id]);
+      xml = object.get_xml_description
+    rescue
+      xml = ""
+    end
     
     if callback.nil?
       respond_to do |format|
