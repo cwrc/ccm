@@ -5,5 +5,6 @@ require File.expand_path('../application', __FILE__)
 EntityHydra::Application.initialize!
 
 ENV["testhost"] = "http://localhost:3000"
+ENV["entity_root_tag"] = "entity"
 
 
