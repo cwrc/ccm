@@ -171,6 +171,26 @@ describe "entity" do
     verify_entity_desc_format(desc)
   end
   
+  it "retrieves entity description in jsonp" do
+    t = CcmApiTest.new
+    
+    #Retrieving list of entities WITHOUT callback
+    t.get("entity/list")
+    
+    json = t.json_body
+    raise "No entities found. Please create some entities and re-run this tets" if json.count == 0
+    
+    entity_id = json[0]["id"]
+    
+    #retreiving the entity description
+    callback = "my_callback_func"
+    t.get("entity/#{entity_id}?callback=#{callback}")
+    
+    desc = t.xml_body(callback)
+    verify_entity_desc_format(desc)
+  end
+  
+  
   it "creates new entity" do
     t = CcmApiTest.new
     

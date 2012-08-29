@@ -17,18 +17,7 @@ class CcmApiTest
     @res = Net::HTTP.post_form(url, params).body
   end
   
-  def text_body
-    @res
-  end
-  
-  def xml_body
-    Nokogiri::XML::Document.parse(@res)
-  end
-  
-  #converts the response body into a json array and returns it.
-  #if callback parameter is supplied, the response is considered to be in jsonp format. In this case, the method verifies the presense of the callback function and returns only the argument 
-  #of the callback function as a json array. 
-  def json_body(callback = nil)
+  def text_body(callback = nil)
     s = @res
     
     unless callback.nil?
@@ -41,12 +30,27 @@ class CcmApiTest
       
       s = s[1, s.length-2]
       
+      #if s begins and ends wih double quotation marks, then the actual text should be what is encapsulated in those double quotation marks.
+      s = s[1, s.length-2] if s.start_with?('"') && s.end_with?('"')
     end
+    s    
+  end
+  
+  def xml_body(callback = nil)
+    s = text_body(callback)
+    Nokogiri::XML::Document.parse(s)
+  end
+  
+  #converts the response body into a json array and returns it.
+  #if callback parameter is supplied, the response is considered to be in jsonp format. In this case, the method verifies the presense of the callback function and returns only the argument 
+  #of the callback function as a json array. 
+  def json_body(callback = nil)
+    s = text_body(callback)
     JSON.parse(s)
   end
   
   def text_body_include?(values)
-    s = @res
+    s = text_body
     
     values.each do |val|
       raise "#{val} not found in the body text." unless s.include?(val)
