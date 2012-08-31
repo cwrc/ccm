@@ -23,8 +23,29 @@ class ItemController < ApplicationController
   end
   
   def show
-    object = CwrcItem.find(params[:id]);
-    render :xml=> object.get_xml_description
+    callback = params[:callback]
+    begin
+      object = CwrcItem.find(params[:id]);
+      xml = object.get_xml_description
+    rescue
+      xml = ""
+    end
+    
+    if callback.nil?
+      respond_to do |format|
+        
+        format.xml { render :xml=> xml }
+                
+        format.json { render :json=>CobraVsMongoose.xml_to_json(xml.to_s) }
+        
+        format.any { render :xml=> xml, :content_type => Mime::XML }
+        
+      end
+      
+    else
+      render :text=> callback + "(\"" + xml.to_s.gsub("\"", "\\\"").gsub("\r\n", " ").gsub("\n", " ") + "\")"      
+    end
+    
   end
   
   def save
