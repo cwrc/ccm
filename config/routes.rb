@@ -21,6 +21,10 @@ EntityHydra::Application.routes.draw do
 
       post 'add_workflow_stamp'
       get 'get_workflow_stamps'
+      
+      post 'add_to_collection'
+      post 'remove_from_collection'
+      get 'get_collections'
     end
   end
 

@@ -68,6 +68,63 @@ class ItemController < ApplicationController
     end    
   end
 
+  def add_to_collection
+    begin
+      id = params[:id]
+      parent_ids = params[:parent].nil? ? [] : params[:parent].split(",")
+      object = CwrcItem.find(id)
+      
+      raise "Item #{id} not found" if object.nil?
+      
+      object.add_to_collection(parent_ids)
+      render :text => object.pid
+    rescue => e
+      logger.error e.message
+      render :text => -1
+    end
+  end
+
+  def remove_from_collection
+    begin
+      id = params[:id]
+      parent_ids = params[:parent].nil? ? [] : params[:parent].split(",")
+      object = CwrcItem.find(id)
+      
+      raise "Item #{id} not found" if object.nil?
+      
+      object.remove_from_collection(parent_ids)
+      render :text => object.pid
+    rescue => e
+      logger.error e.message
+      render :text => -1
+    end
+  end
+
+  def get_collections
+    callback = params[:callback]
+    begin
+      id = params[:id]
+      object = CwrcItem.find(id)
+      
+      raise "Item #{id} not found" if object.nil?
+      
+      ret = object.get_parent_ids
+      
+      if callback.nil?
+        render :json=>ret.to_json
+      else
+        render :json=>ret.to_json, :callback => params[:callback]
+      end
+    rescue => e
+      logger.error e.message
+      if callback.nil?
+        render :json=>-1
+      else
+        render :json=>-1, :callback => params[:callback]
+      end
+    end
+  end
+  
   def delete
     begin
       object = CwrcItem.find(params[:id]);
