@@ -158,7 +158,6 @@ describe "item" do
     #retreiving the item description
     callback = "my_callback_func"
     t.get("item/#{id}?callback=#{callback}")
-    puts "item/#{id}?callback=#{callback}"
     
     desc = t.xml_body(callback)
     verify_item_desc_format(desc)
@@ -184,6 +183,78 @@ describe "item" do
     verify_item_desc_format(t.xml_body, title)
   end
   
+  it "creates new item and associate it to a collection" do
+    t = CcmApiTest.new
+    
+   #Retrieving list of collections
+    t.get("collection/list")
+    
+    json = t.json_body
+    raise "No collections found. Please create some collections and re-run this tets" if json.count == 0
+    
+    collection_id = json[0]["id"]
+    
+    # creating a sample xml description for a new item    
+    title = "Sample Title #{rand(1000)}"
+    desc = create_sample_item_desc(title)
+    
+    #making the post call to create the new item
+    params = {:xml => desc, :parent=>collection_id}
+    t.post("item/save", params)
+    pid = t.text_body
+    
+    raise "Item creation failed" if pid.start_with?("-") #A minus sign
+    
+    #Retrieving the newly created item and making sure that it has the specified title
+    t.get("item/#{pid}")
+    verify_item_desc_format(t.xml_body, title)
+    
+    t.get("item/get_collections/?id=#{pid}")
+    parents = t.json_body
+    
+    raise "Parent collection has been failed to set while creating the item." if parents.count == 0
+    
+    raise "Expected parent collection ID #{collection_id}, found #{parents[0]}" if collection_id != parents[0]
+  end
+  
+  
+  it "creates new item and associate it to multiple collections" do
+    t = CcmApiTest.new
+    
+   #Retrieving list of collections
+    t.get("collection/list")
+    
+    json = t.json_body
+    raise "Need at least 3 collections. Please create some collections and re-run this tets" if json.count < 3
+    
+    collection_ids = [json[0]["id"], json[1]["id"], json[2]["id"]]
+    
+    # creating a sample xml description for a new item    
+    title = "Sample Title #{rand(1000)}"
+    desc = create_sample_item_desc(title)
+    
+    #making the post call to create the new item
+    params = {:xml => desc, :parent=>collection_ids.join(",")}
+    t.post("item/save", params)
+    pid = t.text_body
+    
+    raise "Item creation failed" if pid.start_with?("-") #A minus sign
+    
+    #Retrieving the newly created item and making sure that it has the specified title
+    t.get("item/#{pid}")
+    verify_item_desc_format(t.xml_body, title)
+    
+    t.get("item/get_collections/?id=#{pid}")
+    parents = t.json_body
+    
+    raise "Expected parent collection count = #{collection_ids.count}, actual parent collection count = #{parents.count}" if parents.count != collection_ids.count
+    
+    collection_ids.each do |x|
+      raise "Parent collection #{x} is not associated with the item #{pid}" unless parents.include?(x)
+    end
+  end
+  
+ 
   it "updates item" do
     t = CcmApiTest.new
     
@@ -217,6 +288,67 @@ describe "item" do
     verify_item_desc_format(t.xml_body, title)
   end
 
+  it "associates an item with one collection" do
+    t = CcmApiTest.new
+    
+    #finding an item
+    t.get("item/list")
+    json = t.json_body
+    raise "No items found. Please create some items and re-run this tets" if json.count == 0
+    item_id = json[0]["id"]
+    
+    
+   #finding a collection id
+    t.get("collection/list")
+    json = t.json_body
+    raise "No collections found. Please create some collections and re-run this tets" if json.count == 0
+    collection_id = json[0]["id"]
+    
+    #adding the item to the collection
+    params = {:id => item_id, :parent=>collection_id}
+    t.post("item/add_to_collection", params)
+    pid = t.text_body
+    
+    raise "Associating the item #{item_id} with the collection #{collection_id} failed" unless pid == item_id
+    
+    #verifying that the item is added to the collection    
+    t.get("item/get_collections/?id=#{pid}")
+    parents = t.json_body
+    raise "Parent collection #{collection_id} is not associated with the item #{pid}" unless parents.include?(collection_id)
+  end
+  
+  it "associates an item with multiple collections" do
+    t = CcmApiTest.new
+    
+    #finding an item
+    t.get("item/list")
+    json = t.json_body
+    raise "No items found. Please create some items and re-run this tets" if json.count == 0
+    item_id = json[0]["id"]
+    
+    
+   #finding a collection id
+    t.get("collection/list")
+    json = t.json_body
+    raise "Needs at least 3 collections. Please create some collections and re-run this tets" if json.count < 3
+    collection_ids = [json[0]["id"], json[2]["id"], json[3]["id"]]
+    
+    #adding the item to the collection
+    params = {:id => item_id, :parent=>collection_ids}
+    t.post("item/add_to_collection", params)
+    pid = t.text_body
+    
+    raise "Associating the item #{item_id} with the collections #{collection_ids.join(",")} failed" unless pid == item_id
+    
+    #verifying that the item is added to the collections  
+    t.get("item/get_collections/?id=#{pid}")
+    parents = t.json_body
+    collection_ids.each do |x|
+      raise "Parent collection #{x} is not associated with the item #{pid}" unless parents.include?(x)
+    end
+  end
+  
+  
   it "deletes item" do
     t = CcmApiTest.new
     
