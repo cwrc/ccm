@@ -7,16 +7,36 @@ class CollectionController < ApplicationController
   skip_before_filter :protect_from_forgery, :only => [:save, :delete]
   
   def list
+    callback = params[:callback]
     max = params[:max].nil? ? max_records : params[:max].to_i
     list = CwrcCollection.find(:all, {:rows=>max})
            
     ret = list.map{ |x| {:id=>x.id, :name=>x.id.to_s}}
-    render :json=>ret.to_json
+    if callback.nil?
+      render :json=>ret.to_json
+    else
+      render :json=>ret.to_json, :callback => params[:callback]
+    end
+    
   end
     
   def show
-    object = CwrcCollection.find(params[:id]);
-    render :xml=> object.get_xml_description
+    callback = params[:callback]
+    begin
+      object = CwrcCollection.find(params[:id]);
+      xml = object.get_xml_description
+    rescue
+      xml = ""
+    end
+    if callback.nil?
+      respond_to do |format|
+        format.xml { render :xml=> xml }
+        format.json { render :json=>CobraVsMongoose.xml_to_json(xml.to_s) }
+        format.any { render :xml=> xml, :content_type => Mime::XML }
+      end
+    else
+      render :text=> callback + "(\"" + xml.to_s.gsub("\"", "\\\"").gsub("\r\n", " ").gsub("\n", " ") + "\")"      
+    end
   end
   
   def save
@@ -101,6 +121,32 @@ class CollectionController < ApplicationController
       render :text=> -1
     end
   end
+
+  def get_parent_collections
+    callback = params[:callback]
+    begin
+      id = params[:id]
+      object = CwrcCollection.find(id)
+      
+      raise "Collection #{id} not found" if object.nil?
+      
+      ret = object.get_parent_ids
+      
+      if callback.nil?
+        render :json=>ret.to_json
+      else
+        render :json=>ret.to_json, :callback => params[:callback]
+      end
+    rescue => e
+      logger.error e.message
+      if callback.nil?
+        render :json=>-1
+      else
+        render :json=>-1, :callback => params[:callback]
+      end
+    end
+  end
+  
   
   def children
     callback = params[:callback]

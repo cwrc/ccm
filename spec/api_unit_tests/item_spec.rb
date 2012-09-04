@@ -186,7 +186,7 @@ describe "item" do
   it "creates new item and associate it to a collection" do
     t = CcmApiTest.new
     
-   #Retrieving list of collections
+    #Retrieving list of collections
     t.get("collection/list")
     
     json = t.json_body
@@ -209,7 +209,7 @@ describe "item" do
     t.get("item/#{pid}")
     verify_item_desc_format(t.xml_body, title)
     
-    t.get("item/get_collections/?id=#{pid}")
+    t.get("item/get_parent_collections/?id=#{pid}")
     parents = t.json_body
     
     raise "Parent collection has been failed to set while creating the item." if parents.count == 0
@@ -218,7 +218,7 @@ describe "item" do
   end
   
   
-  it "creates new item and associate it to multiple collections" do
+  it "creates new item and associate it with multiple collections" do
     t = CcmApiTest.new
     
    #Retrieving list of collections
@@ -244,7 +244,7 @@ describe "item" do
     t.get("item/#{pid}")
     verify_item_desc_format(t.xml_body, title)
     
-    t.get("item/get_collections/?id=#{pid}")
+    t.get("item/get_parent_collections/?id=#{pid}")
     parents = t.json_body
     
     raise "Expected parent collection count = #{collection_ids.count}, actual parent collection count = #{parents.count}" if parents.count != collection_ids.count
@@ -311,12 +311,12 @@ describe "item" do
     raise "Associating the item #{item_id} with the collection #{collection_id} failed" unless pid == item_id
     
     #verifying that the item is added to the collection    
-    t.get("item/get_collections/?id=#{pid}")
+    t.get("item/get_parent_collections/?id=#{pid}")
     parents = t.json_body
     raise "Parent collection #{collection_id} is not associated with the item #{pid}" unless parents.include?(collection_id)
   end
   
-  it "associates an item with multiple collections" do
+  it "associates an item with multiple collections then removing some of those associations" do
     t = CcmApiTest.new
     
     #finding an item
@@ -339,11 +339,49 @@ describe "item" do
     raise "Associating the item #{item_id} with the collections #{collection_ids.join(",")} failed" unless pid == item_id
     
     #verifying that the item is added to the collections  
-    t.get("item/get_collections/?id=#{pid}")
+    t.get("item/get_parent_collections/?id=#{pid}")
     parents = t.json_body
     collection_ids.each do |x|
       raise "Parent collection #{x} is not associated with the item #{pid}" unless parents.include?(x)
     end
+    
+
+    #Let's now remove some of those parent-child associations
+    #========================================================
+    parent_to_be_removed = collection_ids[1]
+    collection_ids.delete(parent_to_be_removed)
+    params = {:id => item_id, :parent=>parent_to_be_removed}
+    t.post("item/remove_from_collection", params)
+    pid = t.text_body
+    
+    raise "Removing the item #{item_id} from the collection #{parent_to_be_removed} failed" unless pid == item_id
+    
+    
+    #verifying that the item is no,longer associated with the removed parent, but is stil associated with the remaining set of parent collections  
+    t.get("item/get_parent_collections/?id=#{pid}")
+    parents = t.json_body
+    
+    raise "The collection #{parent_to_be_removed} has not been removed from the list of parent collections of the item #{pid}" if parents.include?(parent_to_be_removed)
+    
+    collection_ids.each do |x|
+      raise "Parent collection #{x} is not associated with the item #{pid}" unless parents.include?(x)
+    end
+    
+
+    #Let's now remove all parent collections
+    #=======================================
+    parents_to_be_removed = parents
+    params = {:id => item_id, :parent=>parents_to_be_removed.join(',')}
+    t.post("item/remove_from_collection", params)
+    pid = t.text_body
+    
+    raise "Removing all parent collections of the item #{item_id} failed" unless pid == item_id
+    
+    #making sure that the item is no longer associated with any collection
+    t.get("item/get_parent_collections/?id=#{pid}")
+    parents = t.json_body
+    
+    raise "Expected no parent collections for the item #{item_id}, but found #{parents.join(",")}" if parents.count > 0
   end
   
   
