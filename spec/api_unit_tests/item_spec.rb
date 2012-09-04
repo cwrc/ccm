@@ -297,8 +297,7 @@ describe "item" do
     raise "No items found. Please create some items and re-run this tets" if json.count == 0
     item_id = json[0]["id"]
     
-    
-   #finding a collection id
+    #finding a collection id
     t.get("collection/list")
     json = t.json_body
     raise "No collections found. Please create some collections and re-run this tets" if json.count == 0
@@ -326,15 +325,14 @@ describe "item" do
     raise "No items found. Please create some items and re-run this tets" if json.count == 0
     item_id = json[0]["id"]
     
-    
-   #finding a collection id
+    #finding a collection id
     t.get("collection/list")
     json = t.json_body
     raise "Needs at least 3 collections. Please create some collections and re-run this tets" if json.count < 3
     collection_ids = [json[0]["id"], json[2]["id"], json[3]["id"]]
     
     #adding the item to the collection
-    params = {:id => item_id, :parent=>collection_ids}
+    params = {:id => item_id, :parent=>collection_ids.join(",")}
     t.post("item/add_to_collection", params)
     pid = t.text_body
     
