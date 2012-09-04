@@ -31,9 +31,49 @@ def verify_collection_list_format(json_array)
   end
 end
 
-def verify_entity_desc_format(desc_doc)
+def verify_collection_desc_format(desc_doc, collection_name = nil)
   root = desc_doc.root
   
-  expected_tag = ENV["entity_root_tag"]
+  expected_tag = "oai_dc:dc"
   raise "Expected root tag is #{expected_tag}, found #{root.name}." if root.name != expected_tag
+  
+  expected_collection_name_field = "<dc:title>#{collection_name}</dc:title>"
+  raise "Expected collection name filed #{expected_collection_name_field} not found."
+end
+
+describe "collection" do
+  it "list" do
+    t = CcmApiTest.new
+    
+    #Retrieving list of collections WITHOUT callback
+    t.get("collection/list")
+    
+    json = t.json_body
+    n = json.count
+    verify_collection_list_format(json)
+    
+    #Retrieving list of collections WITH callback
+    callback = 'my_callback_func'
+    t.get("collection/list?callback=#{callback}")
+    
+    json = t.json_body(callback)
+    verify_collection_list_format(json)
+    
+    #Retrieving a max number of collections when there are more than max items
+    max = 5
+    raise "Please create at least 6 collections before running this test." if n <= max
+    t.get("collection/list?max=#{max}")
+    
+    json = t.json_body
+    raise "Expecting #{max} number of collections, found #{json.count}" if json.count != max 
+    verify_collection_list_format(json)
+    
+    #Retrieving a max number of collections when there are less than max collection. In this case, we should only get the available number of collections.
+    max = n + 5
+    t.get("collection/list?max=#{max}")
+    
+    json = t.json_body
+    raise "Expecting #{n} number of collections, found #{json.count}" if json.count != n 
+    verify_collection_list_format(json)
+  end
 end
