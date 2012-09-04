@@ -24,7 +24,7 @@ EntityHydra::Application.routes.draw do
       
       post 'add_to_collection'
       post 'remove_from_collection'
-      get 'get_collections'
+      get 'get_parent_collections'
     end
   end
 
@@ -38,6 +38,7 @@ EntityHydra::Application.routes.draw do
       post 'unlink_collection'
       get 'list'
       get 'children'
+      get 'get_parent_collections'
     end
   end
 

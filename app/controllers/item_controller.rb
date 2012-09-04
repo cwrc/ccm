@@ -33,19 +33,13 @@ class ItemController < ApplicationController
     
     if callback.nil?
       respond_to do |format|
-        
         format.xml { render :xml=> xml }
-                
         format.json { render :json=>CobraVsMongoose.xml_to_json(xml.to_s) }
-        
         format.any { render :xml=> xml, :content_type => Mime::XML }
-        
       end
-      
     else
       render :text=> callback + "(\"" + xml.to_s.gsub("\"", "\\\"").gsub("\r\n", " ").gsub("\n", " ") + "\")"      
     end
-    
   end
   
   def save
@@ -100,7 +94,7 @@ class ItemController < ApplicationController
     end
   end
 
-  def get_collections
+  def get_parent_collections
     callback = params[:callback]
     begin
       id = params[:id]
