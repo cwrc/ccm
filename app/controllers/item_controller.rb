@@ -79,7 +79,7 @@ class ItemController < ApplicationController
       object.add_to_collection(parent_ids)
       render :text => object.pid
     rescue => e
-      logger.error e.message
+      logger.error "ITEM/ADD_TO_COLLECTION Error. #{e.message}"
       render :text => -1
     end
   end
