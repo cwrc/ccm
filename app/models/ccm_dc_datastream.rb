@@ -33,5 +33,9 @@ class CcmDcDatastream < ActiveFedora::NokogiriDatastream
        ) 
   end # xml_template
   
+  def set_field(field_name, value)
+    root = get_xml_description
+  end
+  
 
 end
