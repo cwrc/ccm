@@ -30,14 +30,6 @@ module CcmDatastreamMethods
     parent.add_child(new_desc) 
     self.dirty = true
   end
-  
-  def title=(val)
-    set_child_text("//dc:title", val)
-  end
-  
-  def title
-    get_child_text("//dc:title")
-  end
-   
+
 end
 

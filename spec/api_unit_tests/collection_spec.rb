@@ -1,28 +1,5 @@
 require 'ccm_api_test'
 
-def create_sample_collection_desc(collection_name)
-  '<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
-    xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
-    <dc:title>' + collection_name + '</dc:title>
-    <dc:creator></dc:creator>
-    <dc:subject></dc:subject>
-    <dc:description></dc:description>
-    <dc:publisher></dc:publisher>
-    <dc:contributor></dc:contributor>
-    <dc:date></dc:date>
-    <dc:type></dc:type>
-    <dc:format></dc:format>
-    <dc:identifier></dc:identifier>
-    <dc:source></dc:source>
-    <dc:language></dc:language>
-    <dc:relation></dc:relation>
-    <dc:coverage></dc:coverage>
-    <dc:rights></dc:rights>
-</oai_dc:dc>
-  '
-end
-
-
 def verify_collection_list_format(json_array)
   raise "No collections found. Please create some collections and re-run this test." if json_array.count == 0
   json_array.each do |entry|
@@ -34,7 +11,7 @@ end
 def verify_collection_desc_format(desc_doc, collection_name = nil)
   root = desc_doc.root
   
-  puts "TODO: UPDATE 'verify_collection_desc_format' method in collection_spec.rb when DC implementation is completed."
+  ##puts "TODO: UPDATE 'verify_collection_desc_format' method in collection_spec.rb when DC implementation is completed."
   raise "Collection description is null" if root.nil?
   
   unless collection_name.nil?
@@ -127,10 +104,9 @@ describe "collection" do
     
     # creating a sample xml description for a new collection    
     name = "Sample Collection #{rand(1000)}"
-    desc = create_sample_collection_desc(name)
-    
+   
     #making the post call to create the new collection
-    params = {:xml => desc}
+    params = {:name => name}
     t.post("collection/save", params)
     pid = t.text_body
     
@@ -154,10 +130,9 @@ describe "collection" do
     
     # creating a sample xml description for a new collection    
     name = "Sample Collection #{rand(1000)}"
-    desc = create_sample_collection_desc(name)
     
     #making the post call to create the new collection
-    params = {:xml => desc, :parent=>collection_id}
+    params = {:name => name, :parent=>collection_id}
     t.post("collection/save", params)
     pid = t.text_body
     
@@ -188,10 +163,9 @@ describe "collection" do
     
     # creating a sample xml description for a new collection    
     name = "Sample Title #{rand(1000)}"
-    desc = create_sample_collection_desc(name)
     
     #making the post call to create the new collection
-    params = {:xml => desc, :parent=>collection_ids.join(",")}
+    params = {:name => name, :parent=>collection_ids.join(",")}
     t.post("collection/save", params)
     pid = t.text_body
     
@@ -230,10 +204,9 @@ describe "collection" do
     begin
       name = "Sample Name #{rand(1000)}"
     end while current_desc_text.include?(name)
-    new_desc_text = create_sample_collection_desc(name)
     
     #updating the collection
-    params = {:xml => new_desc_text, :id=>id}
+    params = {:name => name, :id=>id}
     t.post("collection/save", params)
     pid = t.text_body
     

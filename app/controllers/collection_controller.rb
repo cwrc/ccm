@@ -39,14 +39,16 @@ class CollectionController < ApplicationController
     end
   end
   
+  
   def save
     begin
-      xml_string = params[:xml]
+      name = params[:name]
       id = params[:id]
       parent_ids = params[:parent].nil? ? [] : params[:parent].split(",")
       
       object = (id.nil? || id == "") ? CwrcCollection.new : CwrcCollection.find(id)
-      object.replace_xml_description(xml_string)
+      
+      object.name = name
       
       if object.save
         object.add_to_collection(parent_ids)
@@ -58,7 +60,7 @@ class CollectionController < ApplicationController
       render :text => -1
     end    
   end
-
+    
   def delete
     begin
       object = CwrcCollection.find(params[:id]);
