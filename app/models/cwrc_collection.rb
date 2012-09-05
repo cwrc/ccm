@@ -40,6 +40,14 @@ class CwrcCollection < CcmBase
     self.save
   end
   
+  def name=(val)
+    get_dc.title=val
+  end
+  
+  def name
+    get_dc.title
+  end
+  
 #  def add_to_collection(collectionIDs)
 #    collectionIDs.each do |id|
 #      c = CwrcCollection.find(id)
