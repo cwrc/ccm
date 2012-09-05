@@ -37,5 +37,45 @@ class CcmDcDatastream < ActiveFedora::NokogiriDatastream
     root = get_xml_description
   end
   
+  def title=(val)
+    set_child_text("//dc:title", val)
+  end
+  
+  def title
+    get_child_text("//dc:title")
+  end
+  
+  def identifier=(val)
+    set_child_text("//dc:identifier", val)
+  end
+  
+  def identifier
+    get_child_text("//dc:identifier")
+  end  
+
+  def creator=(val)
+    set_child_text("//dc:creator", val)
+  end
+  
+  def creator
+    get_child_text("//dc:creator")
+  end  
+
+  def date=(val)
+    set_child_text("//dc:date", val)
+  end
+  
+  def date
+    get_child_text("//dc:date")
+  end  
+
+  def type=(val)
+    set_child_text("//dc:type", val)
+  end
+  
+  def type
+    get_child_text("//dc:type")
+  end  
+
 
 end
