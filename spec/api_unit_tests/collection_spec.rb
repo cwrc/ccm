@@ -99,9 +99,10 @@ describe "collection" do
     name = "Sample Collection #{rand(1000)}"
     owner = "Sample Owner #{rand(1000)}"
     rights = "Sample Rights #{rand(1000)}"
+    contributor = "contributor 1, contributor 2, contributor 3"
     
     #making the post call to create the new collection
-    params = {:name => name, :owner=>owner, :rights=>rights}
+    params = {:name => name, :owner=>owner, :rights=>rights, :contributor=>contributor}
     t.post("collection/save", params)
     pid = t.text_body
     

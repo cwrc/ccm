@@ -8,8 +8,6 @@ class CwrcCollection < CcmBase
   has_many :items, :property=>:has_derivation
   has_many :subcollections, :property=>:has_collection
   
-  has_metadata :name => "ccmContentMetadata", :type=> CcmContentDatastream
-  
   def initialize()
     super(:namespace=>"collection")
     get_dc.type = "Collection"
@@ -78,6 +76,9 @@ class CwrcCollection < CcmBase
     get_dc.type
   end
   
+  def add_contributor(val)
+    get_dc.add_contributor(val.split(",").map{|x| x.strip}) unless val.nil?
+  end
 
   
 #  def add_to_collection(collectionIDs)
