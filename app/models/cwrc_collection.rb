@@ -79,6 +79,10 @@ class CwrcCollection < CcmBase
   def add_contributor(val)
     get_dc.add_contributor(val.split(",").map{|x| x.strip}) unless val.nil?
   end
+  
+  def add_language(val)
+    get_dc.add_language(val.split(",").map{|x| x.strip}) unless val.nil?  
+  end
 
   
 #  def add_to_collection(collectionIDs)
