@@ -51,6 +51,7 @@ class CollectionController < ApplicationController
       object.created = params[:created].nil? ? DateTime.now.to_s : params[:created]
       object.rights = params[:rights] unless params[:rights].nil?
       object.add_contributor(params[:contributor]) unless params[:contributor].nil?
+      object.add_language(params[:language]) unless params[:language].nil?
 
       if object.save
         object.add_to_collection(parent_ids)
