@@ -15,6 +15,7 @@ class CcmDcDatastream < ActiveFedora::NokogiriDatastream
           xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
           <dc:title></dc:title>
           <dc:creator></dc:creator>
+          <dc:created></dc:created>
           <dc:subject></dc:subject>
           <dc:description></dc:description>
           <dc:publisher></dc:publisher>
@@ -33,49 +34,119 @@ class CcmDcDatastream < ActiveFedora::NokogiriDatastream
        ) 
   end # xml_template
   
-  def set_field(field_name, value)
-    root = get_xml_description
-  end
-  
+
   def title=(val)
-    set_child_text("//dc:title", val)
+    begin
+      set_text("//dc:title", val)
+    rescue
+      add_element("/", "<dc:title>#{val}</dc:title>")
+    end
   end
   
   def title
-    get_child_text("//dc:title")
+    get_text("//dc:title")
   end
   
   def identifier=(val)
-    set_child_text("//dc:identifier", val)
+    begin
+      set_text("//dc:identifier", val)
+    rescue
+      add_element("/", "<dc:identifier>#{val}</dc:identifier>")
+    end
   end
   
   def identifier
-    get_child_text("//dc:identifier")
+    get_text("//dc:identifier")
   end  
 
   def creator=(val)
-    set_child_text("//dc:creator", val)
+    begin
+      set_text("//dc:creator", val)
+    rescue
+      add_element("/", "<dc:creator>#{val}</dc:creator>")
+    end
   end
   
   def creator
-    get_child_text("//dc:creator")
+    get_text("//dc:creator")
+  end  
+
+  def created=(val)
+    begin
+      set_text("//dc:created", val)
+    rescue
+      add_element("/", "<dc:created>#{val}</dc:created>")
+    end
+  end
+  
+  def created
+    get_text("//dc:created")
   end  
 
   def date=(val)
-    set_child_text("//dc:date", val)
+    begin
+      set_text("//dc:date", val)
+    rescue
+      add_element("/", "<dc:date>#{val}</dc:date>")
+    end
   end
   
   def date
-    get_child_text("//dc:date")
+    get_text("//dc:date")
   end  
 
   def type=(val)
-    set_child_text("//dc:type", val)
+    begin
+      set_text("//dc:type", val)
+    rescue
+      add_element("/", "<dc:type>#{val}</dc:type>")
+    end
   end
   
   def type
-    get_child_text("//dc:type")
+    get_text("//dc:type")
   end  
 
+  def rights=(val)
+    begin
+      set_text("//dc:rights", val)
+    rescue
+      add_element("/", "<dc:rights>#{val}</dc:rights>")
+    end
+  end
+  
+  def rights
+    get_text("//dc:rights")
+  end
+  
+  def add_contributor(val)
+    val.each do |v|
+      add_element("/", "<dc:contributor>#{v}</dc:contributor>")
+    end
+  end 
 
+  def remove_contributor(val)
+    remove_element("//dc:contributor", val)
+  end
+  
+  def add_language(val)
+    val.each do |v|
+      add_element("/", "<dc:language>#{v}</dc:language>")
+    end
+  end 
+
+  def remove_language(val)
+    remove_element("//dc:language", val)
+  end
+  
+  def add_publisher(val)
+    val.each do |v|
+      add_element("/", "<dc:publisher>#{v}</dc:publisher>")
+    end
+  end 
+
+  def remove_publisher(val)
+    remove_element("//dc:publisher", val)
+  end
+  
 end

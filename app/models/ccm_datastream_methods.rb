@@ -9,15 +9,39 @@ module CcmDatastreamMethods
     return self.find_by_terms(:xml_description).first
   end
   
-  def set_child_text(xpath_to_child, text)
-    children = get_xml_description.xpath(xpath_to_child)
+  def set_text(xpathToElement, text)
+    children = get_xml_description.xpath(xpathToElement)
+    raise "Element #{xpathToElement} not found" if children.count == 0
+    
     children.first.content = text
     self.dirty = true
   end
  
-  def get_child_text(xpath_to_child)
-    children = get_xml_description.xpath(xpath_to_child)
-    return children.first.content
+  def get_text(xpathToElement)
+    children = get_xml_description.xpath(xpathToElement)
+    case
+    when 0
+      return ""
+    when 1
+      return children.first.content
+    else
+      return children.map{ |x| x.content}
+    end
+  end
+
+  def add_element(xpathToParent, childXmlString)
+    parent = get_xml_description.xpath(xpathToParent).first
+    child_desc = Nokogiri::XML::Document.parse(childXmlString).root
+    parent.add_child(child_desc)
+    self.dirty = true
+  end
+  
+  def remove_element(xpathToElement, matchingText = nil)
+    children = get_xml_description.xpath(xpathToElement)
+    children.each do |x|
+      x.parent.remove(x) if matchingText.nil? || x.content == matchingText
+    end
+    self.dirty = true
   end
   
   def replace_xml_description(xmlString)

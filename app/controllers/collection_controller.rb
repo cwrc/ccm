@@ -42,13 +42,14 @@ class CollectionController < ApplicationController
   
   def save
     begin
-      name = params[:name]
       id = params[:id]
       parent_ids = params[:parent].nil? ? [] : params[:parent].split(",")
       
       object = (id.nil? || id == "") ? CwrcCollection.new : CwrcCollection.find(id)
-      
-      object.name = name
+      object.name = params[:name]
+      object.owner = params[:owner]
+      object.created = params[:created].nil? ? DateTime.now.to_s : params[:created]
+      object.rights = params[:rights] unless params[:rights].nil?
       
       if object.save
         object.add_to_collection(parent_ids)
@@ -56,7 +57,7 @@ class CollectionController < ApplicationController
       else
         render :text => -1
       end
-    rescue
+    rescue => e
       render :text => -1
     end    
   end
