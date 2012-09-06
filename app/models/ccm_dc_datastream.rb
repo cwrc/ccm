@@ -39,7 +39,7 @@ class CcmDcDatastream < ActiveFedora::NokogiriDatastream
     begin
       set_text("//dc:title", val)
     rescue
-      add_element("/", "<dc:title>#{val}</dc:title>")
+      add_element("//oai_dc:dc", "<dc:title>#{val}</dc:title>")
     end
   end
   
@@ -51,7 +51,7 @@ class CcmDcDatastream < ActiveFedora::NokogiriDatastream
     begin
       set_text("//dc:identifier", val)
     rescue
-      add_element("/", "<dc:identifier>#{val}</dc:identifier>")
+      add_element("//oai_dc:dc", "<dc:identifier>#{val}</dc:identifier>")
     end
   end
   
@@ -63,7 +63,7 @@ class CcmDcDatastream < ActiveFedora::NokogiriDatastream
     begin
       set_text("//dc:creator", val)
     rescue
-      add_element("/", "<dc:creator>#{val}</dc:creator>")
+      add_element("//oai_dc:dc", "<dc:creator>#{val}</dc:creator>")
     end
   end
   
@@ -75,7 +75,7 @@ class CcmDcDatastream < ActiveFedora::NokogiriDatastream
     begin
       set_text("//dc:created", val)
     rescue
-      add_element("/", "<dc:created>#{val}</dc:created>")
+      add_element("//oai_dc:dc", "<dc:created>#{val}</dc:created>")
     end
   end
   
@@ -87,7 +87,7 @@ class CcmDcDatastream < ActiveFedora::NokogiriDatastream
     begin
       set_text("//dc:date", val)
     rescue
-      add_element("/", "<dc:date>#{val}</dc:date>")
+      add_element("//oai_dc:dc", "<dc:date>#{val}</dc:date>")
     end
   end
   
@@ -99,7 +99,7 @@ class CcmDcDatastream < ActiveFedora::NokogiriDatastream
     begin
       set_text("//dc:type", val)
     rescue
-      add_element("/", "<dc:type>#{val}</dc:type>")
+      add_element("//oai_dc:dc", "<dc:type>#{val}</dc:type>")
     end
   end
   
@@ -111,7 +111,7 @@ class CcmDcDatastream < ActiveFedora::NokogiriDatastream
     begin
       set_text("//dc:rights", val)
     rescue
-      add_element("/", "<dc:rights>#{val}</dc:rights>")
+      add_element("//oai_dc:dc", "<dc:rights>#{val}</dc:rights>")
     end
   end
   
@@ -121,7 +121,7 @@ class CcmDcDatastream < ActiveFedora::NokogiriDatastream
   
   def add_contributor(val)
     val.each do |v|
-      add_element("/", "<dc:contributor>#{v}</dc:contributor>")
+      add_element("//oai_dc:dc", "<dc:contributor>#{v}</dc:contributor>")
     end
   end 
 
@@ -131,7 +131,7 @@ class CcmDcDatastream < ActiveFedora::NokogiriDatastream
   
   def add_language(val)
     val.each do |v|
-      add_element("/", "<dc:language>#{v}</dc:language>")
+      add_element("//oai_dc:dc", "<dc:language>#{v}</dc:language>")
     end
   end 
 
@@ -141,7 +141,7 @@ class CcmDcDatastream < ActiveFedora::NokogiriDatastream
   
   def add_publisher(val)
     val.each do |v|
-      add_element("/", "<dc:publisher>#{v}</dc:publisher>")
+      add_element("//oai_dc:dc", "<dc:publisher>#{v}</dc:publisher>")
     end
   end 
 
