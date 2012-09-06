@@ -8,22 +8,15 @@ def verify_collection_list_format(json_array)
   end
 end
 
-def verify_collection_desc_format(desc_doc, collection_name = nil)
+def verify_collection_desc_format(desc_doc, collection_name = nil, owner = nil, rights = nil)
   root = desc_doc.root
   
   ##puts "TODO: UPDATE 'verify_collection_desc_format' method in collection_spec.rb when DC implementation is completed."
   raise "Collection description is null" if root.nil?
   
-  unless collection_name.nil?
-    raise "Collection name #{collection_name} not found in #{root.to_s}" unless root.to_s.include?(collection_name)
-  end
-  return
-  
-  expected_tag = "oai_dc:dc"
-  raise "Expected root tag is #{expected_tag}, found #{root.name}." if root.name != expected_tag
-  
-  expected_collection_name_field = "<dc:title>#{collection_name}</dc:title>"
-  raise "Expected collection name filed #{expected_collection_name_field} not found."
+  raise "Collection name #{collection_name} not found in #{root.to_s}" unless collection_name.nil? || root.to_s.include?(collection_name)
+  raise "Owner name #{owner} not found in #{root.to_s}" unless owner.nil? || root.to_s.include?(owner)
+  raise "Owner name #{owner} not found in #{root.to_s}" unless rights.nil? || root.to_s.include?(owner)
 end
 
 describe "collection" do
@@ -104,9 +97,11 @@ describe "collection" do
     
     # creating a sample xml description for a new collection    
     name = "Sample Collection #{rand(1000)}"
-   
+    owner = "Sample Owner #{rand(1000)}"
+    rights = "Sample Rights #{rand(1000)}"
+    
     #making the post call to create the new collection
-    params = {:name => name}
+    params = {:name => name, :owner=>owner, :rights=>rights}
     t.post("collection/save", params)
     pid = t.text_body
     

@@ -12,6 +12,8 @@ class CwrcCollection < CcmBase
   
   def initialize()
     super(:namespace=>"collection")
+    get_dc.type = "Collection"
+    created = DateTime.now.to_s
   end
   
   def add_to_collection(collectionIDs)
@@ -41,12 +43,42 @@ class CwrcCollection < CcmBase
   end
   
   def name=(val)
-    get_dc.title=val
+    get_dc.title = val
   end
   
   def name
     get_dc.title
   end
+  
+  def owner=(val)
+    get_dc.creator = val
+  end
+  
+  def owner
+    get_dc.creator
+  end  
+  
+  def created=(val)
+    get_dc.created = val
+  end
+
+  def created
+    get_dc.created
+  end
+  
+  def object_type
+    get_dc.type
+  end
+  
+  def rights=(val)
+    get_dc.type = val
+  end
+  
+  def rights
+    get_dc.type
+  end
+  
+
   
 #  def add_to_collection(collectionIDs)
 #    collectionIDs.each do |id|
