@@ -94,9 +94,22 @@
 		<form action="#" id="edit_form" method="post">
 			<% pid = @object.nil? || @object.pid.nil? ? "" : @object.pid %>
 			<input type="hidden" name="pid" id="active_pid" value="<%= pid %>" />
-			XML Description:<br />
-			<textarea id="new_entity_editor" class="entity_editor" name="xml"><%= @object.get_xml_description unless @object.nil? %></textarea>
 			
+			<% if @object.class == CwrcCollection %>
+				DC Content:<br />
+				<textarea id="new_entity_editor" class="entity_editor" name="xml" disabled="disabled"><%= @object.get_xml_description unless @object.nil? %></textarea>
+				<br /><br /><br />
+				<% dc = @object.get_dc %>
+				Collection Name: <input type="text" name="name" id="name" value="<%= dc.title-%>" /> <br /><br />
+				Owner: <input type="text" name="owner" id="owner" value="<%= dc.creator-%>" /> <br /><br />
+				Created: <%= dc.created -%> <br /><br />
+				Rights: <input type="text" name="rights" id="rights" value="<%= dc.rights-%>" /> <br /><br />
+				Contributors: <input type="text" name="rights" id="rights" value="<%= dc.contributors -%>" /> <br /><br />
+			<% else %>
+				XML Description:<br />
+				<textarea id="new_entity_editor" class="entity_editor" name="xml"><%= @object.get_xml_description unless @object.nil? %></textarea>
+			<% end %>
+			 
 			<% if @show_parent_collection_field %>
 			<br ><br >
 			List of Parent Collections:<br />

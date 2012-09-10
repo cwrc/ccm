@@ -19,7 +19,7 @@ module CcmDatastreamMethods
  
   def get_text(xpathToElement)
     children = get_xml_description.xpath(xpathToElement)
-    case
+    case children.count
     when 0
       return ""
     when 1
