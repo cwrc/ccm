@@ -1,6 +1,8 @@
 
 class CwrcItem < ActiveFedora::Base
   
+  include CcmCollectionMemberMethods
+  
   ##has_relationship "member_of", :is_member_of
   
   has_metadata :name => "ccmContentMetadata", :type=> CcmContentDatastream
@@ -48,32 +50,6 @@ class CwrcItem < ActiveFedora::Base
   
   def get_parent_ids
     self.ids_for_outbound(:is_member_of_collection)
-  end
-  
-  def add_to_collection(collectionIDs)
-    self.save unless self.new_object? ##Item should have a valid pid in order to add it to the collection using hasCollectionMember predicate
-    
-    collectionIDs.each do |id|
-      c = CwrcCollection.find(id.strip)
-      
-      self.add_relationship(:is_member_of_collection, c)
-      
-      c.add_relationship(:has_collection_member, self)
-      c.save
-    end
-    self.save
-  end
-  
-  def remove_from_collection(collectionIDs)
-    collectionIDs.each do |id|
-      c = CwrcCollection.find(id.strip)
-      
-      self.remove_relationship(:is_member_of_collection, c)
-      
-      c.remove_relationship(:has_collection_member, self)
-      c.save
-    end
-    self.save
   end
   
 

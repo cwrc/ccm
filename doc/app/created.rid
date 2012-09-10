@@ -1,0 +1,18 @@
+Mon, 10 Sep 2012 11:01:34 -0600
+app/helpers/application_helper.rb	Wed, 11 Jul 2012 15:42:10 -0600
+app/models/solr_document.rb	Wed, 11 Jul 2012 15:42:10 -0600
+app/controllers/entity_controller.rb	Wed, 29 Aug 2012 16:54:10 -0600
+app/models/ccm_datastream_methods.rb	Mon, 10 Sep 2012 09:54:37 -0600
+app/models/cwrc_entity.rb	Wed, 11 Jul 2012 15:42:10 -0600
+app/models/user.rb	Wed, 11 Jul 2012 15:42:10 -0600
+app/controllers/application_controller.rb	Wed, 11 Jul 2012 15:42:10 -0600
+app/models/ccm_base.rb	Mon, 10 Sep 2012 10:59:59 -0600
+app/models/cwrc_datastream.rb	Wed, 11 Jul 2012 15:42:10 -0600
+app/models/ccm_content_datastream.rb	Wed, 11 Jul 2012 15:42:10 -0600
+app/models/cwrc_collection.rb	Mon, 10 Sep 2012 10:59:51 -0600
+app/models/cwrc_item.rb	Mon, 10 Sep 2012 11:01:29 -0600
+doc/README_FOR_APP	Wed, 11 Jul 2012 15:42:10 -0600
+app/controllers/collection_controller.rb	Mon, 10 Sep 2012 10:07:23 -0600
+app/controllers/test_controller.rb	Mon, 10 Sep 2012 09:54:37 -0600
+app/models/ccm_dc_datastream.rb	Mon, 10 Sep 2012 09:54:37 -0600
+app/controllers/item_controller.rb	Wed, 05 Sep 2012 15:56:40 -0600

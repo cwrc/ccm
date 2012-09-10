@@ -98,7 +98,7 @@ describe "collection" do
     verify_collection_desc_format(desc)
   end
   
-  it "creates new collection" do
+  it "creates one new collection" do
     t = CcmApiTest.new
     
     # creating a sample xml description for a new collection    

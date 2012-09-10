@@ -27,7 +27,8 @@ class ItemController < ApplicationController
     begin
       object = CwrcItem.find(params[:id]);
       xml = object.get_xml_description
-    rescue
+    rescue => e
+      logger.error "ITEM/SHOW ERROR: " + e.message
       xml = ""
     end
     
@@ -57,7 +58,8 @@ class ItemController < ApplicationController
       else
         render :text => -1
       end
-    rescue
+    rescue => e
+      logger.error "ITEM/SAVE ERROR: " + e.message
       render :text => -1
     end    
   end
@@ -73,7 +75,7 @@ class ItemController < ApplicationController
       object.add_to_collection(parent_ids)
       render :text => object.pid
     rescue => e
-      logger.error "ITEM/ADD_TO_COLLECTION Error. #{e.message}"
+      logger.error "ITEM/ADD_TO_COLLECTION ERROR: #{e.message}"
       render :text => -1
     end
   end
@@ -89,7 +91,7 @@ class ItemController < ApplicationController
       object.remove_from_collection(parent_ids)
       render :text => object.pid
     rescue => e
-      logger.error e.message
+      logger.error "ITEM/REMOVE_FROM_COLLECTION ERROR: #{e.message}"
       render :text => -1
     end
   end
@@ -110,7 +112,7 @@ class ItemController < ApplicationController
         render :json=>ret.to_json, :callback => params[:callback]
       end
     rescue => e
-      logger.error e.message
+      logger.error "ITEM/GET_PARENT_COLLECTIONS ERROR: #{e.message}"
       if callback.nil?
         render :json=>-1
       else
@@ -125,7 +127,8 @@ class ItemController < ApplicationController
       id = object.pid
       object.delete
       render :text=> id      
-    rescue
+    rescue => e
+      logger.error "ITEM/DELETE ERROR: #{e.message}"
       render :text=>-1        
     end
   end
@@ -152,7 +155,8 @@ class ItemController < ApplicationController
       else
         render :text => -1
       end
-    rescue
+    rescue => e
+      logger.error "ITEM/ADD_WORKFLOW_STAMP ERROR: #{e.message}"
       render :text=>-1
     end
   end

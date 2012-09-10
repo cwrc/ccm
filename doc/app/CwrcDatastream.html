@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+
+<title>class CwrcDatastream - Rails Application Documentation</title>
+
+<link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="./index.html">Home</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>app/models/cwrc_datastream.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link">ActiveFedora::NokogiriDatastream
+  
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-c-xml_template">::xml_template</a>
+    
+    <li><a href="#method-i-get_xml_description">#get_xml_description</a>
+    
+    <li><a href="#method-i-replace_xml_description">#replace_xml_description</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="./doc/README_FOR_APP.html">README_FOR_APP</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./ApplicationController.html">ApplicationController</a>
+  
+    <li><a href="./ApplicationHelper.html">ApplicationHelper</a>
+  
+    <li><a href="./CcmBase.html">CcmBase</a>
+  
+    <li><a href="./CcmContentDatastream.html">CcmContentDatastream</a>
+  
+    <li><a href="./CcmDatastreamMethods.html">CcmDatastreamMethods</a>
+  
+    <li><a href="./CcmDcDatastream.html">CcmDcDatastream</a>
+  
+    <li><a href="./CollectionController.html">CollectionController</a>
+  
+    <li><a href="./CwrcCollection.html">CwrcCollection</a>
+  
+    <li><a href="./CwrcDatastream.html">CwrcDatastream</a>
+  
+    <li><a href="./CwrcEntity.html">CwrcEntity</a>
+  
+    <li><a href="./CwrcItem.html">CwrcItem</a>
+  
+    <li><a href="./EntityController.html">EntityController</a>
+  
+    <li><a href="./ItemController.html">ItemController</a>
+  
+    <li><a href="./SolrDocument.html">SolrDocument</a>
+  
+    <li><a href="./TestController.html">TestController</a>
+  
+    <li><a href="./User.html">User</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class CwrcDatastream</h1>
+
+  <div id="description" class="description">
+    
+<p>a Fedora Datastream object containing information about a Person entity</p>
+
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-xml_template" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">xml_template</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>def create_xml_description(xmlString)</p>
+
+<pre> ## Updates the XML description of the record using the given xmlString
+
+ old_desc = self.find_by_terms(:xml_description).first
+ doc = old_desc.parent
+ old_desc.remove
+new_doc = Nokogiri::XML::Document.parse(xmlString)
+ new_desc = new_doc.root
+
+ doc.add_child(new_desc)</pre>
+
+<p>end</p>
+          
+
+          
+          <div class="method-source-code" id="xml_template-source">
+            <pre><span class="ruby-comment"># File app/models/cwrc_datastream.rb, line 45</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">xml_template</span>
+  <span class="ruby-constant">Nokogiri</span><span class="ruby-operator">::</span><span class="ruby-constant">XML</span><span class="ruby-operator">::</span><span class="ruby-constant">Document</span>.<span class="ruby-identifier">parse</span>(
+     <span class="ruby-string">'&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+      &lt;entity&gt;
+          &lt;recordInfo&gt;
+              &lt;projectId&gt;orlando&lt;/projectId&gt;
+              &lt;projectId&gt;otherProjectId&lt;/projectId&gt;
+              &lt;!-- &lt;entityId&gt;
+              &lt;/entityId&gt; --&gt;
+              &lt;!-- entityId can hold FOXML\s PID --&gt;
+          &lt;/recordInfo&gt;
+          &lt;identity&gt;
+              &lt;entityType&gt;person&lt;/entityType&gt;
+              &lt;preferredForm&gt;
+                  &lt;namePart partType=&quot;forename&quot;&gt;Victoria&lt;/namePart&gt;
+                  &lt;namePart&gt;Queen&lt;/namePart&gt;
+              &lt;/preferredForm&gt;
+              &lt;displayLabel&gt;Queen Victoria&lt;/displayLabel&gt;
+              &lt;personTypes&gt;
+                  &lt;personType&gt;orl:BWW&lt;/personType&gt;
+                  &lt;personType&gt;canwwr:creator&lt;/personType&gt;
+              &lt;/personTypes&gt;
+              &lt;sameAs&gt;http://sw.opencyc.org/concept/Mx4rwMSm5JwpEbGdrcN5Y29ycA&lt;/sameAs&gt;
+              &lt;sameAs certaininty=&quot;reasonable&quot;&gt;http://dbpedia.org/resource/Victoria_of_the_United_Kingdom&lt;/sameAs&gt;
+          &lt;/identity&gt;
+          &lt;description&gt;
+              &lt;variantForms&gt;
+                  &lt;variant&gt;
+                      &lt;namePart&gt;Alexandrina Victoria&lt;/namePart&gt;
+                      &lt;!-- can occur one or more --&gt;
+                          &lt;variantType&gt;birthName&lt;/variantType&gt;
+                      &lt;/variant&gt;
+                      &lt;variant&gt;
+                      &lt;namePart&gt;Queen Victoria&lt;/namePart&gt;
+                      &lt;variantType&gt;royalName&lt;/variantType&gt;
+                  &lt;/variant&gt;
+                  &lt;variant&gt;
+                      &lt;namePart&gt;Queen Victoria, Empress of India&lt;/namePart&gt;
+                      &lt;variantType&gt;titledName&lt;/variantType&gt;
+                  &lt;/variant&gt;
+                  &lt;variant&gt;
+                      &lt;namePart&gt;Princess Victoria&lt;/namePart&gt;
+                      &lt;variantType&gt;usedForm&lt;/variantType&gt;
+                  &lt;/variant&gt;
+              &lt;/variantForms&gt;
+              &lt;existDates&gt;
+                  &lt;dateRange cert=&quot;certain&quot;&gt;
+                      &lt;fromDate&gt;
+                          &lt;standardDate&gt;1819-05-24&lt;/standardDate&gt;
+                          &lt;textDate&gt;24 May 1819&lt;/textDate&gt;
+                          &lt;dateType&gt;birth&lt;/dateType&gt;
+                      &lt;/fromDate&gt;
+                      &lt;toDate&gt;
+                          &lt;standardDate&gt;1901-01-22&lt;/standardDate&gt;
+                          &lt;textDate&gt;22 January 1901&lt;/textDate&gt;
+                          &lt;dateType&gt;death&lt;/dateType&gt;
+                      &lt;/toDate&gt;
+                  &lt;/dateRange&gt;
+                  &lt;dateSingle&gt;
+                      &lt;standardDate&gt;1838-06-28&lt;/standardDate&gt;
+                      &lt;textDate&gt;28 June 1838&lt;/textDate&gt;
+                      &lt;dateType&gt;other&lt;/dateType&gt;
+                      &lt;note&gt;
+                          &lt;p&gt;Coronation date. Sample note providing information on date type &quot;other.&quot;&lt;/p&gt;
+                          &lt;p&gt;Sample optional second paragraph.&lt;/p&gt;
+                          &lt;projectId&gt;orlando&lt;/projectId&gt;
+                          &lt;access&gt;public&lt;/access&gt;
+                      &lt;/note&gt;
+                  &lt;/dateSingle&gt;
+              &lt;/existDates&gt;
+              &lt;descriptiveNote&gt;
+                  &lt;p&gt;Sample text in a descriptive note about Queen Victoria.&lt;/p&gt;
+                  &lt;p&gt;Sample optional second paragraph in note.&lt;/p&gt;
+                  &lt;access&gt;project&lt;/access&gt;
+                  &lt;projectId&gt;orlando&lt;/projectId&gt;
+              &lt;/descriptiveNote&gt;
+          &lt;/description&gt;
+      &lt;/entity&gt;
+      '</span>
+      ) 
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- xml_template-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- xml_template-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-get_xml_description" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_xml_description</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_xml_description-source">
+            <pre><span class="ruby-comment"># File app/models/cwrc_datastream.rb, line 12</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_xml_description</span>
+  <span class="ruby-comment">## Returns the XML description of the record</span>
+  
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">find_by_terms</span>(<span class="ruby-value">:xml_description</span>).<span class="ruby-identifier">first</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_xml_description-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_xml_description-method -->
+
+    
+      <div id="method-i-replace_xml_description" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">replace_xml_description</span><span
+            class="method-args">(xmlString)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="replace_xml_description-source">
+            <pre><span class="ruby-comment"># File app/models/cwrc_datastream.rb, line 18</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">replace_xml_description</span>(<span class="ruby-identifier">xmlString</span>)
+  <span class="ruby-comment">## Updates the XML description of the record using the given xmlString</span>
+  
+  <span class="ruby-identifier">parent</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">find_by_terms</span>(<span class="ruby-value">:xml_description</span>).<span class="ruby-identifier">first</span>.<span class="ruby-identifier">parent</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">find_by_terms</span>(<span class="ruby-value">:xml_description</span>).<span class="ruby-identifier">first</span>.<span class="ruby-identifier">remove</span>
+
+  <span class="ruby-identifier">new_desc</span> = <span class="ruby-constant">Nokogiri</span><span class="ruby-operator">::</span><span class="ruby-constant">XML</span><span class="ruby-operator">::</span><span class="ruby-constant">Document</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">xmlString</span>).<span class="ruby-identifier">root</span>
+  <span class="ruby-identifier">parent</span>.<span class="ruby-identifier">add_child</span>(<span class="ruby-identifier">new_desc</span>)
+  
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">dirty</span> = <span class="ruby-keyword">true</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- replace_xml_description-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- replace_xml_description-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+
