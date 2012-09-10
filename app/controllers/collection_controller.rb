@@ -50,8 +50,8 @@ class CollectionController < ApplicationController
       object.owner = params[:owner]
       object.created = params[:created].nil? ? DateTime.now.to_s : params[:created]
       object.rights = params[:rights] unless params[:rights].nil?
-      object.add_contributor(params[:contributor]) unless params[:contributor].nil?
-      object.add_language(params[:language]) unless params[:language].nil?
+      object.add_contributor(params[:contributors]) unless params[:contributors].nil?
+      object.add_language(params[:languages]) unless params[:languages].nil?
 
       if object.save
         object.add_to_collection(parent_ids)
@@ -60,6 +60,7 @@ class CollectionController < ApplicationController
         render :text => -1
       end
     rescue => e
+      logger.error "COLLECTION SAVE ERROR: " + e.message
       render :text => -1
     end    
   end

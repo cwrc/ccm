@@ -8,7 +8,7 @@ def verify_collection_list_format(json_array)
   end
 end
 
-def verify_collection_desc_format(desc_doc, collection_name = nil, owner = nil, rights = nil, contributor = nil, language = nil)
+def verify_collection_desc_format(desc_doc, collection_name = nil, owner = nil, rights = nil, contributors = nil, languages = nil)
   root = desc_doc.root
   
   ##puts "TODO: UPDATE 'verify_collection_desc_format' method in collection_spec.rb when DC implementation is completed."
@@ -18,8 +18,8 @@ def verify_collection_desc_format(desc_doc, collection_name = nil, owner = nil, 
   raise "Owner name #{owner} not found in #{root.to_s}" unless owner.nil? || root.to_s.include?("<dc:creator>#{owner}</dc:creator>")
   raise "Right #{rights} not found in #{root.to_s}" unless rights.nil? || root.to_s.include?("<dc:rights>#{rights}</dc:rights>")
   
-  unless contributor.nil?
-    contributor.split(",").map{|x| x.strip}.each do |v|
+  unless contributors.nil?
+    contributors.split(",").map{|x| x.strip}.each do |v|
       raise "Contributor #{v} not found in #{root.to_s}" unless root.to_s.include?("<dc:contributor>#{v}</dc:contributor>")
     end
   end
@@ -105,11 +105,11 @@ describe "collection" do
     name = "Sample Collection #{rand(1000)}"
     owner = "Sample Owner #{rand(1000)}"
     rights = "Sample Rights #{rand(1000)}"
-    contributor = "contributor 1, contributor 2, contributor 3"
+    contributors = "contributor 1, contributor 2, contributor 3"
     language = "English, French"
     
     #making the post call to create the new collection
-    params = {:name => name, :owner=>owner, :rights=>rights, :contributor=>contributor}
+    params = {:name => name, :owner=>owner, :rights=>rights, :contributors=>contributors}
     t.post("collection/save", params)
     pid = t.text_body
     

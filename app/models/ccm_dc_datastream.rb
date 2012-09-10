@@ -129,6 +129,10 @@ class CcmDcDatastream < ActiveFedora::NokogiriDatastream
     remove_element("//dc:contributor", val)
   end
   
+  def contributors
+    get_text("//dc:contributor")
+  end 
+
   def add_language(val)
     val.each do |v|
       add_element("//oai_dc:dc", "<dc:language>#{v}</dc:language>")
@@ -139,6 +143,10 @@ class CcmDcDatastream < ActiveFedora::NokogiriDatastream
     remove_element("//dc:language", val)
   end
   
+  def languages
+    get_text("//dc:language")
+  end 
+
   def add_publisher(val)
     val.each do |v|
       add_element("//oai_dc:dc", "<dc:publisher>#{v}</dc:publisher>")
@@ -149,4 +157,8 @@ class CcmDcDatastream < ActiveFedora::NokogiriDatastream
     remove_element("//dc:publisher", val)
   end
   
+  def publishers
+    get_text("//dc:publisher")
+  end 
+
 end
