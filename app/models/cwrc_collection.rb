@@ -1,107 +1,84 @@
 
-##class CwrcCollection < ActiveFedora::Base
+# This class represents CWRC Collections. 
+
 class CwrcCollection < CcmBase
   
-  ##has_relationship "members", :is_member_of, :inbound => true
-  ##has_relationship "member_of", :is_member_of
+  include CcmCollectionMemberMethods
   
   has_many :items, :property=>:has_derivation
   has_many :subcollections, :property=>:has_collection
   
+  # Creates a new collection
   def initialize()
     super(:namespace=>"collection")
-    get_dc.type = "Collection"
-    created = DateTime.now.to_s
+    self.type = "Collection"
   end
-  
-  def add_to_collection(collectionIDs)
-    self.save unless self.new_object? ##Item should have a valid pid in order to add it to the collection using hasCollectionMember predicate
-    
-    collectionIDs.each do |id|
-      c = CwrcCollection.find(id.strip)
-      
-      self.add_relationship(:is_member_of_collection, c)
-      
-      c.add_relationship(:has_collection_member, self)
-      c.save
-    end
-    self.save
-  end
-  
-  def remove_from_collection(collectionIDs)
-    collectionIDs.each do |id|
-      c = CwrcCollection.find(id.strip)
-      
-      self.remove_relationship(:is_member_of_collection, c)
-      
-      c.remove_relationship(:has_collection_member, self)
-      c.save
-    end
-    self.save
-  end
-  
+ 
+  # Sets collection name
   def name=(val)
     get_dc.title = val
   end
   
+  # Returns collection name
   def name
     get_dc.title
   end
   
+  # Sets collection owner
   def owner=(val)
     get_dc.creator = val
   end
   
+  # Returns collection owner
   def owner
     get_dc.creator
   end  
   
+  # Sets collection creation date forcefully
   def created=(val)
     get_dc.created = val
   end
 
+  # Returns collection creation date
   def created
     get_dc.created
   end
   
-  def object_type
-    get_dc.type
-  end
-  
+  # Sets rights
   def rights=(val)
     get_dc.type = val
   end
   
+  # Returns rights
   def rights
     get_dc.type
   end
   
+  # Adds one or more new contributors to the collection.
+  #
+  # <b>Params</b>
+  # * val: a comma-speatrated list of contributors 
   def add_contributor(val)
     get_dc.add_contributor(val.split(",").map{|x| x.strip}) unless val.nil?
   end
   
+  # Returns the list of contributors of the collection as an array of strings 
   def get_contributors
-    get_dc.get_contributors
+    get_dc.contributors
   end
   
+  # Adds one or more new languages to the collection
+  #
+  # <b>Params</b>
+  # * val: a comma-speatrated list of languages 
   def add_language(val)
     get_dc.add_language(val.split(",").map{|x| x.strip}) unless val.nil?  
   end
 
-  
-#  def add_to_collection(collectionIDs)
-#    collectionIDs.each do |id|
-#      c = CwrcCollection.find(id)
-#      member_of_append(c)
-#    end
-#  end
-#  
-#  def remove_from_collection(collectionIDs)
-#    collectionIDs.each do |id|
-#      c = CwrcCollection.find(id)
-#      member_of_remove(c)
-#    end
-#  end
+  # Returns the list of languages of the collection as an array of strings 
+  def get_languages
+    get_dc.languages
+  end
   
 #
 #  def get_child_collections(recurse = false, result = nil)

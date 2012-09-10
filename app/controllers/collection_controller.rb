@@ -46,6 +46,7 @@ class CollectionController < ApplicationController
       parent_ids = params[:parent].nil? ? [] : params[:parent].split(",")
       
       object = (id.nil? || id == "") ? CwrcCollection.new : CwrcCollection.find(id)
+      
       object.name = params[:name]
       object.owner = params[:owner]
       object.created = params[:created].nil? ? DateTime.now.to_s : params[:created]
@@ -60,7 +61,7 @@ class CollectionController < ApplicationController
         render :text => -1
       end
     rescue => e
-      logger.error "COLLECTION SAVE ERROR: " + e.message
+      logger.error "COLLECTION/SAVE ERROR: " + e.message
       render :text => -1
     end    
   end
@@ -71,7 +72,8 @@ class CollectionController < ApplicationController
       id = object.pid
       object.delete
       render :text=> id      
-    rescue
+    rescue => e
+      logger.error "COLLECTION/DELETE ERROR: " + e.message
       render :text=>-1        
     end
   end
@@ -84,7 +86,8 @@ class CollectionController < ApplicationController
       child.add_to_collection(parent_ids) ##This call saves both the child and its parents after the relationship is added
       
       render :text=> 1
-    rescue
+    rescue => e
+      logger.error "COLLECTION/LINK_ITEM ERROR: " + e.message
       render :text=> -1
     end
   end
@@ -97,7 +100,8 @@ class CollectionController < ApplicationController
       child.remove_from_collection(parent_ids) ##This call saves both the child and its parents after the relationship is removed
       
       render :text=> 1
-    rescue
+    rescue => e
+      logger.error "COLLECTION/UNLINK_ITEM ERROR: " + e.message
       render :text=> -1
     end
   end
@@ -110,7 +114,8 @@ class CollectionController < ApplicationController
       child.add_to_collection(parent_ids) ##This call saves both the child and its parents after the relationship is added
       
       render :text=> 1
-    rescue
+    rescue => e
+      logger.error "COLLECTION/LINK_COLLECTION ERROR: " + e.message
       render :text=> -1
     end
   end
@@ -123,7 +128,8 @@ class CollectionController < ApplicationController
       child.remove_from_collection(parent_ids) ##This call saves both the child and its parents after the relationship is removed
       
       render :text=> 1
-    rescue
+    rescue => e
+      logger.error "COLLECTION/UNLONK_COLLECTION ERROR: " + e.message
       render :text=> -1
     end
   end
@@ -144,7 +150,7 @@ class CollectionController < ApplicationController
         render :json=>ret.to_json, :callback => params[:callback]
       end
     rescue => e
-      logger.error e.message
+      logger.error "COLLECTION/GET_PARENT_COLLECTIONS ERROR: " + e.message
       if callback.nil?
         render :json=>-1
       else
@@ -159,34 +165,43 @@ class CollectionController < ApplicationController
     deep = params[:deep]
     type = params[:type]
     
-    collection = CwrcCollection.find(params[:id]);
+    begin
     
-    ret_collections_only = type == "c"
-    ret_items_only = type == "i"
-    recurse = deep == "1"
-     
-    children = collection.get_children(ret_collections_only, recurse)
+      collection = CwrcCollection.find(params[:id]);
+      
+      ret_collections_only = type == "c"
+      ret_items_only = type == "i"
+      recurse = deep == "1"
+       
+      children = collection.get_children(ret_collections_only, recurse)
+          
+      ret = Array.new
+      children.each do |child|
         
-    ret = Array.new
-    children.each do |child|
+        next if (ret_collections_only && !child.is_a?(CwrcCollection)) || (ret_items_only && child.is_a?(CwrcCollection))
+        
+        id = child.pid
+        name = child.pid.to_s
+        type = child.is_a?(CwrcCollection) ? "c" : "i"
+        parents = child.get_parent_ids
+        children = child.is_a?(CwrcCollection) ? child.get_child_ids : []
+        
+        x = {"id" => id, "name" => name, "type" => type, "parents" => parents, "children" => children}
+        ret.push(x)
+      end
       
-      next if (ret_collections_only && !child.is_a?(CwrcCollection)) || (ret_items_only && child.is_a?(CwrcCollection))
-      
-      id = child.pid
-      name = child.pid.to_s
-      type = child.is_a?(CwrcCollection) ? "c" : "i"
-      parents = child.get_parent_ids
-      children = child.is_a?(CwrcCollection) ? child.get_child_ids : []
-      
-      x = {"id" => id, "name" => name, "type" => type, "parents" => parents, "children" => children}
-      ret.push(x)
-    end
-    
-    if callback.nil?
-      render :json=>ret.to_json
-    else
-      render :json=>ret.to_json, :callback => callback
+      if callback.nil?
+        render :json=>ret.to_json
+      else
+        render :json=>ret.to_json, :callback => callback
+      end
+    rescue => e
+      logger.error "COLLECTION/CHILDREN ERROR: " + e.message
+      if callback.nil?
+        render :json=>-1
+      else
+        render :json=>-1, :callback => params[:callback]
+      end      
     end
   end
-  
 end

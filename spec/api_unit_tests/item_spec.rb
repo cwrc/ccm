@@ -164,7 +164,7 @@ describe "item" do
   end
   
   
-  it "creates new item" do
+  it "creates one new item" do
     t = CcmApiTest.new
     
     # creating a sample xml description for a new item    

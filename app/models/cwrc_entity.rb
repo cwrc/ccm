@@ -4,8 +4,6 @@ class CwrcEntity < ActiveFedora::Base
   
   has_metadata :name => "cwrcMetadata", :type=> CwrcDatastream
   
-  
-
 #
 #  def self.list_ids(pageNumber, itemsPerPage)
 #    entities = CwrcEntity.find(:all).paginate(:page => pageNumber, :per_page => params[:perpage])
