@@ -106,10 +106,10 @@ describe "collection" do
     owner = "Sample Owner #{rand(1000)}"
     rights = "Sample Rights #{rand(1000)}"
     contributors = "contributor 1, contributor 2, contributor 3"
-    language = "English, French"
+    languages = "English, French"
     
     #making the post call to create the new collection
-    params = {:name => name, :owner=>owner, :rights=>rights, :contributors=>contributors}
+    params = {:name => name, :owner=>owner, :rights=>rights, :contributors=>contributors, :languages=>languages}
     t.post("collection/save", params)
     pid = t.text_body
     
