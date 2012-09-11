@@ -130,7 +130,7 @@ class CcmDcDatastream < ActiveFedora::NokogiriDatastream
   end
   
   def contributors
-    get_text("//dc:contributor")
+    get_text("//dc:contributor", true)
   end 
 
   def add_language(val)
@@ -144,7 +144,7 @@ class CcmDcDatastream < ActiveFedora::NokogiriDatastream
   end
   
   def languages
-    get_text("//dc:language")
+    get_text("//dc:language", true)
   end 
 
   def add_publisher(val)
@@ -158,7 +158,7 @@ class CcmDcDatastream < ActiveFedora::NokogiriDatastream
   end
   
   def publishers
-    get_text("//dc:publisher")
+    get_text("//dc:publisher", true)
   end 
 
 end

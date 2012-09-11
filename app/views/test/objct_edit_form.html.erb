@@ -134,7 +134,7 @@
 				Owner: <input type="text" name="owner" id="owner" value="<%= @object.owner unless @object.nil?-%>" /> <br /><br />
 				Created: <%= @object.created unless @object.nil?-%> <br /><br />
 				Rights: <input type="text" name="rights" id="rights" value="<%= @object.rights unless @object.nil?-%>" /> <br /><br />
-				Current Contributors: <%= @object.get_contributors unless @object.nil?-%> <br /><br />
+				Current Contributors: <%= @object.get_contributors.join(", ") unless @object.nil?-%> <br /><br />
 				New Contributors: <input type="text" name="contributors" id="contributors" value="<%= @object.get_contributors unless @object.nil?-%>" /> <br /><br />
 			<% else %>
 				XML Description:<br />
