@@ -17,15 +17,19 @@ module CcmDatastreamMethods
     self.dirty = true
   end
  
-  def get_text(xpathToElement)
+  def get_text(xpathToElement, retAsArray=false)
     children = get_xml_description.xpath(xpathToElement)
-    case children.count
-    when 0
-      return ""
-    when 1
-      return children.first.content
-    else
+    if retAsArray
       return children.map{ |x| x.content}
+    else
+      case children.count
+      when 0
+        return ""
+      when 1
+        return children.first.content
+      else
+        return children.map{ |x| x.content}
+      end
     end
   end
 
