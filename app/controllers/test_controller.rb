@@ -48,6 +48,7 @@ class TestController < ApplicationController
       @object = CwrcCollection.find(id);
     end
     
+    @item_type = "collection"
     @show_parent_collection_field = true
     
     render "objct_edit_form"

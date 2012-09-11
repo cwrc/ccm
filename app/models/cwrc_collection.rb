@@ -46,12 +46,12 @@ class CwrcCollection < CcmBase
   
   # Sets rights
   def rights=(val)
-    get_dc.type = val
+    get_dc.rights = val
   end
   
   # Returns rights
   def rights
-    get_dc.type
+    get_dc.rights
   end
   
   # Adds one or more new contributors to the collection.

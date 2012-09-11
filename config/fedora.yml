@@ -16,16 +16,25 @@ development:
 ##    url: http://localhost:8983/solr 
 
 test: &TEST  
-  fedora:
-    url: http://cwrcFedoraCCM:JcpD70HwJGCLrDyaoKWIkg@fedora.testing.cwrc.ca:8080/fedora
-  solr:
-    url: http://apps.testing.cwrc.ca:8080/solr/solr_core_hydra
+  user: fedoraAdmin
+  password: fedoraAdmin
+  url: http://localhost:8983/fedora
+
+##  fedora:
+##    url: http://cwrcFedoraCCM:JcpD70HwJGCLrDyaoKWIkg@fedora.testing.cwrc.ca:8080/fedora
+##  solr:
+##    url: http://apps.testing.cwrc.ca:8080/solr/solr_core_hydra
 
 production:
-  fedora:
-    url: http://fedoraAdmin:fedoraAdmin@your.production.server:8080/fedora
-  solr:
-    url: http://your.production.server:8080/solr 
+  
+  user: fedoraAdmin
+  password: fedoraAdmin
+  url: http://localhost:8983/fedora
+  
+##  fedora:
+##    url: http://fedoraAdmin:fedoraAdmin@your.production.server:8080/fedora
+##  solr:
+##    url: http://your.production.server:8080/solr 
 
 cucumber:
   <<: *TEST
