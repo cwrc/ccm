@@ -191,7 +191,7 @@ describe "entity" do
   end
   
   
-  it "creates new entity" do
+  it "creates one new entity" do
     t = CcmApiTest.new
     
     # creating a sample xml description for a new entity    
