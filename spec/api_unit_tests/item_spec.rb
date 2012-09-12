@@ -90,6 +90,10 @@ def verify_item_desc_format(desc_doc, item_title = nil)
   end
 end
 
+def create_sample_workflow_stamp()
+  "<stamp>Workflow Stamp #{rand(1000)}</stamp>"
+end
+
 describe "item" do
   it "list" do
     t = CcmApiTest.new
@@ -405,5 +409,95 @@ describe "item" do
     puts t.text_body
     raise "Item deletion failed" unless t.text_body == ""
   end
+  
+  it "can add and retrieve workflow stamps" do
+    t = CcmApiTest.new
 
+    #finding an item to be updated
+    t.get("item/list")
+    json = t.json_body
+    raise "No items found. Please create some items and re-run this tets" if json.count == 0
+    
+    id = json[0]["id"]
+    
+    stamp = create_sample_workflow_stamp()
+    
+    #adding the workflow stamp
+    params = {:id=>id, :stamp=>stamp}
+    t.post("item/add_workflow_stamp", params)
+    pid = t.text_body
+    raise "Adding workflow stamp #{stamp} to item #{id} might have failed. Expected to see #{id} as return, but found #{pid}" unless id == pid
+    
+    #retrieving the workflow stamps and making sure that the last one of them is the one that we just added.
+    t.get("item/get_workflow_stamps?id=#{id}")
+    json = t.json_body
+    
+    raise "Expected to have at least one workflow stamp but found none" if json.count == 0
+    
+    raise "Last workflow stamp is different from the one that was just added. Expected #{stamp}, found #{json.last}." unless json.last == stamp
+  end
+  
+  it "can add a workflow stamp while creating an item" do
+    t = CcmApiTest.new
+    
+   # creating a sample xml description for a new item    
+    title = "Sample Title #{rand(1000)}"
+    desc = create_sample_item_desc(title)
+    
+    #creating a sample workflow stamp
+    stamp = create_sample_workflow_stamp()
+    
+    #making the post call to create the new item along with the worflow stamp
+    params = {:xml => desc, :stamp=>stamp}
+    t.post("item/save", params)
+    pid = t.text_body
+    
+    raise "Item creation failed" if pid.start_with?("-") #A minus sign
+    
+    #Retrieving the newly created item and making sure that it has the specified title
+    t.get("item/#{pid}")
+    verify_item_desc_format(t.xml_body, title)
+     
+    #retrieving workflow stamps and making sure that it has one workflow stamp, which is the one that we specified.
+    t.get("item/get_workflow_stamps?id=#{pid}")
+    json = t.json_body
+    
+    raise "Expected to have at one workflow stamp but found #{json.count}" unless json.count == 1
+    
+    raise "The workflow stamp is different from the one that was added. Expected #{stamp}, found #{json.last}." unless json.last == stamp
+  end
+    
+  it "can add multiple workflow stamps which are retrieved in the same order they added" do
+    t = CcmApiTest.new
+    
+   # creating a sample xml description for a new item    
+    title = "Sample Title #{rand(1000)}"
+    desc = create_sample_item_desc(title)
+
+    #making the post call to create the new item
+    params = {:xml => desc}
+    t.post("item/save", params)
+    pid = t.text_body
+    
+    raise "Item creation failed" if pid.start_with?("-") #A minus sign
+
+    #creating a set of sample workflow stamps and adding them one by one to the new object
+    stamps = [create_sample_workflow_stamp(), create_sample_workflow_stamp(), create_sample_workflow_stamp(), create_sample_workflow_stamp(), create_sample_workflow_stamp()]
+
+    stamps.each do |st|
+      params = {:id=>pid, :stamp=>st}
+      t.post("item/add_workflow_stamp", params)
+      raise "Adding workflow stamp failed. Expected to receive #{pid} as response, found #{t.text_body}." unless pid == t.text_body
+    end
+    
+    #retrieving the list of workflow stamps and making sure that it is the same as the ones added, and are in the same order.
+    t.get("item/get_workflow_stamps?id=#{pid}")
+    json = t.json_body
+    
+    raise "Expected to have #{stamps.count} workflow stamps, found #{json.count}" unless stamps.count == json.count
+    
+    (1..stamps.count).each do |i|
+      raise "Expected stamp #{stamps[i]}, found #{json[i]}" unless stamps[i] == json[i]       
+    end
+  end
 end

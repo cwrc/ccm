@@ -48,9 +48,11 @@ class ItemController < ApplicationController
       xml_string = params[:xml]
       id = params[:id]
       parent_ids = params[:parent].nil? ? [] : params[:parent].split(",")
+      stamp = params[:stamp]
       
       object = (id.nil? || id == "") ? CwrcItem.new : CwrcItem.find(id)
       object.replace_xml_description(xml_string)
+      object.add_stamp_string(stamp) unless stamp == nil || stamp == ""
       
       if object.save
         object.add_to_collection(parent_ids)
@@ -137,7 +139,7 @@ class ItemController < ApplicationController
     begin
       object = CwrcItem.find(params[:id]);
       
-      stamp_string = params[:xml]
+      stamp_string = params[:stamp]
 
       object.add_stamp_string(stamp_string)
       
