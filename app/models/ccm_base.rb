@@ -6,7 +6,7 @@ class CcmBase < ActiveFedora::Base
   has_metadata :name => "DC", :type=> CcmDcDatastream
   
   # Constructor
-  def initialize(params)
+  def initialize(params=nil)
     super(params)
     get_dc.created = DateTime.now.to_s
   end
