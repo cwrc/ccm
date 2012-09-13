@@ -1,7 +1,5 @@
 class ItemController < ApplicationController
   
-  require "uri"
-  require "net/http"
   
   ##API actions do not require any layout formatting
   layout false
@@ -56,7 +54,13 @@ class ItemController < ApplicationController
       
       if object.save
         object.add_to_collection(parent_ids)
-        render :text => object.pid
+        
+        unless stamp == nil || stamp == ""
+          x = notify_workflow_engine(object.pid, stamp)
+          render :text => (x.body.to_i == 0 ? object.pid : -1)
+        else
+          render :text => object.pid
+        end
       else
         render :text => -1
       end
@@ -144,15 +148,7 @@ class ItemController < ApplicationController
       object.add_stamp_string(stamp_string)
       
       if object.save
-        
-        ##Notifying the Workflow engine
-        url = ENV['workflow_engine_notification_url']
-        
-        uri = URI.parse(url)
-        params = {'id' => object.pid, 'stamp' => stamp_string}
-        
-        x = Net::HTTP.post_form(uri, params)
-        
+        x = notify_workflow_engine(object.pid, stamp_string)
         render :text => (x.body.to_i == 0 ? object.pid : -1)
       else
         render :text => -1
