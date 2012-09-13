@@ -30,11 +30,6 @@ class ApplicationController < ActionController::Base
     2 ** 31 -1
   end
   
-  #Set the following variable to the URL of the API call that must be used to notify the Workflow Engine about new workflow stamps 
-  def workflow_engine_new_stamp_notification_api_url
-    "http://www.ualberta.ca/~ranaweer/shrek/dymmyapi.html"
-  end
-
   # Please be sure to impelement current_user and user_session. Blacklight depends on 
   # these methods in order to perform user specific actions. 
 

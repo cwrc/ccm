@@ -146,7 +146,7 @@ class ItemController < ApplicationController
       if object.save
         
         ##Notifying the Workflow engine
-        url = workflow_engine_new_stamp_notification_api_url
+        url = ENV['workflow_engine_notification_url']
         
         uri = URI.parse(url)
         params = {'id' => object.pid, 'stamp' => stamp_string}
