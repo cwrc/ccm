@@ -1,7 +1,6 @@
-
-# a Fedora Datastream object containing information about a Person entity 
-
-class CwrcDatastream < ActiveFedora::NokogiriDatastream
+class CcmEntityDatastream < ActiveFedora::NokogiriDatastream
+  
+  include CcmDatastreamMethods
 
   set_terminology do |t|
     ##t.root(:path=>"entity", :xmlns=>"http://www.cwrc.ca/schema/entities", :schema=>"http://www.cwrc.ca/schema/entities")
@@ -9,39 +8,6 @@ class CwrcDatastream < ActiveFedora::NokogiriDatastream
     t.xml_description(:path=>"entity")
   end # set_terminology
 
-  def get_xml_description
-    ## Returns the XML description of the record
-    
-    return self.find_by_terms(:xml_description).first
-  end
-
-  def replace_xml_description(xmlString)
-    ## Updates the XML description of the record using the given xmlString
-    
-    parent = self.find_by_terms(:xml_description).first.parent
-    self.find_by_terms(:xml_description).first.remove
-
-    new_desc = Nokogiri::XML::Document.parse(xmlString).root
-    parent.add_child(new_desc)
-    
-    self.dirty = true
-  end
-  
-#  
-#  def create_xml_description(xmlString)
-#    ## Updates the XML description of the record using the given xmlString
-#    
-#    old_desc = self.find_by_terms(:xml_description).first
-#    doc = old_desc.parent
-#    old_desc.remove
-#   new_doc = Nokogiri::XML::Document.parse(xmlString)
-#    new_desc = new_doc.root
-#    
-#    doc.add_child(new_desc)
-#  end
-#
-  
-  
   def self.xml_template
     Nokogiri::XML::Document.parse(
        '<?xml version="1.0" encoding="UTF-8"?>
@@ -124,4 +90,25 @@ class CwrcDatastream < ActiveFedora::NokogiriDatastream
         ) 
   end # xml_template
   
+  
+  def display_name
+    
+  end
+  
+#  
+#  def create_xml_description(xmlString)
+#    ## Updates the XML description of the record using the given xmlString
+#    
+#    old_desc = self.find_by_terms(:xml_description).first
+#    doc = old_desc.parent
+#    old_desc.remove
+#   new_doc = Nokogiri::XML::Document.parse(xmlString)
+#    new_desc = new_doc.root
+#    
+#    doc.add_child(new_desc)
+#  end
+#
+  
+  
+
 end # class
