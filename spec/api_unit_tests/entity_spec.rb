@@ -1,107 +1,153 @@
 require 'ccm_api_test'
 
-def create_sample_person_entity_desc(firstname, lastname)
-  '<entity>
-    <person xmlns="">
-      <identity>
-        <preferredForm>
-          <namePart>'+firstname+'</namePart>
-          <namePart partType="surname">'+lastname+'</namePart>
-        </preferredForm>
-        <variantForms>
-          <variant>
-            <namePart/>
-            <namePart partType="surname"/>
-            <variantType>birthName</variantType>
-            <authorizedBy>
-              <projectId/>
-            </authorizedBy>
-          </variant>
-        </variantForms>
-        <sameAs/>
-        <sameAs cert=""/>
-      </identity>
-      <description>
-        <existDates>
-          <dateSingle>
-            <standardDate/>
-            <dateType/>
-            <note/>
-            <note/>
-          </dateSingle>
-          <dateSingle cert="">
-            <standardDate/>
-            <dateType>birth</dateType>
-            <note/>
-            <note xml:lang="english"/>
-          </dateSingle>
-          <dateRange>
-            <fromDate>
-              <standardDate/>
-              <dateType/>
-              <note/>
-            </fromDate>
-            <toDate>
-              <standardDate/>
-              <dateType/>
-              <note/>
-            </toDate>
-          </dateRange>
-          <dateRange cert="">
-            <fromDate>
-              <standardDate/>
-              <dateType>birth</dateType>
-              <note/>
-            </fromDate>
-            <toDate>
-              <standardDate/>
-              <dateType>birth</dateType>
-              <note/>
-            </toDate>
-          </dateRange>
-        </existDates>
-        <occupations>
-          <occupation>
-            <term/>
-          </occupation>
-        </occupations>
-        <activities>
-          <activity>
-            <term/>
-          </activity>
-        </activities>
-        <genders>
-          <gender>female</gender>
-        </genders>
-        <researchInterests>
-          <interest>
-            <term/>
-          </interest>
-        </researchInterests>
-        <descriptiveNotes>
-          <note>
-            <projectId/>
-            <access/>
-          </note>
-          <note xml:lang="english">
-            <projectId/>
-            <access/>
-          </note>
-        </descriptiveNotes>
-      </description>
-      <recordInfo>
-        <personTypes>
-          <personType/>
-        </personTypes>
-        <originInfo>
-          <projectId/>
-        </originInfo>
-      </recordInfo>
-    </person>
-  </entity>
-  '
+def create_sample_person_desc(forename, surname)
+   '<?xml version="1.0" encoding="UTF-8"?>
+    <?xml-model href="http://www.cwrc.ca/schema/entities" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+    <entity>
+        <person>
+            <recordInfo>
+                <originInfo>
+                    <projectId>orlando</projectId>
+                    <projectId>ceww</projectId>
+                </originInfo>
+                <personTypes>
+                    <personType>orl:BWW</personType>
+                </personTypes>
+            </recordInfo>
+            <identity>
+                <preferredForm>
+                    <namePart partType="surname">' + surname + '</namePart>
+                    <namePart partType="forename">' + forename + '</namePart>
+                </preferredForm>
+                <variantForms>
+                    <variant>
+                        <namePart>' + "#{surname}, #{forename}" + '</namePart>
+                        <authorizedBy>
+                            <projectId>orlando</projectId>
+                        </authorizedBy>
+                    </variant>
+                    <variant>
+                        <variantType>birthName</variantType>
+                        <namePart>Alexandrina Victoria</namePart>
+                    </variant>
+                    <variant>
+                        <variantType/>
+                        <namePart>Queen Victoria</namePart>
+                    </variant>
+                    <variant>
+                        <variantType>titledName</variantType>
+                        <namePart>Queen Victoria, Empress of
+                            India</namePart>
+                    </variant>
+                    <variant>
+                        <variantType>usedForm</variantType>
+                        <namePart>Princess Victoria</namePart>
+                    </variant>
+                </variantForms>
+            </identity>
+            <description>
+                <existDates>
+                    <dateRange>
+                        <fromDate>
+                            <standardDate>1819-05-24</standardDate>
+                            <dateType>birth</dateType>
+                        </fromDate>
+                        <toDate>
+                            <standardDate>1901-01-22</standardDate>
+                            <dateType>death</dateType>
+                        </toDate>
+                    </dateRange>
+                </existDates>
+            </description>
+        </person>
+    </entity>'
 end
 
+def create_sample_organization_desc(org_name)
+   '<?xml version="1.0" encoding="UTF-8"?>
+    <?xml-model href="http://www.cwrc.ca/schema/entities" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+    <entity>
+        <organization>
+            <recordInfo>
+                <originInfo>
+                    <projectId>orlando</projectId>
+                </originInfo>
+            </recordInfo>
+            <identity>
+                <preferredForm>
+                    <namePart>'+org_name+'</namePart>
+                    <displayLabel/>
+                </preferredForm>
+                <variantForms>
+                    <variant>
+                        <namePart>BBC</namePart>
+                    </variant>
+                    <variant>
+                        <namePart>BBC World Service</namePart>
+                        <picklist/>
+                    </variant>
+                    <variant>
+                        <namePart>British Broadcasting Corporation</namePart>
+                        <picklist>YES</picklist>
+                    </variant>
+                    <variant>
+                        <namePart>British Broadcasting Company</namePart>
+                        <picklist/>
+                    </variant>
+                    <variant>
+                        <namePart>BBC Overseas Service</namePart>
+                        <picklist/>
+                    </variant>
+                    <variant>
+                        <namePart>BBC Radio 3</namePart>
+                        <picklist/>
+                    </variant>
+                    <variant>
+                        <namePart>BBC Radio 4</namePart>
+                        <picklist/>
+                    </variant>
+                    <variant>
+                        <namePart>BBC Radio Four</namePart>
+                        <picklist/>
+                    </variant>
+                    <variant>
+                        <namePart>BBC Television</namePart>
+                        <picklist/>
+                    </variant>
+                    <variant>
+                        <namePart>BBC Radio</namePart>
+                        <picklist/>
+                    </variant>
+                    <variant>
+                        <namePart>BBC Western Region</namePart>
+                        <picklist/>
+                    </variant>
+                    <variant>
+                        <namePart>BBC Home Service</namePart>
+                        <picklist/>
+                    </variant>
+                    <variant>
+                        <namePart>BBC Third Programme</namePart>
+                        <picklist/>
+                    </variant>
+                    <variant>
+                        <namePart>BBC International Service</namePart>
+                        <picklist/>
+                    </variant>
+                    <variant>
+                        <namePart>BBC International World Service</namePart>
+                        <picklist/>
+                    </variant>
+                </variantForms>
+            </identity>
+            <description>
+                <orgTypes>
+                    <orgType>broadcasting</orgType>
+                </orgTypes>
+            </description>
+        </organization>
+    </entity>'
+end
 def verify_entity_list_format(json_array)
   raise "No entities found. Please create some entities and re-run this test." if json_array.count == 0
   json_array.each do |entry|
@@ -197,7 +243,7 @@ describe "entity" do
     # creating a sample xml description for a new entity    
     firstname = "firstname #{rand(1000)}"
     lastname = "lastname #{rand(1000)}"
-    desc = create_sample_person_entity_desc(firstname, lastname)
+    desc = create_sample_person_desc(firstname, lastname)
     
     #making the post call to create the new entity
     params = {:xml => desc}
@@ -208,7 +254,7 @@ describe "entity" do
     
     #Retrieving the newly created entity and making sure that it has the first and last names
     t.get("entity/#{pid}")
-    t.text_body_include?(["<namePart>#{firstname}</namePart>", "<namePart partType=\"surname\">#{lastname}</namePart>"])
+    t.text_body_include?(["<namePart partType=\"forename\">#{firstname}</namePart>", "<namePart partType=\"surname\">#{lastname}</namePart>"])
   end
   
   it "updates entity" do
@@ -230,7 +276,7 @@ describe "entity" do
     begin
       firstname = "firstname #{rand(1000)}"
     end while current_desc_text.include?(firstname)
-    new_desc_text = create_sample_person_entity_desc(firstname, "")
+    new_desc_text = create_sample_person_desc(firstname, "")
     
     #updating the entity
     params = {:xml => new_desc_text, :id=>entity_id}
@@ -241,7 +287,7 @@ describe "entity" do
     
     #Retrieving the newly created entity and making sure that it has the first and last names
     t.get("entity/#{pid}")
-    t.text_body_include?("<namePart>#{firstname}</namePart>")
+    t.text_body_include?("<namePart partType=\"forename\">#{firstname}</namePart>")
   end
 
   it "deletes entity" do
