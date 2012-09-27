@@ -22,8 +22,14 @@ class CcmBase < ActiveFedora::Base
     update_dc_id = get_dc.identifier == ""
     status = super
     
+    dc = get_dc
     if update_dc_id && status
-      get_dc.identifier = self.pid
+      
+      dc.identifier = self.pid
+      dc.creator = "TODO"
+      dc.created = "TODO"
+      
+      dc.dirty = true
       status = super      
     end
     
