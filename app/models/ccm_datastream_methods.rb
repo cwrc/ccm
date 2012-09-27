@@ -48,15 +48,23 @@ module CcmDatastreamMethods
     self.dirty = true
   end
   
-  def replace_xml_description(xmlString)
+  def replace_xml_description(xmlDesc)
     ## Updates the XML description of the record using the given xmlString
     
     parent = self.find_by_terms(:xml_description).first.parent
     self.find_by_terms(:xml_description).first.remove
 
-    new_desc = Nokogiri::XML::Document.parse(xmlString).root
+    new_desc = xmlDesc.class == String ? Nokogiri::XML::Document.parse(xmlDesc).root : xmlDesc
     parent.add_child(new_desc) 
     self.dirty = true
+  end
+  
+  def get_child_elements(xpathToParent)
+    ret = Array.new
+    get_xml_description.xpath(xpathToParent).children.each do |child|
+      ret.push(child) if child.class == Nokogiri::XML::Element
+    end
+    ret
   end
 
 end

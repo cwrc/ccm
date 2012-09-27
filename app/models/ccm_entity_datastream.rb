@@ -28,15 +28,28 @@ class CcmEntityDatastream < ActiveFedora::NokogiriDatastream
   
   
   def display_name
-    get_text('/entity/*/identity/preferredForm/displayForm')
+    get_text(ENTITY_DISPLAY_NAME_PATH)
   end
   
   def forename
-    get_text('/entity/*/identity/preferredForm/namePart[@partType="forename"]')
+    get_text(ENTITY_FORENAME_PATH)
   end
 
   def surname
-    get_text('/entity/*/identity/preferredForm/namePart[@partType="surname"]')
+    get_text(ENTITY_SURNAME_PATH)
+  end
+  
+  def preferred_form_names
+    get_text(ENTITY_PREFERRED_FORM_NAMES_PATH, true)
+  end
+  
+  def type
+    CcmEntityDatastream.get_type(get_xml_description)
+  end
+  
+  def self.get_type(entity_xml)
+    desc = entity_xml.class == String ? Nokogiri::XML::Document.parse(entity_xml).root : entity_xml
+    desc.xpath(ENTITY_TYPE_PATH).first.name
   end
 
 #  

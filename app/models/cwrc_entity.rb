@@ -3,16 +3,42 @@ class CwrcEntity < CcmBase
   
   protected
   def update_dc
-    xml = datastreams["EntityMetadata"].get_xml_description
+    entity_ds = datastreams["EntityMetadata"]
     dc = get_dc
     
+    dc.title = entity_ds.display_name
+    dc.title = "#{entity_ds.surname} #{entity_ds.forename}".strip if dc.title == ""
+    dc.title = entity_ds.preferred_form_names.join(" ") if dc.title == ""
+
+    dc.type = entity_ds.type
     
     dc.dirty = true #flag that DC is changed, so needs to be saved
   end
   
+  private
+  def initialize(namespace)
+    super(:namespace=>namespace)
+  end
+
   public
-    
   has_metadata :name => "EntityMetadata", :type=> CcmEntityDatastream
+  
+  def self.new_entity(xmlString)
+    desc = Nokogiri::XML::Document.parse(xmlString).root
+    namespace = CcmEntityDatastream.get_type(desc)
+    
+    entity = CwrcEntity.new(namespace)
+    entity.datastreams["EntityMetadata"].replace_xml_description(desc)
+    entity
+  end
+  
+  def self.new_person
+    CwrcEntity.new("person")
+  end
+  
+  def self.new_organization
+    CwrcEntity.new("organization")
+  end
   
   def get_xml_description
     return datastreams["EntityMetadata"].get_xml_description

@@ -51,9 +51,13 @@ class EntityController < ApplicationController
 ##      if request.post?
         xml_string = params[:xml]
         id = params[:id]
-      
-        object = (id.nil? || id == "") ? CwrcEntity.new : CwrcEntity.find(id)
-        object.replace_xml_description(xml_string)
+        
+        if id.nil? || id == ""
+          object = CwrcEntity.new_entity(xml_string)
+        else
+          object = CwrcEntity.find(id)
+          object.replace_xml_description(xml_string)
+        end
         
         if object.save
           render :text => callback.nil? ? object.pid : "#{callback}(\"#{object.pid}\")"
