@@ -266,6 +266,9 @@ describe "entity" do
     org_name = "Organization #{rand(1000)}"
     desc = create_sample_organization_desc(org_name)
     
+    #puts desc
+    #desc = '<entity><organization><recordInfo><originInfo><projectId>ceww</projectId></originInfo></recordInfo><identity><preferredForm><namePart>London Women\'s Press Club (president 1921-23)</namePart></preferredForm></identity><description><orgTypes><orgType>literary</orgType></orgTypes></description><relations><relation type="basedIn"><place>president 1921-23</place></relation></relations></organization></entity>'
+    
     #making the post call to create the new entity
     params = {:xml => desc}
     t.post("entity/save", params)
