@@ -1,0 +1,20 @@
+development:
+#  url: http://fedora.testing.cwrc.ca:8080/fedora
+  
+  user: fedoraAdmin
+  password: fedoraAdmin
+  url: http://localhost:8983/fedora
+    
+test: &TEST  
+  user: fedoraAdmin
+  password: fedoraAdmin
+  url: http://localhost:8983/fedora
+
+production:
+  
+  user: fedoraAdmin
+  password: fedoraAdmin
+  url: http://localhost:8983/fedora
+
+cucumber:
+  <<: *TEST
