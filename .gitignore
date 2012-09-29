@@ -4,4 +4,6 @@ log/*.log
 tmp/
 .project
 *~
+fedora.yml
+solr.yml
 
