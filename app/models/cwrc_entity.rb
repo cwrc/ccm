@@ -64,6 +64,9 @@ class CwrcEntity < CcmBase
     super    
   end
   
+  def self.list(entity_type=nil)
+    matches = CcmBase.get_objects_from_solr("info%5C%3Afedora%2Fafmodel%5C%3ACwrcEntity", entity_type, false);
+  end
   
 #  def self.get_latest_pids
 #    CwrcEntity.find(:all)
