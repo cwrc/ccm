@@ -9,9 +9,14 @@ class EntityController < ApplicationController
   def list
     callback = params[:callback]
     max = params[:max].nil? ? max_records : params[:max].to_i
-    list = CwrcEntity.find(:all, {:rows=>max})
+    type = nil #params[:type]
     
-    ret = list.map{ |x| {:id=>x.id, :name=>x.id.to_s}}
+    #list = CwrcEntity.find(:all, {:rows=>max}) #using hydra framework
+    #ret = list.map{ |x| {:id=>x.id, :name=>x.id.to_s}}
+    
+    list = CwrcEntity.list(type, max) #directly using solr API
+    ret = list.map{ |x| {:id=>x[:id], :name=>x[:id].to_s}}
+    
     if callback.nil?
       render :json=>ret.to_json
     else
