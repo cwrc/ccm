@@ -53,7 +53,7 @@ class CcmBase < ActiveFedora::Base
     xml.xpath("/response/result/doc")
   end
   
-  def self.get_objects_from_solr(model_type=nil, dc_type=nil, ret_score=false)
+  def self.get_objects_from_solr(model_type=nil, dc_type=nil, ret_score=false, max=nil)
     
     fields = ret_score ? "id,score" : "id"
     
@@ -62,6 +62,8 @@ class CcmBase < ActiveFedora::Base
     q.push("has_model%5C#{model_type}") unless model_type.nil?
     
     q_str = q.join("%20AND%20")
+    q_str = "#{q_str}&rows=#{max}" unless max.nil?
+     
     url = URI::join(ENV["solr_base"], "select?").to_s + "fl=#{fields}&q=#{q_str}" 
     puts url
     res = CcmBase.get_solr_object_list(URI::parse(url))
@@ -72,9 +74,9 @@ class CcmBase < ActiveFedora::Base
       pid = doc_element.xpath("str[@name=\"id\"]").first.text
       if ret_score
         score = doc_element.xpath("float[@name=\"score\"]").first.text.to_f
-        ret.push({:pid=>pid, :score=>score})
+        ret.push({:id=>pid, :score=>score})
       else
-        ret.push({:pid=>pid})
+        ret.push({:id=>pid})
       end
     end
     ret
