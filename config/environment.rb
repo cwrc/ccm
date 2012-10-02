@@ -13,3 +13,5 @@ ENV["entity_root_tag"] = "entity"
 
 ENV['workflow_engine_notification_url'] = "http://www.ualberta.ca/~ranaweer/shrek/dymmyapi.html"
 #ENV['workflow_engine_notification_url'] = "http://apps.testing.cwrc.ca:8080/EventAdapter"
+
+ENV["solr_base"] = "http://127.0.0.1:11877/solr/solr_core_default/" 
