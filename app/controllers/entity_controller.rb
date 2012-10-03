@@ -9,7 +9,7 @@ class EntityController < ApplicationController
   def list
     callback = params[:callback]
     max = params[:max].nil? ? max_records : params[:max].to_i
-    type = nil #params[:type]
+    type = params[:type]
     
     #list = CwrcEntity.find(:all, {:rows=>max}) #using hydra framework
     #ret = list.map{ |x| {:id=>x.id, :name=>x.id.to_s}}
