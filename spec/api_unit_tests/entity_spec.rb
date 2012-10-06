@@ -288,9 +288,9 @@ describe "entity" do
     t = CcmApiTest.new
     
     #finding an entity to be updated
-    t.get("entity/list")
+    t.get("entity/list?type=person")
     json = t.json_body
-    raise "No entities found. Please create some entities and re-run this tets" if json.count == 0
+    raise "No person entities found. Please create some person entities and re-run this tets" if json.count == 0
     
     entity_id = json[0]["id"]
     
