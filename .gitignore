@@ -6,4 +6,5 @@ tmp/
 *~
 fedora.yml
 solr.yml
+jetty/*
 
