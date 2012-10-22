@@ -6,4 +6,8 @@ tmp/
 *~
 fedora.yml
 solr.yml
+<<<<<<< HEAD
+=======
+jetty/*
+>>>>>>> cb7d9b9c23bc38f4fba549ba59473b5943c9bb72
 
