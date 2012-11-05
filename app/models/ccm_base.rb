@@ -16,6 +16,16 @@ class CcmBase < ActiveFedora::Base
     datastreams["DC"]
   end  
   
+  # Sets Object Name
+  def name=(val)
+    get_dc.title = val
+  end
+  
+  # Gets Object Name
+  def name
+    get_dc.title
+  end
+  
   # Saves the object. If this is a new object, then this call makes sure the saved object ID is added to the DC datastream and saves it agian.
   # Returns true if save is successful, and falise, otherwise.  
   def save
@@ -55,7 +65,7 @@ class CcmBase < ActiveFedora::Base
   
   def self.get_objects_from_solr(model_type=nil, dc_type=nil, ret_score=false, max=nil)
     
-    fields = ret_score ? "id,score" : "id"
+    fields = ret_score ? "id,dc.title,score" : "id,dc.title"
     
     q = []
     q.push("dc.type%5C%20#{dc_type}") unless dc_type.nil?
@@ -64,7 +74,7 @@ class CcmBase < ActiveFedora::Base
     q_str = q.join("%20AND%20")
     q_str = "#{q_str}&rows=#{max}" unless max.nil?
      
-    url = URI::join(ENV["solr_base"], "select?").to_s + "fl=#{fields}&q=#{q_str}" 
+    url = URI::join(ENV["solr_base"], "select?").to_s + "fl=#{fields}&q=#{q_str}"
     puts url
     res = CcmBase.get_solr_object_list(URI::parse(url))
     
@@ -72,15 +82,15 @@ class CcmBase < ActiveFedora::Base
     ret = []  
     res.each do |doc_element|
       pid = doc_element.xpath("str[@name=\"id\"]").first.text
+      name = doc_element.xpath("arr[@name=\"dc.title\"]/str").text
+      
       if ret_score
         score = doc_element.xpath("float[@name=\"score\"]").first.text.to_f
-        ret.push({:id=>pid, :score=>score})
+        ret.push({:id=>pid, :name=>name, :score=>score})
       else
-        ret.push({:id=>pid})
+        ret.push({:id=>pid, :name=>name})
       end
     end
     ret
   end
-  
-
 end

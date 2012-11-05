@@ -15,7 +15,7 @@ class EntityController < ApplicationController
     #ret = list.map{ |x| {:id=>x.id, :name=>x.id.to_s}}
     
     list = CwrcEntity.list(type, max) #directly using solr API
-    ret = list.map{ |x| {:id=>x[:id], :name=>x[:id].to_s}}
+    ret = list.map{ |x| {:id=>x[:id], :name=>x[:name]}}
     
     if callback.nil?
       render :json=>ret.to_json

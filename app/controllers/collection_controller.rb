@@ -11,7 +11,7 @@ class CollectionController < ApplicationController
     max = params[:max].nil? ? max_records : params[:max].to_i
     list = CwrcCollection.find(:all, {:rows=>max})
            
-    ret = list.map{ |x| {:id=>x.id, :name=>x.id.to_s}}
+    ret = list.map{ |x| {:id=>x.id, :name=>x.name}}
     if callback.nil?
       render :json=>ret.to_json
     else
