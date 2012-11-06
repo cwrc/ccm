@@ -3,6 +3,8 @@ class CcmBase < ActiveFedora::Base
   
   include Hydra::ModelMethods
   
+  include CcmCollectionMemberMethods
+  
   has_metadata :name => "DC", :type=> CcmDcDatastream
   
   # Constructor

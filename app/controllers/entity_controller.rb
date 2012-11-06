@@ -56,6 +56,7 @@ class EntityController < ApplicationController
 ##      if request.post?
         xml_string = params[:xml]
         id = params[:id]
+        parent_ids = params[:parent].nil? ? [] : params[:parent].split(",")
         
         if id.nil? || id == ""
           object = CwrcEntity.new_entity(xml_string)
@@ -65,6 +66,8 @@ class EntityController < ApplicationController
         end
         
         if object.save
+          object.add_to_collection(parent_ids)
+          
           render :text => callback.nil? ? object.pid : "#{callback}(\"#{object.pid}\")"
         else
           render :text => callback.nil? ? -1 : "#{callback}(\"-1\")"
@@ -75,6 +78,63 @@ class EntityController < ApplicationController
     rescue
       render :text => callback.nil? ? -1 : "#{callback}(\"-1\")"
     end    
+  end
+  
+  def add_to_collection
+    begin
+      id = params[:id]
+      parent_ids = params[:parent].nil? ? [] : params[:parent].split(",")
+      object = CwrcEntity.find(id)
+      
+      raise "Entity #{id} not found" if object.nil?
+      
+      object.add_to_collection(parent_ids)
+      render :text => object.pid
+    rescue => e
+      logger.error "ENTITY/ADD_TO_COLLECTION ERROR: #{e.message}"
+      render :text => -1
+    end
+  end
+
+  def remove_from_collection
+    begin
+      id = params[:id]
+      parent_ids = params[:parent].nil? ? [] : params[:parent].split(",")
+      object = CwrcEntity.find(id)
+      
+      raise "Entity #{id} not found" if object.nil?
+      
+      object.remove_from_collection(parent_ids)
+      render :text => object.pid
+    rescue => e
+      logger.error "ENTITY/REMOVE_FROM_COLLECTION ERROR: #{e.message}"
+      render :text => -1
+    end
+  end
+
+  def get_parent_collections
+    callback = params[:callback]
+    begin
+      id = params[:id]
+      object = CwrcEntity.find(id)
+      
+      raise "Entity #{id} not found" if object.nil?
+      
+      ret = object.get_parent_ids
+      
+      if callback.nil?
+        render :json=>ret.to_json
+      else
+        render :json=>ret.to_json, :callback => params[:callback]
+      end
+    rescue => e
+      logger.error "ENTITY/GET_PARENT_COLLECTIONS ERROR: #{e.message}"
+      if callback.nil?
+        render :json=>-1
+      else
+        render :json=>-1, :callback => params[:callback]
+      end
+    end
   end
   
   def delete

@@ -1,8 +1,6 @@
 
 class CwrcItem < CcmBase
   
-  include CcmCollectionMemberMethods
-  
   ##has_relationship "member_of", :is_member_of
   
   has_metadata :name => "ccmContentMetadata", :type=> CcmContentDatastream

@@ -10,6 +10,10 @@ EntityHydra::Application.routes.draw do
       get 'save' #This is required to parse callback when using JSONP
       post 'delete'
       get 'list'
+      
+      post 'add_to_collection'
+      post 'remove_from_collection'
+      get 'get_parent_collections'
     end
   end
   

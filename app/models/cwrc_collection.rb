@@ -3,8 +3,6 @@
 
 class CwrcCollection < CcmBase
   
-  include CcmCollectionMemberMethods
-  
   has_many :items, :property=>:has_derivation
   has_many :subcollections, :property=>:has_collection
   
