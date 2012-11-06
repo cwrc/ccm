@@ -34,5 +34,9 @@ module CcmCollectionMemberMethods
     end
     self.save
   end
+  
+  def get_parent_ids
+    self.ids_for_outbound(:is_member_of_collection)
+  end
  
 end

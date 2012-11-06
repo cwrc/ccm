@@ -23,11 +23,6 @@ class CwrcItem < CcmBase
     ds = datastreams["workflowStamp"]
     ds.get_stamps
   end
-  
-  def get_parent_ids
-    self.ids_for_outbound(:is_member_of_collection)
-  end
-  
 
 #  def to_solr(solr_doc=Hash.new)
 #    super
