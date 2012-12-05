@@ -176,7 +176,7 @@ describe "item" do
     desc = create_sample_item_desc(title)
     
     #making the post call to create the new item
-    params = {:xml => desc}
+    params = {:xml => desc, :name=>title}
     t.post("item/save", params)
     pid = t.text_body
     
