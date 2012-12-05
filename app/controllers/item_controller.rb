@@ -24,7 +24,8 @@ class ItemController < ApplicationController
     callback = params[:callback]
     begin
       object = CwrcItem.find(params[:id]);
-      xml = object.get_xml_description
+      ##xml = object.get_xml_description
+      xml = object.get_datastream_content
     rescue => e
       logger.error "ITEM/SHOW ERROR: " + e.message
       xml = ""
@@ -33,11 +34,11 @@ class ItemController < ApplicationController
     if callback.nil?
       respond_to do |format|
         format.xml { render :xml=> xml }
-        format.json { render :json=>CobraVsMongoose.xml_to_json(xml.to_s) }
+        format.json { render :json=>CobraVsMongoose.xml_to_json(xml) }
         format.any { render :xml=> xml, :content_type => Mime::XML }
       end
     else
-      render :text=> callback + "(\"" + xml.to_s.gsub("\"", "\\\"").gsub("\r\n", " ").gsub("\n", " ") + "\")"      
+      render :text=> callback + "(\"" + xml.gsub("\"", "\\\"").gsub("\r\n", " ").gsub("\n", " ") + "\")"      
     end
   end
   

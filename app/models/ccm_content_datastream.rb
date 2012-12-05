@@ -17,7 +17,10 @@ class CcmContentDatastream < ActiveFedora::NokogiriDatastream
     enc = envelope.get_attribute('encoding')
     version_string = "<?xml version=\"#{ver}\" encoding=\"#{enc}\"?>"
     
-    return version_string + envelope.elements.first.to_s
+    ##returning the version string and all children. The children include the item description as well as all of its root-level processing instructions
+    xml_str = envelope.children.map{|child|child.to_s}.join
+    
+    return version_string + xml_str
   end
 
   def get_xml_element
@@ -42,9 +45,11 @@ class CcmContentDatastream < ActiveFedora::NokogiriDatastream
       envelope.elements.first.remove
     end
     
-    ##Inserting the new element to the envelope
-    envelope.add_child(new_desc_doc.root)
-
+    #Adding all children of the new_doc to the envelope. This include the root element of the new_doc as well as all of its root-level processing instructions
+    new_desc_doc.children.each do |node|
+      envelope.add_child(node)
+    end
+       
     ##Indicating that the XML description was updated, so that item must be saved to the repository.     
     self.dirty = true
   end

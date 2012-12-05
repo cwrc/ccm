@@ -1,11 +1,19 @@
 # This module defines common methods for data streams used in CCM models
 
 module CcmDatastreamMethods
-  
+
+  def get_datastream_content
+    ##Returns the data stream content as a string. 
+    ##This includes XML element as well as XML Processing Instructions
+
+    desc = self.find_by_terms(:xml_description)
+    parent = desc.parent
+    
+    return parent.children.map{|child|child.to_s}.join
+  end  
   
   def get_xml_description
     ## Returns the XML description of the record
-    
     return self.find_by_terms(:xml_description).first
   end
   
@@ -53,9 +61,21 @@ module CcmDatastreamMethods
     
     parent = self.find_by_terms(:xml_description).first.parent
     self.find_by_terms(:xml_description).first.remove
-
-    new_desc = xmlDesc.class == String ? Nokogiri::XML::Document.parse(xmlDesc).root : xmlDesc
-    parent.add_child(new_desc) 
+    
+    if(xmlDesc.class == String)
+      new_doc =  Nokogiri::XML::Document.parse(xmlDesc)
+      
+      #Adding all children of the new_doc to the parent. This include the root element of the new_doc as well as all of its root-level processing instructions
+      new_doc.children.each do |node|
+        parent.add_child(node)
+      end
+    else
+      parent.add_child(xmlDesc)
+    end
+    
+    #Add all root-level processing instructions of the new desc to the saved one.
+    
+    
     self.dirty = true
   end
   
