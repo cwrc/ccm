@@ -31,20 +31,27 @@ class CcmBase < ActiveFedora::Base
   # Saves the object. If this is a new object, then this call makes sure the saved object ID is added to the DC datastream and saves it agian.
   # Returns true if save is successful, and falise, otherwise.  
   def save
+    #see if PID is not yet specified in DC. Note that according the rest of the code, the PID is put in DC when the object is first saved. 
+    #That means the below expression becomes true only if this is the object is saved first time.
     update_dc_id = get_dc.identifier == ""
+    
+    #Save the object. This generates the PID if this is a new object.
     status = super
     
     dc = get_dc
     if update_dc_id && status
       
       dc.identifier = self.pid
-      dc.creator = "TODO"
-      dc.created = "TODO"
       
-      dc.dirty = true
+      #We need to set up the following field at some point.
+      dc.creator = "TODO" if dc.creator == ""
+      dc.created = "TODO" if dc.created == ""
+      
+      #Since the DC is updated, let's save the object again.
       status = super      
     end
     
+    #Return the save status.
     return status
   end
   

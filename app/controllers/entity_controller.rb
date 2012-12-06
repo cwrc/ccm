@@ -11,11 +11,13 @@ class EntityController < ApplicationController
     max = params[:max].nil? ? max_records : params[:max].to_i
     type = params[:type]
     
-    #list = CwrcEntity.find(:all, {:rows=>max}) #using hydra framework
-    #ret = list.map{ |x| {:id=>x.id, :name=>x.id.to_s}}
+    list = CwrcEntity.find(:all, {:rows=>max}) #using hydra framework
+    ret = list.map{ |x| {:id=>x.id, :name=>x.name}}
     
-    list = CwrcEntity.list(type, max) #directly using solr API
-    ret = list.map{ |x| {:id=>x[:id], :name=>x[:name]}}
+    ##below code directly uses solr api to do the search.
+    ##this is experimental; found on Dec 12, 2012 that it doesn't return the name properly.
+    #list = CwrcEntity.list(type, max) #directly using solr API
+    #ret = list.map{ |x| {:id=>x[:id], :name=>x[:name]}}
     
     if callback.nil?
       render :json=>ret.to_json

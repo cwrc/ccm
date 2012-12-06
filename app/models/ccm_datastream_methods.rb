@@ -2,7 +2,7 @@
 
 module CcmDatastreamMethods
 
-  def get_datastream_content
+  def get_datastream_content_with_processing_instructions
     ##Returns the data stream content as a string. 
     ##This includes XML element as well as XML Processing Instructions
 

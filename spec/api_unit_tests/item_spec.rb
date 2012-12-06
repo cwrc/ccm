@@ -203,7 +203,7 @@ describe "item" do
     desc = create_sample_item_desc(title)
     
     #making the post call to create the new item
-    params = {:xml => desc, :parent=>collection_id}
+    params = {:xml => desc, :parent=>collection_id, :name=>title}
     t.post("item/save", params)
     pid = t.text_body
     
@@ -238,7 +238,7 @@ describe "item" do
     desc = create_sample_item_desc(title)
     
     #making the post call to create the new item
-    params = {:xml => desc, :parent=>collection_ids.join(",")}
+    params = {:xml => desc, :parent=>collection_ids.join(","), :name=>title}
     t.post("item/save", params)
     pid = t.text_body
     
@@ -448,7 +448,7 @@ describe "item" do
     stamp = create_sample_workflow_stamp()
     
     #making the post call to create the new item along with the worflow stamp
-    params = {:xml => desc, :stamp=>stamp}
+    params = {:xml => desc, :stamp=>stamp, :name=>title}
     t.post("item/save", params)
     pid = t.text_body
     
@@ -475,7 +475,7 @@ describe "item" do
     desc = create_sample_item_desc(title)
 
     #making the post call to create the new item
-    params = {:xml => desc}
+    params = {:xml => desc, :name=>title}
     t.post("item/save", params)
     pid = t.text_body
     
@@ -508,6 +508,7 @@ describe "item" do
     ins_2 = '<?xml-model href="http://www.cwrc.ca/schema/cwrcbasic" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>'
     ins_3 = '<?xml-stylesheet type="text/css" href="http://www.cwrc.ca/templates/css/tei.css"?>'
     ins_4 = '<?xml-stylesheet type="text/css" href="http://www.cwrc.ca/templates/css/tei.css"?>'
+    title = "Sample Document Title"
     
     desc = ins_1 + ins_2 + ins_3 + '
 <TEI xmlns="http://www.tei-c.org/ns/1.0">
@@ -515,7 +516,7 @@ describe "item" do
         ' + ins_4 + '
         <fileDesc>
             <titleStmt>
-                <title>Sample Document Title</title>
+                <title>' + title + '</title>
             </titleStmt>
             <publicationStmt>
                 <p/>
@@ -546,7 +547,7 @@ describe "item" do
 '
     
     #making the post call to create the new item
-    params = {:xml => desc}
+    params = {:xml => desc, :name=>title}
     t.post("item/save", params)
     pid = t.text_body
     

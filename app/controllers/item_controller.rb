@@ -24,8 +24,7 @@ class ItemController < ApplicationController
     callback = params[:callback]
     begin
       object = CwrcItem.find(params[:id]);
-      ##xml = object.get_xml_description
-      xml = object.get_datastream_content
+      xml = object.get_xml_description
     rescue => e
       logger.error "ITEM/SHOW ERROR: " + e.message
       xml = ""
@@ -48,10 +47,12 @@ class ItemController < ApplicationController
       id = params[:id]
       parent_ids = params[:parent].nil? ? [] : params[:parent].split(",")
       stamp = params[:stamp]
+      name = params[:name]
       
       object = (id.nil? || id == "") ? CwrcItem.new : CwrcItem.find(id)
       object.replace_xml_description(xml_string)
       object.add_stamp_string(stamp) unless stamp == nil || stamp == ""
+      object.name = name unless name == nil || name == ""
       
       if object.save
         object.add_to_collection(parent_ids)
