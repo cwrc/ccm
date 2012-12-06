@@ -46,6 +46,7 @@ describe "item" do
     
     item = CwrcItem.new
     item.replace_xml_description(desc)
+    item.name = "sample item desc"
     
     item.save
     pid = item.pid
@@ -53,18 +54,16 @@ describe "item" do
     raise "Item creation failed" if pid.start_with?("-") #A minus sign
     
     puts pid
+    reloaded_item = CwrcItem.find(pid)
     
     source_xml = Nokogiri::XML(desc);
-    retrieved_xml = Nokogiri::XML(item.get_xml_description)
+    retrieved_xml = Nokogiri::XML(reloaded_item.get_xml_description)
     
-    item2 = CwrcItem.find(pid)
+    #puts "Saved:"
+    #puts item.get_xml_description
     
-    puts "Saved:"
-    puts item.get_xml_description
-    
-    puts "Retrieved:"
-    puts item2.get_xml_description
-    
+    #puts "Retrieved:"
+    #puts item2.get_xml_description
     
     #both documents should have the same number of childrenn (i.e. one root node and the same number of root-level processing instructions)
     raise "The retrieved doc should have #{source_xml.children.count} root-level children but found #{retrieved_xml.children.count}" unless source_xml.children.count == retrieved_xml.children.count
