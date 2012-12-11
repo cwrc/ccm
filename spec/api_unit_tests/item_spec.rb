@@ -556,43 +556,14 @@ describe "item" do
     #Retrieving the newly created item and making sure that it has the specified title
     t.get("item/#{pid}")
     
-    #making sure that the three processing instructions appear outside of the root element
-    #=====================================================================================
+    #test the existence of ins_1 at the root level
+    raise "#{ins_1} not found at the root level" unless t.assert_processing_instruction("//", "http://www.tei-c.org/ns/1.0", ins_1)
     
-    source_xml = Nokogiri::XML(desc);
-    retrieved_xml = t.xml_body
+    #test the existence of ins_2 at the root level
+    raise "#{ins_2} not found at the root level" unless t.assert_processing_instruction("//", "http://www.tei-c.org/ns/1.0", ins_2)
     
-    #both documents should have the same number of childrenn (i.e. one root node and the same number of root-level processing instructions)
-    raise "The retrieved doc should have #{source_xml.children.count} root-level children but found #{retrieved_xml.children.count}" unless source_xml.children.count == retrieved_xml.children.count
+    #test the existence of ins_3 inside the teiHeader element
+    raise "#{ins_3} not found inside the teiHeader element" unless t.assert_processing_instruction("//teiHeader", "http://www.tei-c.org/ns/1.0", ins_3)
     
-    #making sure that ins_1 is within the root level children of the retrieved document
-    x = retrieved_xml.xml.xpath('//processing-instruction("xml-model")', "x"=>"http://www.tei-c.org/ns/1.0")
-    raise "xml-model processing instruction noty found." if x.count == 0
-    pi_1 = x.first
-    raise "xml-model processing instruction is not at the root level" unless pi_1.parent == retrieved_xml
-    
-    #making sure that rge PI has its correct content. I do this by creating a fake elment using PI content and then verifying that
-    #it has correct attributes. This workaround is done 
-    
-    
-    found = false;
-    retrieved_xml.children.each do |child|
-      found = true if child.to_s == ins_1
-    end
-    raise "#{ins_1} not found within the root-level children of the document." unless found
-
-    #making sure that ins_2 is within the root level children of the retrieved document
-    found = false;
-    retrieved_xml.children.each do |child|
-      found = true if child.to_s == ins_2
-    end
-    raise "#{ins_2} not found within the root-level children of the document." unless found
-    
-    puts retrieved_xml.xpath("/TEI//teiHeader").children.count
-    
-    #making sure that ins_3 appears as a child of the teiHeader element
-    teiHeader = retrieved_xml.root.xpath("//teiHeader").children.each do |child|
-      puts child.to_s
-    end
   end
 end
