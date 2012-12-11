@@ -3,7 +3,7 @@ class CwrcItem < CcmBase
   
   ##has_relationship "member_of", :is_member_of
   
-  has_metadata :name => "ccmContentMetadata", :type=> CcmContentDatastream
+  has_metadata :name => "ccmContentMetadata", :type=> CcmContentDatastream, :control_group=>'M' 
   has_metadata :name => "workflowStamp", :type=> CcmWorkflowDatastream
   
   def get_xml_description

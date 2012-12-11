@@ -504,16 +504,16 @@ describe "item" do
   it "saves items with processing instructions" do
     t = CcmApiTest.new
     
-    ins_1 = '<?xml version="1.0" encoding="UTF-8"?>'
-    ins_2 = '<?xml-model href="http://www.cwrc.ca/schema/cwrcbasic" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>'
-    ins_3 = '<?xml-stylesheet type="text/css" href="http://www.cwrc.ca/templates/css/tei.css"?>'
-    ins_4 = '<?xml-stylesheet type="text/css" href="http://www.cwrc.ca/templates/css/tei.css"?>'
+    ver = '<?xml version="1.0" encoding="UTF-8"?>'
+    ins_1 = '<?xml-model href="http://www.cwrc.ca/schema/cwrcbasic" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>'
+    ins_2 = '<?xml-stylesheet type="text/css" href="http://www.cwrc.ca/templates/css/tei.css"?>'
+    ins_3 = '<?xml-stylesheet type="text/css" href="http://www.cwrc.ca/templates/css/random.css"?>'
     title = "Sample Document Title"
     
-    desc = ins_1 + ins_2 + ins_3 + '
+    desc = ver + ins_1 + ins_2 + '
 <TEI xmlns="http://www.tei-c.org/ns/1.0">
     <teiHeader>
-        ' + ins_4 + '
+        ' + ins_3 + '
         <fileDesc>
             <titleStmt>
                 <title>' + title + '</title>
@@ -565,12 +565,34 @@ describe "item" do
     #both documents should have the same number of childrenn (i.e. one root node and the same number of root-level processing instructions)
     raise "The retrieved doc should have #{source_xml.children.count} root-level children but found #{retrieved_xml.children.count}" unless source_xml.children.count == retrieved_xml.children.count
     
+    #making sure that ins_1 is within the root level children of the retrieved document
+    x = retrieved_xml.xml.xpath('//processing-instruction("xml-model")', "x"=>"http://www.tei-c.org/ns/1.0")
+    raise "xml-model processing instruction noty found." if x.count == 0
+    pi_1 = x.first
+    raise "xml-model processing instruction is not at the root level" unless pi_1.parent == retrieved_xml
     
-     
+    #making sure that rge PI has its correct content. I do this by creating a fake elment using PI content and then verifying that
+    #it has correct attributes. This workaround is done 
     
     
-    x2 = doc_xml;
+    found = false;
+    retrieved_xml.children.each do |child|
+      found = true if child.to_s == ins_1
+    end
+    raise "#{ins_1} not found within the root-level children of the document." unless found
+
+    #making sure that ins_2 is within the root level children of the retrieved document
+    found = false;
+    retrieved_xml.children.each do |child|
+      found = true if child.to_s == ins_2
+    end
+    raise "#{ins_2} not found within the root-level children of the document." unless found
     
+    puts retrieved_xml.xpath("/TEI//teiHeader").children.count
     
+    #making sure that ins_3 appears as a child of the teiHeader element
+    teiHeader = retrieved_xml.root.xpath("//teiHeader").children.each do |child|
+      puts child.to_s
+    end
   end
 end
