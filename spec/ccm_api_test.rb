@@ -65,7 +65,7 @@ class CcmApiTest
   #
   #         assert_processing_instruction("//", "http://www.tei-c.org/ns/1.0", "xml-model", {"href"=>"http://www.cwrc.ca/schema/cwrcbasic", "type"=>"application/xml", "schematypens"=>"http://relaxng.org/ns/structure/1.0"})
   #
-  def assert_processing_instruction(absoluteXpathToParent, xmlns, piName, contentNameValuePairs)
+  def assert_processing_instruction(absoluteXpathToParent, xmlns, expectedProcessingInstruction)
     if xpathToParent == "//"
       parents = [xml_body]
     else
