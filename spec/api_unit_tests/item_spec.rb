@@ -172,7 +172,7 @@ describe "item" do
     t = CcmApiTest.new
     
     # creating a sample xml description for a new item    
-    title = "Sample Title #{rand(1000)}"
+    title = "Sample Document #{rand(1000)}"
     desc = create_sample_item_desc(title)
     
     #making the post call to create the new item
@@ -199,7 +199,7 @@ describe "item" do
     collection_id = json[0]["id"]
     
     # creating a sample xml description for a new item    
-    title = "Sample Title #{rand(1000)}"
+    title = "Sample Document #{rand(1000)}"
     desc = create_sample_item_desc(title)
     
     #making the post call to create the new item
@@ -234,7 +234,7 @@ describe "item" do
     collection_ids = [json[0]["id"], json[1]["id"], json[2]["id"]]
     
     # creating a sample xml description for a new item    
-    title = "Sample Title #{rand(1000)}"
+    title = "Sample Document #{rand(1000)}"
     desc = create_sample_item_desc(title)
     
     #making the post call to create the new item
@@ -276,7 +276,7 @@ describe "item" do
     
     # creating an updated xml description with a different title name    
     begin
-      title = "Sample Title #{rand(1000)}"
+      title = "Sample Document #{rand(1000)}"
     end while current_desc_text.include?(title)
     new_desc_text = create_sample_item_desc(title)
     
@@ -441,7 +441,7 @@ describe "item" do
     t = CcmApiTest.new
     
    # creating a sample xml description for a new item    
-    title = "Sample Title #{rand(1000)}"
+    title = "Sample Document #{rand(1000)}"
     desc = create_sample_item_desc(title)
     
     #creating a sample workflow stamp
@@ -471,7 +471,7 @@ describe "item" do
     t = CcmApiTest.new
     
    # creating a sample xml description for a new item    
-    title = "Sample Title #{rand(1000)}"
+    title = "Sample Document #{rand(1000)}"
     desc = create_sample_item_desc(title)
 
     #making the post call to create the new item

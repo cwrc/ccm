@@ -48,11 +48,14 @@ class ItemController < ApplicationController
       parent_ids = params[:parent].nil? ? [] : params[:parent].split(",")
       stamp = params[:stamp]
       name = params[:name]
+      type = params[:type]
+      type = "document" if type.nil? || type == ""
       
       object = (id.nil? || id == "") ? CwrcItem.new : CwrcItem.find(id)
       object.replace_xml_description(xml_string)
       object.add_stamp_string(stamp) unless stamp == nil || stamp == ""
       object.name = name unless name == nil || name == ""
+      object.type = type
       
       if object.save
         object.add_to_collection(parent_ids)
